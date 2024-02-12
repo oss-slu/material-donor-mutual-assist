@@ -1,0 +1,30 @@
+name: Docker Build and Push
+
+on:
+  push:
+    branches:
+      - backend_yrlmanoharreddy
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        run: docker --version
+
+      - name: Build Docker image
+        run: |
+          cd backend/admin-module
+          docker build -t yrlmanoharreddymeda/yrl-admin-module .
+      - name: Log in to Docker Hub
+        run: docker login -u yrlmanoharreddymeda -p Manohar123%
+
+      - name: Push Docker image
+        run: docker push yrlmanoharreddymeda/yrl-admin-module
+      
+      - name: Run Docker container
+        run: docker run -d -p 3000:3000 yrlmanoharreddymeda/yrl-admin-module;
