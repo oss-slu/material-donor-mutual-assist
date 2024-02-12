@@ -1,4 +1,4 @@
-name: Docker Build and Push
+name: Docker Build and Push and run testcases
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-     - name: Install dependencies for Admin Module
+      - name: Install dependencies for Admin Module
         run: npm install --prefix backend/admin-module
 
       - name: Run unit tests for Admin Module
@@ -24,7 +24,7 @@ jobs:
 
       - name: Run unit tests for Donor Module
         run: npm run test --prefix backend/donor-module
-        
+
       - name: Set up Docker
         run: docker --version
 
