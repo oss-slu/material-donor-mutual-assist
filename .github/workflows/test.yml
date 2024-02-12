@@ -35,11 +35,8 @@ jobs:
       - name: Push Donor Module Docker image
         run: docker push yrlmanoharreddymeda/yrl-donor-module
 
-      - name: Set up Docker Compose
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
+      - name: Run Docker container for Admin Module
+        run: docker run -d -p 3000:3000 yrlmanoharreddymeda/yrl-admin-module
 
-      - name: Run Docker containers
-        run: |
-          docker-compose up -d
+      - name: Run Docker container for Donor Module
+        run: docker run -d -p 4000:4000 yrlmanoharreddymeda/yrl-donor-module
