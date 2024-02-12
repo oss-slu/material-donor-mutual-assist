@@ -13,6 +13,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+     - name: Install dependencies for Admin Module
+        run: npm install --prefix backend/admin-module
+
+      - name: Run unit tests for Admin Module
+        run: npm run test --prefix backend/admin-module
+
+      - name: Install dependencies for Donor Module
+        run: npm install --prefix backend/donor-module
+
+      - name: Run unit tests for Donor Module
+        run: npm run test --prefix backend/donor-module
+        
       - name: Set up Docker
         run: docker --version
 
