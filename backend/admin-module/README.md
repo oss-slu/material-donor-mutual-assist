@@ -13,8 +13,6 @@ For the issue #23: Test case for getting list of donors data using the /donorsLi
    if does not work, try with root user
    # sudo npm install
 
-3. Run the application using the following command
- #  npm start
 
 4. Run the unit test using the command 
    #  npm run test
@@ -41,8 +39,6 @@ To show material donors the impact of their donations.
    if does not work, try with root user
    # sudo npm install
 
-3. Run the application using the following command
- #  npm start
 
 4. Run the unit test using the command 
    #  npm run test
