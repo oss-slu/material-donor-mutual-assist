@@ -1,0 +1,18 @@
+// form.jade
+
+extends layout
+
+block content
+  h1= title
+  p Thanks for donating to B-Works #{title}
+  form(action="/submit-form" method="post")
+    label(for="username") Username:
+    input(type="text" id="username" name="username")
+
+    label(for="text") email id:
+    input(type="text" id="email" name="email")
+
+    label(for="text") Material Name:
+    input(type="text" id="material" name="material")
+
+    input(type="submit" value="Submit")
