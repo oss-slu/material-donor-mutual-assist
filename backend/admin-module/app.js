@@ -9,7 +9,7 @@ var usersRouter = require('./routes/users');
 var donarListRouter = require('./routes/donars_List');
 var donar_module_router = require('./routes/donar-module');
 var submitformRouter = require('./routes/submit-form');
-
+var sendEmailRouterr = require('./routes/send-email');
 var app = express();
 
 // view engine setup
@@ -27,6 +27,7 @@ app.use('/users', usersRouter);
 app.use('/donorsList', donarListRouter);
 app.use('/donar-module', donar_module_router);
 app.use('/submit-form', submitformRouter);
+app.use('/sendEmail', sendEmailRouterr);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
