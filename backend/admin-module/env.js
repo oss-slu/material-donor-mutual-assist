@@ -1,4 +1,4 @@
 module.exports = {
-    EMAIL : 'manoharmeda6@gmail.com',
-    PASSWORD : 'qzrz ywwq vtnw wdzm'
+    ACCKEY : 'AKIAU6GDXZYYMKHJXQ5P',
+    secKey : '4b+ftJy+ER4wLgeCIG1vRCKf8rZqSHGWkE4ulcDH'
 }

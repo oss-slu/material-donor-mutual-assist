@@ -1,4 +1,6 @@
+FROM nats:latest AS nats
 FROM node:21-alpine
+
 
 WORKDIR /app/admin-module
 

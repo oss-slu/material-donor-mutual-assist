@@ -27,7 +27,7 @@ app.use('/users', usersRouter);
 app.use('/donorsList', donarListRouter);
 app.use('/donar-module', donar_module_router);
 app.use('/submit-form', submitformRouter);
-app.use('/sendEmail', sendEmailRouterr);
+app.use('/send-email', sendEmailRouterr);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
