@@ -11,3 +11,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.text-weak {
+  color: red;
+}
+
+.text-medium{
+color: yellow;
+}
+
+.text-strong {
+  color: green;
+}
