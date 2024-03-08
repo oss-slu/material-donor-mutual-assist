@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  mdma-database:
+    build: .  # Build the image from the current directory (./)
+    image: mdma-database-image:latest  # Tag the built image as "mdma-database:latest"
+    container_name: mdma-database-container  # Set the container name to "mdma-database"
+    environment:
+      POSTGRES_USER: admin  # Set environment variable for username
+      POSTGRES_PASSWORD: admin  # Set environment variable for password
+      DATABASE_NAME: mdma  # Set environment variable for database name
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persistent data volume for database
+    ports:
+      - "5432:5432"  # Map container port 5432 to host port 5432
+
+volumes:
+  postgres_data:  # Define the volume name
