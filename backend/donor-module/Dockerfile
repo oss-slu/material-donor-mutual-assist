@@ -16,6 +16,6 @@ COPY ./views /app/donor-module/views/
 COPY app.js /app/donor-module/
 COPY . . 
 RUN npm install
-EXPOSE 4000
+EXPOSE 5001
 CMD ["npm", "start"]
 

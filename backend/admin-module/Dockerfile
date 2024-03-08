@@ -18,6 +18,6 @@ COPY ./views /app/admin-module/views/
 COPY app.js /app/admin-module/
 COPY . . 
 RUN npm install
-EXPOSE 3000
+EXPOSE 5000
 CMD ["npm", "start"]
 
