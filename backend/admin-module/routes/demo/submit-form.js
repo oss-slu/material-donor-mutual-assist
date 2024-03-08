@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 const nodemailer = require('nodemailer');
-const {EMAIL, PASSWORD} = require('../env.js');
 
 /* GET home page. */
 router.post('/', function(req, res, next) {
@@ -11,8 +10,8 @@ router.post('/', function(req, res, next) {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: EMAIL,
-            pass: PASSWORD
+            user: 'manoharmeda6@gmail.com',
+            pass: 'qzrz ywwq vtnw wdzm'
         }
     });
   

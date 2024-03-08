@@ -6,10 +6,9 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var donarListRouter = require('./routes/donars_List');
-var donar_module_router = require('./routes/donar-module');
-var submitformRouter = require('./routes/submit-form');
-var sendEmailRouterr = require('./routes/send-email');
+var donarListRouter = require('./routes/donor-details/donars_List');
+var donar_module_router = require('./routes/demo/donar-module');
+var submitformRouter = require('./routes/demo/submit-form');
 var app = express();
 
 // view engine setup
@@ -27,7 +26,6 @@ app.use('/users', usersRouter);
 app.use('/donorsList', donarListRouter);
 app.use('/donar-module', donar_module_router);
 app.use('/submit-form', submitformRouter);
-app.use('/send-email', sendEmailRouterr);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
