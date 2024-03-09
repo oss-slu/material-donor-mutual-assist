@@ -1,0 +1,92 @@
+.header {
+    background-color: #8cc969;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Logo */
+.logo-container {
+    flex-basis: 100px; /* Adjust width of logo container */
+}
+
+.logo {
+    width: 100%;
+    height: auto;
+}
+
+/* List of Donated Items heading */
+h1 {
+    flex-basis: calc(100% - 100px); /* Adjust width of heading */
+    margin-bottom: 10px;
+}
+
+/* Search bar */
+.search-bar {
+    display: flex;
+    align-items: center;
+    position: relative; /* Add position relative to enable positioning of search button */
+}
+
+.search-bar input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: calc(100% - 40px); /* Adjusted width to accommodate the search icon */
+}
+
+.search-button {
+    background-color: #462dea;
+    color: white;
+    border: none;
+    border-radius: 0; /* Rounded edges removed */
+    cursor: pointer;
+    position: absolute; /* Position the search button */
+    right: 0; /* Align the search button to the right */
+    padding: 8px;
+    width: 40px; /* Decreased width of search button */
+    height: 100%; /* Make the search button match the height of the input field */
+}
+
+/* Dropdowns */
+.dropdowns {
+    display: flex;
+}
+
+.sort-options,
+.filters-options {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 150px;
+    margin-right: 10px; /* Adjusted margin between dropdowns */
+}
+
+/* Filters button */
+.filters-button {
+    background-color: #6a5acd;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 8px 16px;
+}
+
+/* Table styles (for the item list) */
+.item-list {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.item-list th,
+.item-list td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+/* Add more styling as needed */
