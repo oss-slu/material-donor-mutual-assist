@@ -29,41 +29,42 @@ const Register = () => {
             return;
         }
     
-        const response = await fetch("http://localhost:5000/api/auth/createuser", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ name: credentials.name, email: credentials.email, password: credentials.password })
-        });
+        // const response = await fetch("http://localhost:5000/api/auth/createuser", {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({ name: credentials.name, email: credentials.email, password: credentials.password })
+        // });
 
-        const json = await response.json();
-        if (true) {
-            localStorage.setItem('token', json.authtoken);
-            localStorage.setItem('name', json.name);
+        // const json = await response.json();
+        // if (true) {
+        //     localStorage.setItem('token', json.authtoken);
+        //     localStorage.setItem('name', json.name);
             window.location.href = '/About';
-        }    
-        try {
-            const json = await response.json();
-            console.log(json);
+        // }    
+        // try {
+        //     const json = await response.json();
+        //     console.log(json);
     
-            if (response.ok) {
-                setSuccessMessage("Registration successful");
-                setTimeout(() => {
-                    window.location.href = '/Login';
-                }, 3000); 
-            } else {
-                // Check if response status is 400 (Bad Request) and error message indicates email already exists
-                if (response.status === 400 && json.error === "Sorry a user with this email already exists") {
-                    setErrorMessage("Email already exists. Please login.");
-                } else {
-                    setErrorMessage(json.error || "Registration failed");
-                }
-            }
-        } catch (error) {
-            console.error("Error:", error);
-            setErrorMessage("An error occurred. Please try again.");
-        }
+        //     if (response.ok) {
+        //         setSuccessMessage("Registration successful");
+        //         setTimeout(() => {
+        //             window.location.href = '/Login';
+        //         }, 3000); 
+        //     } else {
+        //         // Check if response status is 400 (Bad Request) and error message indicates email already exists
+        //         if (response.status === 400 && json.error === "Sorry a user with this email already exists") {
+        //             setErrorMessage("Email already exists. Please login.");
+        //         } else {
+        //             setErrorMessage(json.error || "Registration failed");
+        //         }
+        //     }
+        // } catch (error) {
+        //     console.error("Error:", error);
+        //     setErrorMessage("An error occurred. Please try again.");
+        // }
+        alert("Registration Success");
     };
 
     return (
