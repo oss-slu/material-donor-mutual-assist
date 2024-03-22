@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
-const admin = require('../../../database/models/admin-model');
+const donor = require('../../../database/models/donor-model')
 
 router.post('/', async (req, res) => {
     try {
-      const newAdmin = await admin.create(req.body);
-      res.status(201).json(newAdmin);
+      const newDonor = await donor.create(req.body);
+      res.status(201).json(newDonor);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Error creating admin' });
@@ -14,8 +14,8 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const admins = await admin.findAll();
-    res.json(admins);
+    const donors = await donor.findAll();
+    res.json(donors);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error fetching admins' });

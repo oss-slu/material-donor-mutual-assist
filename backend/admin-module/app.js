@@ -10,6 +10,7 @@ var donarListRouter = require('./routes/donor-details/donars_List');
 var donar_module_router = require('./routes/demo/donar-module');
 var submitformRouter = require('./routes/demo/submit-form');
 var adminRouter = require('./routes/admin-details/crud_admin')
+var donorRouter = require('./routes/donor-details/crud_donordetails')
 var app = express();
 
 // view engine setup
@@ -28,6 +29,7 @@ app.use('/donorsList', donarListRouter);
 app.use('/donar-module', donar_module_router);
 app.use('/submit-form', submitformRouter);
 app.use('/admin',adminRouter);
+app.use('/donor', donorRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
