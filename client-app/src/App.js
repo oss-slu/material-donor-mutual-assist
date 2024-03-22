@@ -6,27 +6,23 @@ import Register from './Components/Register';
 import Home from './Components/Home';
 import ForgotPassword from './Components/ForgotPassword';
 import ResetPasswordPage from './Components/ResetPasswordPage';
-import StatusDisplayPage from './Components/StatusDisplayPage';
-import AdminHeader from './Components/AdminHeader';
 import DonatedItemsList from './Components/DonatedItemsList';
-
-
-const App = () => {
+import StatusDisplayPage from './Components/StatusDisplayPage';
+function App() {
   return (
     <Router>
       <div className="App">
         <Navbar />
-        
-        <Routes> {}
-          <Route path='/' element={<Home/>} />
+
+        <Routes>
+          <Route path='/' element={<Home />} />
           <Route path="/login" element={<Login />} /> {/* Use element prop to render components */}
-          <Route path="/register" element={<Register />}/>
-          <Route path="/about" element={<Home />}/>
-          <Route path="/forgot-password" element={<ForgotPassword/>}/>
-          <Route path='/resetpassword' element={<ResetPasswordPage/>}/>
+          <Route path="/register" element={<Register />} />
+          <Route path="/about" element={<Home />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path='/resetpassword' element={<ResetPasswordPage />} />
           <Route path="/item/:itemId" element={<StatusDisplayPage />} />
           <Route path="/donations" element={<>
-            <AdminHeader />
             <DonatedItemsList />
           </>} />
         </Routes>
