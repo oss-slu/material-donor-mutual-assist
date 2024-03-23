@@ -1,4 +1,4 @@
-FROM postgres:latest
+FROM postgres:16.2
 
 # Set environment variable for database name
 ENV DATABASE_NAME=mdma

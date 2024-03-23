@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const donor = require('../../../database/models/donor-model')
+const donor = require('../../database/models/donor-model')
 
 router.post('/', async (req, res) => {
     try {

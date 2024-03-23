@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const admin = require('../../../database/models/admin-model');
+const admin = require('../../database/models/admin-model');
 
 router.post('/', async (req, res) => {
     try {
