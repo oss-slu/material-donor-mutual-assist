@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var amazonSESCredentials = require('../env-cred.js');
-
+var emailBody = require('../templates/success-template.js');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -31,15 +31,7 @@ router.get('/', function(req, res, next) {
         },
         Body: {
           Text: {
-            Data: `Dear ${donor},
-            
-            Thank you for your generous donation to B-Works. Every dollar helps us move closer to our goal. Your support means everything to us.
-            
-            Stay tuned for updates on how your contribution is making an impact. We're excited about what we can accomplish together!
-            
-            Warm regards,
-            B-works
-            `
+            Data: emailBody.replace('{donor', donor)
           }
         }
       }
