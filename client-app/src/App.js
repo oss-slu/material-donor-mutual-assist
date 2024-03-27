@@ -8,6 +8,7 @@ import ForgotPassword from './Components/ForgotPassword';
 import ResetPasswordPage from './Components/ResetPasswordPage';
 import DonatedItemsList from './Components/DonatedItemsList';
 import StatusDisplayPage from './Components/StatusDisplayPage';
+import ProgramsPage from './Components/ProgramsPage';
 function App() {
   return (
     <Router>
@@ -25,6 +26,7 @@ function App() {
           <Route path="/donations" element={<>
             <DonatedItemsList />
           </>} />
+          <Route path="/programs" element={<ProgramsPage />} />
         </Routes>
       </div>
     </Router>

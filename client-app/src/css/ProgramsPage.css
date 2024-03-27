@@ -1,0 +1,33 @@
+.programs-container {
+    padding: 20px;
+    text-align: center;
+}
+
+.program-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.program-card {
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: left;
+}
+
+.program-card h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.program-card p {
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.program-card p strong {
+    font-weight: bold;
+}
