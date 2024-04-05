@@ -1,7 +1,7 @@
 // emailTemplate.js
 
 const emailBody = `
-Dear {donor},
+Dear donor,
 
 Thank you for your generous donation to B-Works. Every dollar helps us move closer to our goal. Your support means everything to us.
 

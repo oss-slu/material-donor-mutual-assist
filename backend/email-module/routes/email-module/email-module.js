@@ -4,7 +4,7 @@ var amazonSESCredentials = require('../env-cred.js');
 var emailBody = require('../templates/success-template.js');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.post('/', function(req, res, next) {
     const AWS = require('aws-sdk');
 
     AWS.config.update({
@@ -31,7 +31,7 @@ router.get('/', function(req, res, next) {
         },
         Body: {
           Text: {
-            Data: emailBody.replace('{donor', donor)
+            Data: emailBody.replace('donor', donor)
           }
         }
       }

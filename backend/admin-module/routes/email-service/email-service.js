@@ -66,8 +66,10 @@ const axios = require('axios');
 router.post('/', function(req, res, next) {
   async function callMicroserviceB() {
     try {
+      const username = req.body.username;
+      console.log("soln:", req.body.username);
       // Replace 'http://microservice-b-url' with the actual URL of Microservice B
-      const response = await axios.get('http://localhost:3000/send-email/');
+      const response = await axios.post('http://localhost:4001/send-email/', {username});
       console.log('Data from Microservice B:', response.data);
     } catch (error) {
       console.error('Error calling Microservice B:', error);
