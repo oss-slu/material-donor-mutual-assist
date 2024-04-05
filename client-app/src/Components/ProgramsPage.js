@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import '../css/ProgramsPage.css'; // Import your CSS file for styling
 
 function ProgramsPage() {
@@ -48,7 +49,15 @@ function ProgramsPage() {
                         
                     </div>
                 ))}
-                <button>Add Program</button>
+                <div className='program-card'>
+                    <Link to="/addprogram" >
+                        <button>Add Program</button>
+                    </Link>  
+                </div>
+                 
+               
+                
+                
             </div>
         </div>
     );
