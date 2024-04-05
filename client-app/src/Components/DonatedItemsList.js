@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
+import { FaPlus } from 'react-icons/fa';
 import '../css/AdminHeader.css';
 import '../css/DonatedItemsList.css';
 
@@ -14,6 +15,7 @@ function DonatedItemsList() {
   const [filterByItemName, setFilterByItemName] = useState('');
   const [filterByProgram, setFilterByProgram] = useState('');
   const [filterByStatus, setFilterByStatus] = useState('');
+  const navigate = useNavigate();
 
   const handleSearch = () => {
     const filtered = donatedItems.filter(item =>
@@ -86,6 +88,12 @@ function DonatedItemsList() {
   const toggleAssignProgram = () => {
     setAssignProgramClicked(!assignProgramClicked);
   };
+
+  const handleAddDonationClick = () => {
+    // Navigate to the DonationForm page
+    navigate('/donation-form');
+
+  }
 
   // Sample data for demonstration
   const [donatedItems, setDonatedItems] = useState([
@@ -215,6 +223,11 @@ function DonatedItemsList() {
           ))}
         </tbody>
       </table>
+      <div style={{ position: 'fixed', bottom: '20px', right: '20px' }}>
+        <button onClick={() => handleAddDonationClick()}>
+            <FaPlus size={24} />
+        </button>
+      </div>
     </div>
   );
 }

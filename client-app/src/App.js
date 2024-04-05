@@ -7,6 +7,7 @@ import Home from './Components/Home';
 import ForgotPassword from './Components/ForgotPassword';
 import ResetPasswordPage from './Components/ResetPasswordPage';
 import DonatedItemsList from './Components/DonatedItemsList';
+import DonationForm from './Components/DonationForm';
 import StatusDisplayPage from './Components/StatusDisplayPage';
 import ProgramsPage from './Components/ProgramsPage';
 import AddProgramPage from './Components/AddProgramPage'; // Import AddProgramPage correctly
@@ -30,6 +31,7 @@ function App() {
         <Route path='/resetpassword' element={<ResetPasswordPage />} />
         <Route path="/item/:itemId" element={<StatusDisplayPage />} />
         <Route path="/donations" element={<DonatedItemsList />} /> {/* Corrected Route element */}
+        <Route path="/donation-form" element={<DonationForm />} />
         <Route path="/programs" element={<ProgramsPage />} />
         <Route path="/addprogram" element={<AddProgramPage />} />
         <Route path="/addprogram" element={<AddProgramPage onAddProgram={handleAddProgram} />} />
