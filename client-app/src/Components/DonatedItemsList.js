@@ -5,25 +5,17 @@ import '../css/AdminHeader.css';
 import '../css/DonatedItemsList.css';
 
 function DonatedItemsList() {
- const [searchInput, setSearchInput] = useState('');
- const [filteredItems, setFilteredItems] = useState([]);
- const [selectedItems, setSelectedItems] = useState([]);
- const [programOptions, setProgramOptions] = useState(['Youth Program', 'Retail Sales', 'Recycle', 'Earn-a-bicycle', 'Earn-a-computer']);
- const [selectedProgram, setSelectedProgram] = useState('');
- const [assignProgramClicked, setAssignProgramClicked] = useState(false);
- const [donatedItems, setDonatedItems] = useState([
-    { id: 811253, name: 'Bicycle', donor: 'Mary', date: '2024-02-25', program: 'Not Assigned', status: 'Donated' },
-    { id: 811249, name: 'Computer', donor: 'James', date: '2024-02-06', program: 'Not Assigned', status: 'In Storage Facility' },
-    { id: 811247, name: 'Computer', donor: 'Vivian', date: '2024-01-26', program: 'Not Assigned', status: 'Refurbished' },
-    { id: 811246, name: 'Bicycle', donor: 'Elizabeth', date: '2024-01-21', program: 'Not Assigned', status: 'Item Sold' },
-    { id: 811240, name: 'Bicycle', donor: 'Peter', date: '2024-01-13', program: 'Not Assigned', status: 'Received' }
- ]);
+  const [searchInput, setSearchInput] = useState('');
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [programOptions, setProgramOptions] = useState(['Youth Program', 'Retail Sales', 'Recycle', 'Earn-a-bicycle', 'Earn-a-computer']);
+  const [selectedProgram, setSelectedProgram] = useState('');
+  const [assignProgramClicked, setAssignProgramClicked] = useState(false);
+  const [filterByItemName, setFilterByItemName] = useState('');
+  const [filterByProgram, setFilterByProgram] = useState('');
+  const [filterByStatus, setFilterByStatus] = useState('');
 
- useEffect(() => {
-    handleSort(); // Trigger sorting logic on initial render
- }, []); // Empty dependency array ensures this effect runs only once after the initial render
-
- const handleSearch = () => {
+  const handleSearch = () => {
     const filtered = donatedItems.filter(item =>
       item.id.toString().includes(searchInput) ||
       item.name.toLowerCase().includes(searchInput.toLowerCase()) ||
@@ -33,39 +25,31 @@ function DonatedItemsList() {
       item.status.toLowerCase().includes(searchInput.toLowerCase())
     );
     setFilteredItems(filtered);
- };
+  };
 
- const handleSort = () => {
-    const sortingOption = document.getElementById("sortOptions").value;
-    let sortedItems = [...donatedItems]; // Create a copy of donatedItems to avoid mutating state directly
-  
-    if (sortingOption === "dateAsc") {
-      sortedItems.sort((a, b) => new Date(a.date) - new Date(b.date));
-    } else if (sortingOption === "dateDesc") {
-      sortedItems.sort((a, b) => new Date(b.date) - new Date(a.date));
-    }
-  
-    // Update state with sorted items
-    setDonatedItems(sortedItems);
- };
+  const handleSort = (event) => {
+    // Implement your sorting logic here
+    console.log('Sorting by:', event.target.value);
+  };
 
- const handleOpenFilters = () => {
+  const handleOpenFilters = () => {
+    // Implement your filter logic here
     console.log('Opening filters...');
- };
+  };
 
- const handleCheckboxChange = (itemId) => {
+  const handleCheckboxChange = (itemId) => {
     if (selectedItems.includes(itemId)) {
       setSelectedItems(selectedItems.filter(id => id !== itemId));
     } else {
       setSelectedItems([...selectedItems, itemId]);
     }
- };
+  };
 
- const handleProgramChange = (event) => {
+  const handleProgramChange = (event) => {
     setSelectedProgram(event.target.value);
- };
+  };
 
- const updatePrograms = () => {
+  const updatePrograms = () => {
     const updatedItems = donatedItems.map(item => {
       if (selectedItems.includes(item.id)) {
         return { ...item, program: selectedProgram };
@@ -75,13 +59,45 @@ function DonatedItemsList() {
     setDonatedItems(updatedItems);
     setSelectedItems([]); // Clear selected items after updating
     setAssignProgramClicked(false); // Hide assign program section
- };
+  };
 
- const toggleAssignProgram = () => {
+  // Function to filter items by item name
+  const handleFilterByItemName = (event) => {
+    setFilterByItemName(event.target.value);
+    const filtered = donatedItems.filter(item => item.name === event.target.value);
+    setFilteredItems(filtered);
+  };
+
+  // Function to filter items by program
+  const handleFilterByProgram = (event) => {
+    setFilterByProgram(event.target.value);
+    const filtered = donatedItems.filter(item => item.program === event.target.value);
+    setFilteredItems(filtered);
+  };
+
+  // Function to filter items by status
+  const handleFilterByStatus = (event) => {
+    setFilterByStatus(event.target.value);
+    const filtered = donatedItems.filter(item => item.status === event.target.value);
+    setFilteredItems(filtered);
+  };
+
+  // Function to toggle assign program section
+  const toggleAssignProgram = () => {
     setAssignProgramClicked(!assignProgramClicked);
- };
+  };
 
- return (
+  // Sample data for demonstration
+  const [donatedItems, setDonatedItems] = useState([
+    { id: 811253, name: 'Bicycle', donor: 'Mary', date: '2024-02-25', program: 'Not Assigned', status: 'Donated' },
+    { id: 811249, name: 'Computer', donor: 'James', date: '2024-02-06', program: 'Not Assigned', status: 'In Storage Facility' },
+    { id: 811247, name: 'Computer', donor: 'Vivian', date: '2024-01-26', program: 'Not Assigned', status: 'Refurbished' },
+    { id: 811246, name: 'Bicycle', donor: 'Elizabeth', date: '2024-01-21', program: 'Not Assigned', status: 'Item Sold' },
+    { id: 811240, name: 'Bicycle', donor: 'Peter', date: '2024-01-13', program: 'Not Assigned', status: 'Received' }
+    // Add more items here...
+  ]);
+
+  return (
     <div>
       <div className="header">
         <div className="logo-container">
@@ -92,36 +108,65 @@ function DonatedItemsList() {
           />
         </div>
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}></div>
-        <div className="search-bar">
-          <input
-            type="text"
-            placeholder="Search using Item Id, Name, Donor, Date, Program, or Status"
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-          />
-          <button className="search-button" onClick={handleSearch}><FaSearch /></button>
-        </div>
+          <div className="search-bar">
+            <input
+              type="text"
+              placeholder="Search using Item Id, Name, Donor, Date, Program, or Status"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
+            <button className="search-button" onClick={handleSearch}><FaSearch /></button>
+          </div>
 
-        <div className="options">
-          <div className="dropdowns">
-            <select id="sortOptions" className="sort-options" onChange={handleSort}>
-              <option value="" disabled defaultValue>
-                Sort
-              </option>
-              <option value="dateAsc">Date Ascending</option>
-              <option value="dateDesc">Date Descending</option>
-            </select>
+          <div className="options">
+            <div className="dropdowns">
+              <select className="sort-options" onChange={handleSort}>
+                <option value="" disabled defaultValue>
+                  Sort
+                </option>
+                <option value="dateAsc">Date Ascending</option>
+                <option value="dateDesc">Date Descending</option>
+              </select>
 
-            <button className="set-program-button" onClick={handleOpenFilters}>Filters</button>
+              {/* Filter by Item Name */}
+              <select className="filter-options" onChange={handleFilterByItemName}>
+                <option value="" disabled selected>
+                  Filter by Item Name
+                </option>
+                <option value="Bicycle">Bicycle</option>
+                <option value="Computer">Computer</option>
+              </select>
+
+              {/* Filter by Program */}
+              <select className="filter-options" onChange={handleFilterByProgram}>
+                <option value="" disabled selected>
+                  Filter by Program
+                </option>
+                {programOptions.map(option => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </select>
+
+              {/* Filter by Status */}
+              <select className="filter-options" onChange={handleFilterByStatus}>
+                <option value="" disabled selected>
+                  Filter by Status
+                </option>
+                <option value="Donated">Donated</option>
+                <option value="In Storage Facility">In Storage Facility</option>
+                <option value="Refurbished">Refurbished</option>
+                <option value="Received">Received</option>
+                <option value="Item Sold">Item Sold</option>
+              </select>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div style={{ textAlign: 'right' }}>
-        <button onClick={toggleAssignProgram}>
-          {assignProgramClicked ? "Hide Assign Program" : "Assign Program"}
-        </button>
-      </div>
+        <div style={{ textAlign: 'right' }}>
+          <button onClick={toggleAssignProgram}>
+            {assignProgramClicked ? "Hide Assign Program" : "Assign Program"}
+          </button>
+        </div>
       {assignProgramClicked && (
         <div>
           <select value={selectedProgram} onChange={handleProgramChange}>
@@ -159,11 +204,11 @@ function DonatedItemsList() {
               <td>{item.status}</td>
               {assignProgramClicked && (
                 <td>
-                 <input
+                  <input
                     type="checkbox"
                     checked={selectedItems.includes(item.id)}
                     onChange={() => handleCheckboxChange(item.id)}
-                 />
+                  />
                 </td>
               )}
             </tr>
@@ -171,7 +216,8 @@ function DonatedItemsList() {
         </tbody>
       </table>
     </div>
- );
+  );
 }
 
 export default DonatedItemsList;
+
