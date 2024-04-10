@@ -1,0 +1,58 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+/* General styles */
+/* .donation-form {
+    @apply bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4;
+   }
+   
+   .form-group {
+    @apply mb-4;
+   }
+   
+   .form-label {
+    @apply block text-gray-700 font-bold mb-2;
+   }
+   
+   .form-input, .form-textarea {
+    @apply shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500;
+   }
+   
+   .form-actions {
+    @apply flex items-center justify-between;
+   }*/
+   
+   /* Button styles */
+   /* .btn {
+    @apply text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500;
+   }
+   
+   .btn-primary {
+    @apply bg-blue-500 hover:bg-blue-700;
+   }
+   
+   .btn-danger {
+    @apply bg-red-500 hover:bg-red-700;
+   }  */
+
+/* DonationForm.css */
+
+/* Example Tailwind CSS classes */
+.p-4 {
+    padding: 1rem;
+  }
+  
+  .text-lg {
+    font-size: 1.125rem;
+  }
+  
+  .font-bold {
+    font-weight: 700;
+  }
+  
+  .mb-4 {
+    margin-bottom: 1rem;
+  }
+  
+  /* ... (other Tailwind CSS classes) ... */
+  
