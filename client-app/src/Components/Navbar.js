@@ -55,10 +55,7 @@ const Navbar = () => {
                         <li className="nav-item" style={{ fontSize: "20px", paddingLeft: "10px" }}>
                             <Link className="nav-link" to="/donations">Donations</Link> {/* Example link for About page */}
                         </li>
-                        <li className="nav-item" style={{ fontSize: "20px", paddingLeft: "10px" }}>
-                            {/* Use Link component for navigation */}
-                            <Link className="nav-link" to="/material-donation">Material Donation</Link>
-                        </li>
+                        
                         <li className="nav-item" style={{ fontSize: "20px", paddingLeft: "10px" }}>
                             {/* Use Link component for navigation */}
                             <Link className="nav-link" to="/donorform">Donor Form</Link>
