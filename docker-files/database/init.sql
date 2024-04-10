@@ -1,4 +1,3 @@
--- Create a new role
 CREATE ROLE adminmd WITH LOGIN PASSWORD 'adminmd';
 
 -- Create a new database
@@ -9,3 +8,7 @@ ALTER ROLE admin WITH SUPERUSER;
 
 -- Connect to the database
 \c mdma;
+
+\i /docker-entrypoint-initdb.d/table_admin.sql
+\i /docker-entrypoint-initdb.d/table_donor.sql
+\i /docker-entrypoint-initdb.d/table_inventory.sql

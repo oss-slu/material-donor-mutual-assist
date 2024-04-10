@@ -1,10 +1,8 @@
 # Database setup steps
 
-Open terminal and navigate to folder docker-files\database where the docker-compose file is located
+Open terminal
 
 Run docker-compose up to bring the database up
-
-Run "npx sequelize-cli init"
-
-Run "npx sequelize-cli migration:generate --name=create_admin_table"
+Navigate to backend/admin-module and run 'npm install'
+run 'npm start'
 

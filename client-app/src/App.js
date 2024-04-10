@@ -11,6 +11,7 @@ import DonationForm from './Components/DonationForm';
 import StatusDisplayPage from './Components/StatusDisplayPage';
 import ProgramsPage from './Components/ProgramsPage';
 import AddProgramPage from './Components/AddProgramPage'; // Import AddProgramPage correctly
+import AddDonor from './Components/AddDonor';
 
 function App() {
   // Define handleAddProgram function here
@@ -20,24 +21,26 @@ function App() {
   };
 
   return (
+   <Router>
     <div className="App">
       <Navbar />
-      <Routes> {/* Use Routes component */}
-        <Route path='/' element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/about" element={<Home />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path='/resetpassword' element={<ResetPasswordPage />} />
-        <Route path="/item/:itemId" element={<StatusDisplayPage />} />
-        <Route path="/donations" element={<DonatedItemsList />} /> {/* Corrected Route element */}
-        <Route path="/donation-form" element={<DonationForm />} />
-        <Route path="/programs" element={<ProgramsPage />} />
-        <Route path="/addprogram" element={<AddProgramPage />} />
-        <Route path="/addprogram" element={<AddProgramPage onAddProgram={handleAddProgram} />} />
-
-      </Routes>
+        <Routes> {/* Use Routes component */}
+          <Route path='/' element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/about" element={<Home />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path='/resetpassword' element={<ResetPasswordPage />} />
+          <Route path="/item/:itemId" element={<StatusDisplayPage />} />
+          <Route path="/donations" element={<DonatedItemsList />} /> {/* Corrected Route element */}
+          <Route path="/donation-form" element={<DonationForm />} />
+          <Route path="/programs" element={<ProgramsPage />} />
+          <Route path="/addprogram" element={<AddProgramPage />} />
+          <Route path="/addprogram" element={<AddProgramPage onAddProgram={handleAddProgram} />} />
+          <Route path="/add-donor" element={<AddDonor/>}/>
+        </Routes>
     </div>
+  </Router>
   );
 }
 
