@@ -9,6 +9,7 @@ import ResetPasswordPage from './Components/ResetPasswordPage';
 import StatusDisplayPage from './Components/StatusDisplayPage';
 import AdminHeader from './Components/AdminHeader';
 import DonatedItemsList from './Components/DonatedItemsList';
+import AddDonor from './Components/AddDonor';
 
 
 const App = () => {
@@ -29,6 +30,7 @@ const App = () => {
             <AdminHeader />
             <DonatedItemsList />
           </>} />
+          <Route path="/add-donor" element={<AddDonor/>}/>
         </Routes>
       </div>
     </Router>
