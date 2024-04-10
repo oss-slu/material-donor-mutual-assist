@@ -9,9 +9,8 @@
     flex-wrap: wrap;
 }
 
-/* Logo */
 .logo-container {
-    flex-basis: 100px; /* Adjust width of logo container */
+    flex-basis: 100px;
 }
 
 .logo {
@@ -19,40 +18,32 @@
     height: auto;
 }
 
-/* List of Donated Items heading */
-h1 {
-    flex-basis: calc(100% - 100px); /* Adjust width of heading */
-    margin-bottom: 10px;
-}
-
-/* Search bar */
 .search-bar {
     display: flex;
     align-items: center;
-    position: relative; /* Add position relative to enable positioning of search button */
+    position: relative;
 }
 
 .search-bar input {
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    width: calc(100% - 40px); /* Adjusted width to accommodate the search icon */
+    width: calc(100% - 40px);
 }
 
 .search-button {
     background-color: #462dea;
     color: white;
     border: none;
-    border-radius: 0; /* Rounded edges removed */
+    border-radius: 0;
     cursor: pointer;
-    position: absolute; /* Position the search button */
-    right: 0; /* Align the search button to the right */
+    position: absolute;
+    right: 0;
     padding: 8px;
-    width: 40px; /* Decreased width of search button */
-    height: 100%; /* Make the search button match the height of the input field */
+    width: 40px;
+    height: 100%;
 }
 
-/* Dropdowns */
 .dropdowns {
     display: flex;
 }
@@ -63,11 +54,10 @@ h1 {
     border: 1px solid #ddd;
     border-radius: 4px;
     width: 150px;
-    margin-right: 10px; /* Adjusted margin between dropdowns */
+    margin-right: 10px;
 }
 
-/* Filters button */
-.filters-button {
+.set-program-button {
     background-color: #6a5acd;
     color: white;
     border: none;
@@ -76,7 +66,6 @@ h1 {
     padding: 8px 16px;
 }
 
-/* Table styles (for the item list) */
 .item-list {
     width: 100%;
     border-collapse: collapse;
@@ -88,5 +77,3 @@ h1 {
     padding: 8px;
     text-align: left;
 }
-
-/* Add more styling as needed */
