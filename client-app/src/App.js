@@ -22,7 +22,6 @@ function App() {
   };
 
   return (
-   <Router>
     <div className="App">
       <Navbar />
         <Routes> {/* Use Routes component */}
@@ -39,10 +38,8 @@ function App() {
           <Route path="/programs" element={<ProgramsPage />} />
           <Route path="/addprogram" element={<AddProgramPage />} />
           <Route path="/addprogram" element={<AddProgramPage onAddProgram={handleAddProgram} />} />
-          <Route path="/add-donor" element={<AddDonor/>}/>
         </Routes>
     </div>
-  </Router>
   );
 }
 
