@@ -5,7 +5,7 @@ extends layout
 block content
   h1= title
   p Thanks for donating to B-Works #{title}
-  form(action="/submit-form" method="post")
+  form(action="/email-service" method="post")
     label(for="username") Username:
     input(type="text" id="username" name="username")
 
