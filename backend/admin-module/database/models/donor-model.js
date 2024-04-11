@@ -2,13 +2,13 @@ const db = require('../database');
 
 const donor = {
   create: async (data) => {
-    const { donor_name, donor_contact, donor_email, donor_address_line1, donor_address_line2, donor_state, donor_city, donor_zipcode, email_opt_in } = data;
+    const { donor_firstName, donor_lastName, donor_contact, donor_email, donor_address_line1, donor_address_line2, donor_state, donor_city, donor_zipcode, email_opt_in } = data;
     const query = `
-      INSERT INTO donor (donor_name, donor_contact, donor_email, donor_address_line1, donor_address_line2, donor_state, donor_city, donor_zipcode, email_opt_in)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      INSERT INTO donor (donor_firstName, donor_lastName, donor_contact, donor_email, donor_address_line1, donor_address_line2, donor_state, donor_city, donor_zipcode, email_opt_in)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
       RETURNING *
     `;
-    const values = [donor_name, donor_contact, donor_email, donor_address_line1, donor_address_line2, donor_state, donor_city, donor_zipcode, email_opt_in];
+    const values = [donor_firstName, donor_lastName, donor_contact, donor_email, donor_address_line1, donor_address_line2, donor_state, donor_city, donor_zipcode, email_opt_in];
     const result = await db.query(query, values);
     return result.rows[0];
   },
@@ -27,7 +27,8 @@ const donor = {
 
   update: async (donorId, data) => {
     const {
-      donor_name,
+      donor_firstName,
+      donor_lastName,
       donor_contact,
       donor_email,
       donor_address_line1,
@@ -41,9 +42,14 @@ const donor = {
     const updateValues = [];
     let updateString = '';
   
-    if (donor_name) {
-      updateValues.push(donor_name);
-      updateString += 'donor_name = $' + updateValues.length + ', ';
+    if (donor_firstName) {
+      updateValues.push(donor_firstName);
+      updateString += 'donor_firstName = $' + updateValues.length + ', ';
+    }
+
+    if (donor_lastName) {
+      updateValues.push(donor_lastName);
+      updateString += 'donor_lastName = $' + updateValues.length + ', ';
     }
   
     if (donor_contact) {

@@ -53,10 +53,13 @@ const Navbar = () => {
                             <Link className="nav-link" to="/about">About</Link> {/* Example link for About page */}
                         </li>
                         <li className="nav-item" style={{ fontSize: "20px", paddingLeft: "10px" }}>
-                            <Link className="nav-link" to="/donations">Donations</Link> {/* Example link for About page */}
+                            <Link className="nav-link" to="/donations">Donations</Link>
                         </li>
                         <li className="nav-item" style={{ fontSize: "20px", paddingLeft: "10px" }}>
-                            <Link className="nav-link" to="/programs">Programs</Link> {/* Example link for About page */}
+                            <Link className="nav-link" to="/donorform">Donor Form</Link>
+                        </li>
+                        <li className="nav-item" style={{ fontSize: "20px", paddingLeft: "10px" }}>
+                            <Link className="nav-link" to="/programs">Programs</Link>
                         </li>
                     </ul>
                 </div>

@@ -7,6 +7,7 @@ import Home from './Components/Home';
 import ForgotPassword from './Components/ForgotPassword';
 import ResetPasswordPage from './Components/ResetPasswordPage';
 import DonatedItemsList from './Components/DonatedItemsList';
+import DonorForm from './Components/DonorForm';
 import DonationForm from './Components/DonationForm';
 import StatusDisplayPage from './Components/StatusDisplayPage';
 import ProgramsPage from './Components/ProgramsPage';
@@ -21,7 +22,6 @@ function App() {
   };
 
   return (
-   <Router>
     <div className="App">
       <Navbar />
         <Routes> {/* Use Routes component */}
@@ -32,15 +32,14 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path='/resetpassword' element={<ResetPasswordPage />} />
           <Route path="/item/:itemId" element={<StatusDisplayPage />} />
-          <Route path="/donations" element={<DonatedItemsList />} /> {/* Corrected Route element */}
+          <Route path="/donorform" element={<DonorForm />} />
+          <Route path="/donations" element={<DonatedItemsList />} />
           <Route path="/donation-form" element={<DonationForm />} />
           <Route path="/programs" element={<ProgramsPage />} />
           <Route path="/addprogram" element={<AddProgramPage />} />
           <Route path="/addprogram" element={<AddProgramPage onAddProgram={handleAddProgram} />} />
-          <Route path="/add-donor" element={<AddDonor/>}/>
         </Routes>
     </div>
-  </Router>
   );
 }
 
