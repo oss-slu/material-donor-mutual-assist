@@ -9,3 +9,30 @@
     text-align: left;
   }
 
+.div-addprogram{
+  width: 80%;
+  padding: 8px;
+  button{
+    margin-left:5px !important;
+    margin:9px !important;
+  }
+  select{
+    height: 45px;
+    width: 250px;
+  }
+}
+.div-addprogram button{
+    margin-left:5px !important;
+    margin:9px !important;
+  }
+.div-updateprogram{
+  display: flex;
+  justify-content: flex-end;
+  button{
+    margin: 20px 6px;
+    padding: 10px 20px 12px;
+    width: 200px;
+    text-align: center;
+  }
+}
+

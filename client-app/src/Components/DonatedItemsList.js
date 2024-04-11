@@ -170,22 +170,28 @@ function DonatedItemsList() {
           </div>
         </div>
 
-        <div style={{ textAlign: 'right' }}>
+        {/* <div >
+          
+        </div> */}
+      
+        <div class="div-updateprogram">
+          
+        {assignProgramClicked && (
+          <div class="div-addprogram">
+            <select value={selectedProgram} onChange={handleProgramChange}>
+              <option value="">Select Program</option>
+              {programOptions.map(option => (
+                <option key={option} value={option}>{option}</option>
+              ))}
+            </select>
+            <button onClick={updatePrograms}>Update Programs</button>
+          </div>
+        )}
           <button onClick={toggleAssignProgram}>
             {assignProgramClicked ? "Hide Assign Program" : "Assign Program"}
           </button>
-        </div>
-      {assignProgramClicked && (
-        <div>
-          <select value={selectedProgram} onChange={handleProgramChange}>
-            <option value="">Select Program</option>
-            {programOptions.map(option => (
-              <option key={option} value={option}>{option}</option>
-            ))}
-          </select>
-          <button onClick={updatePrograms}>Update Programs</button>
-        </div>
-      )}
+       </div>
+      
 
       <table className="item-list">
         <thead>
