@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation  } from 'react-router-dom';
 
 const Navbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState('');
+    const location = useLocation();
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -40,26 +41,75 @@ const Navbar = () => {
                         {!isLoggedIn && (
                           <li className="nav-item" style={{ fontSize: "20px", paddingLeft: "10px" }}>
                               {/* Use Link component for navigation */}
-                              <Link className="nav-link active" aria-current="page" to="/login">Login</Link>
+                              <Link className="nav-link active" 
+                                    aria-current="page" 
+                                    to="/login"  
+                                    style=
+                                        {{ 
+                                            fontWeight: location.pathname === '/login' ? 'bold' : 'normal', 
+                                            color: location.pathname === '/login' ? 'black' : 'inherit' 
+                                        }} 
+                                >Login</Link>
                           </li>
                         )}
                         {!isLoggedIn && (
                           <li className="nav-item" style={{ fontSize: "20px", paddingLeft: "10px" }}>
                               {/* Use Link component for navigation */}
-                              <Link className="nav-link active" aria-current="page" to="/register">Register</Link>
+                              <Link 
+                                className="nav-link active"
+                                aria-current="page"
+                                to="/register"
+                                style=
+                                        {{ 
+                                            fontWeight: location.pathname === '/register' ? 'bold' : 'normal', 
+                                            color: location.pathname === '/register' ? 'black' : 'inherit' 
+                                        }} 
+                            >Register</Link>
                           </li>
                         )}
                         <li className="nav-item" style={{ fontSize: "20px", paddingLeft: "10px" }}>
-                            <Link className="nav-link" to="/about">About</Link> {/* Example link for About page */}
+                            <Link 
+                                className="nav-link" 
+                                to="/donations"
+                                style=
+                                        {{ 
+                                            fontWeight: location.pathname === '/donations' ? 'bold' : 'normal', 
+                                            color: location.pathname === '/donations' ? 'black' : 'inherit' 
+                                        }} 
+                            >Donations</Link>
                         </li>
                         <li className="nav-item" style={{ fontSize: "20px", paddingLeft: "10px" }}>
-                            <Link className="nav-link" to="/donations">Donations</Link>
+                            <Link
+                                className="nav-link" 
+                                to="/donorform"
+                                style=
+                                        {{ 
+                                            fontWeight: location.pathname === '/donorform' ? 'bold' : 'normal', 
+                                            color: location.pathname === '/donorform' ? 'black' : 'inherit' 
+                                        }} 
+                            >Donor Form</Link>
                         </li>
                         <li className="nav-item" style={{ fontSize: "20px", paddingLeft: "10px" }}>
-                            <Link className="nav-link" to="/donorform">Donor Form</Link>
+                            <Link 
+                                className="nav-link" 
+                                to="/programs"
+                                style=
+                                        {{ 
+                                            fontWeight: location.pathname === '/programs' ? 'bold' : 'normal', 
+                                            color: location.pathname === '/programs' ? 'black' : 'inherit' 
+                                        }} 
+                            >Programs</Link>
                         </li>
                         <li className="nav-item" style={{ fontSize: "20px", paddingLeft: "10px" }}>
-                            <Link className="nav-link" to="/programs">Programs</Link>
+                            <Link 
+                                className="nav-link" 
+                                to="/about"
+                                style=
+                                        {{ 
+                                            fontWeight: location.pathname === '/about' ? 'bold' : 'normal', 
+                                            color: location.pathname === '/about' ? 'black' : 'inherit' 
+                                        }} 
+                            >About</Link> 
                         </li>
                     </ul>
                 </div>
