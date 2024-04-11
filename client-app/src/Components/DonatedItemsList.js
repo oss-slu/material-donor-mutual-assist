@@ -116,17 +116,17 @@ function DonatedItemsList() {
           />
         </div>
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}></div>
-          <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Search using Item Id, Name, Donor, Date, Program, or Status"
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-            />
-            <button className="search-button" onClick={handleSearch}><FaSearch /></button>
-          </div>
-
           <div className="options">
+          <div className="search-bar">
+              <input
+                type="text"
+                placeholder="Search using Item Id, Name, Donor, Date, Program, or Status"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+              />
+              <button className="search-button" onClick={handleSearch}><FaSearch /></button>
+            </div>
+
             <div className="dropdowns">
               <select className="sort-options" onChange={handleSort}>
                 <option value="" disabled defaultValue>
