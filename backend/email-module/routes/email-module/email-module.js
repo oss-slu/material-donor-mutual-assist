@@ -1,53 +1,51 @@
-var express = require('express');
-var router = express.Router();
-var amazonSESCredentials = require('../env-cred.js');
-var emailBody = require('../templates/success-template.js');
+const express = require('express');
+const router = express.Router();
+const amazonSESCredentials = require('../env-cred.js');
+const emailBody = require('../templates/success-template.js');
+const AWS = require('aws-sdk');
 
-/* GET home page. */
-router.post('/', function(req, res, next) {
-    const AWS = require('aws-sdk');
+router.post('/', async (req, res) => {
+  try {
+    const { donor_name, email } = req.body;
 
     AWS.config.update({
       accessKeyId: amazonSESCredentials.id,
       secretAccessKey: amazonSESCredentials.key,
-      region: 'us-east-2'
+      region: 'us-east-2',
     });
-
-    console.log('req:', req.body);
-    donor = req.body.username;
-
-    // Create an SES instance
+    //create an SES session    
     const ses = new AWS.SES();
-
-    // Define email parameters
+    //define email parameters
     const params = {
-      Source: 'yrlmanoharreddymeda@gmail.com',
+      Source: 'garimellasirichandana@gmail.com',
       Destination: {
-        ToAddresses: ['yrlmanoharreddymeda@gmail.com']
+        ToAddresses: [email],
       },
       Message: {
         Subject: {
-          Data: `Thank You, ${donor} Your Donation is Making a Difference `
+          Data: `Thank You, ${donor_name} Your Donation is Making a Difference `,
         },
         Body: {
           Text: {
-            Data: emailBody.replace('donor', donor)
-          }
-        }
-      }
+            Data: emailBody.replace('donor', donor_name),
+          },
+        },
+      },
     };
-
-    // Send email
+    //send email
     ses.sendEmail(params, (err, data) => {
       if (err) {
         console.log('Error sending email:', err);
+        res.status(500).json({ message: 'Error sending email' });
       } else {
         console.log('Email sent successfully:', data);
+        res.json({ message: 'Email sent successfully' });
       }
     });
-    //   res.render('index', { title: 'Express' });
-    res.json({ message: 'Form submitted successfully! Thank you for donating' });
-
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error sending email' });
+  }
 });
 
 module.exports = router;
