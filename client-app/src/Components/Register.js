@@ -86,7 +86,10 @@ const Register = () => {
                     <div className="password-strength-meter" style={{display: 'flex'}}>
                     <p className='my-3'>Password Strength:</p>  <p className={`text-${passwordStrength} my-3 mx-2`} style={{ marginTop: '5px', textAlign: 'center', fontWeight: 'bold' }}>{passwordStrength.toUpperCase()}</p>
                     </div>
-
+                </div>
+                <div className="mb-3 position-relative">
+                    <label htmlFor="confirm_password" className="form-label">Confirm Password</label>
+                    <input type="password" className="form-control" value={credentials.confirm_password} onChange={handleChange} name="confirm_password" id="confirm_password" />
                 </div>
                 {errorMessage && <div className="alert alert-danger" role="alert">{errorMessage}</div>}
                 {successMessage && <div className="alert alert-success" role="alert">{successMessage}</div>}
