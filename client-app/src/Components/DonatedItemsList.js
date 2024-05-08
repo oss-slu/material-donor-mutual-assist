@@ -212,6 +212,7 @@ function DonatedItemsList() {
               <th>Program</th>
               <th>Status</th>
               <th>Barcode</th>
+              {assignProgramClicked && <th>Select</th>}
             </tr>
           </thead>
           <tbody>
@@ -224,6 +225,7 @@ function DonatedItemsList() {
                 <td>{item.date}</td>
                 <td>{item.program}</td>
                 <td>{item.status}</td>
+                
                 <td>
                   <div onClick={() => handleBarcodeClick(item.id)}>
                   <div id={`barcode-${item.id}`}><Barcode value={item.id.toString()} /></div>
@@ -231,6 +233,15 @@ function DonatedItemsList() {
                   </div>
                 
                 </td>
+                {assignProgramClicked && (
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={selectedItems.includes(item.id)}
+                    onChange={() => handleCheckboxChange(item.id)}
+                  />
+                </td>
+              )}
               </tr>
             ))}
           </tbody>
