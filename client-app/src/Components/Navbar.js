@@ -18,23 +18,26 @@ const Navbar = () => {
       setUser(name);
 
     }
-    
-    setIsLoggedIn(localStorage.getItem('isLogged'))
-  }, [ ]);
+    console.log("in navbar useEffect ")
+    if(localStorage.getItem('isLogged') === 'true')
+      {
+        setIsLoggedIn(true)
+      }
+      else{
+        setIsLoggedIn(false)
+      }
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('name');
     setUser('');
-    const loginValue = localStorage.setItem('isLogged', false)
-    console.log("in handle logout in navbar")
-    setIsLoggedIn(loginValue)
-
+    localStorage.setItem('isLogged', false);
+    setIsLoggedIn(false); // Update state with the new value
+  
     window.location.href = "/";
   }
-
-  console.log("In navbar page ",localStorage.getItem('isLogged'))
-
+  
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">

@@ -35,11 +35,12 @@ const Login = (props) => {
         // if (json.success) {
         //     localStorage.setItem('token', json.authtoken);
         //     localStorage.setItem('name', json.name);
+        localStorage.setItem('isLogged', true)
             window.location.href = '/Donations';
         // } else {
         //     setErrorMessage("Invalid credentials");
         // }
-        localStorage.setItem('isLogged', true)
+        
         alert("Login Success");
 
         console.log('in login page ', localStorage.getItem('isLogged'))
