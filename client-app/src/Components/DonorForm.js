@@ -283,7 +283,8 @@ const DonorForm = () => {
           type="button" 
           className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full button-margin"
           style={{ backgroundColor: 'blue' }}
-          onClick={() => setFormData({ ...formData, email_opt_in: '' })}>
+          //onClick={() => setFormData({ ...formData, email_opt_in: '' })}
+          >
           Refresh
         </button>
       </form>
