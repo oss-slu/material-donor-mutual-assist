@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import '../css/StatusDisplayPage.css';
 
 const StatusDisplayPage = () => {
   const location = useLocation();
   const itemInfo = location.state.itemInfo;
+  const navigate = useNavigate();
 
   const [donorInfo, setDonorInfo] = useState({
     fullName: '',
@@ -56,6 +57,14 @@ const StatusDisplayPage = () => {
       ...donorInfo,
       image: URL.createObjectURL(file) // Generate a temporary URL for the selected image
     });
+  };
+  const handleSaveChanges = () => {
+    // Logic to handle save changes
+    navigate('/Donations'); // Adjust '/donations' to your specific route
+  };
+
+  const handleCancel = () => {
+    navigate('/Donations'); // Adjust '/donations' to your specific route
   };
 
   if (!itemInfo) {
@@ -151,10 +160,11 @@ const StatusDisplayPage = () => {
           <img src={donorInfo.image} alt="Uploaded" style={{ maxWidth: '100%', maxHeight: '200px' }} />
         )}
         <br />
+        
         <br />
-        <button type="button">Cancel</button>
+        <button type="button" onClick={handleCancel}>Cancel</button>
         <br />
-        <button type="submit">Save Changes</button>
+        <button type="submit" onClick={handleSaveChanges}>Save Changes</button>
       </div>
     </div>
   );

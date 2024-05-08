@@ -84,8 +84,26 @@ const DonorForm = () => {
         try {
           const response = await axios.post('http://localhost:5000/donor', formData)
           console.log(response.status)
-          if (response.status===201)
+          if (response.status===201){
             setSuccessMessage('Donor added successfully!');
+            try{
+              const donor_name = formData.donor_firstName+ " "+formData.donor_lastName
+              const email = formData.donor_email
+              const emailresponse = await axios.post('http://localhost:5001/send-email/', {
+                donor_name,
+                email,
+              })            
+              console.log(emailresponse.data, donor_name, email, emailresponse.status);
+              if (emailresponse.status===200)
+                setSuccessMessage('Email sent successfully!');
+              else
+                setErrorMessage('Email not sent');
+
+            }
+            catch(errorResponse) {
+                console.error('Error sending email:', errorResponse);
+            };
+          }
           else
             setErrorMessage('Donor not added');
           setFormData({ // Clear form on success

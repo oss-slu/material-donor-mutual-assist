@@ -6,7 +6,9 @@ const Login = (props) => {
     const [captcha, setCaptcha] = useState("");
     const [captchaValue, setCaptchaValue] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-
+    
+    localStorage.setItem('isLogged', false)
+    
     const generateCaptcha = () => {
         const randomCaptcha = Math.random().toString(36).substring(7);
         setCaptcha(randomCaptcha);
@@ -33,11 +35,15 @@ const Login = (props) => {
         // if (json.success) {
         //     localStorage.setItem('token', json.authtoken);
         //     localStorage.setItem('name', json.name);
-            window.location.href = '/About';
+        localStorage.setItem('isLogged', true)
+            window.location.href = '/Donations';
         // } else {
         //     setErrorMessage("Invalid credentials");
         // }
+        
         alert("Login Success");
+
+        console.log('in login page ', localStorage.getItem('isLogged'))
     };
 
     const onChange = (e) => {

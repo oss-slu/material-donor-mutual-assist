@@ -1,13 +1,22 @@
-// DonationForm.js
-
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const DonationForm = () => {
+  const navigate = useNavigate(); // Create an instance of useNavigate
+
+  const handleSubmit = (event) => {
+    event.preventDefault(); // Prevent the default form submission behavior
+    // Here you would typically handle the form submission, e.g., save data to a database
+
+    // After form submission is handled, navigate to the donations page
+    navigate('/Donations'); // Adjust '/donations' to your specific route
+  };
+
   return (
     <div className="p-4">
       <h2 className="text-lg font-bold mb-4">Add a donation</h2>
       
-      <form>
+      <form onSubmit={handleSubmit}> {/* Update form to handle on submit */}
         <div className="mb-4">
           <label className="block text-sm font-bold mb-2" htmlFor="itemType">
             Item Type
