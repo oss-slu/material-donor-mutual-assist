@@ -7,11 +7,22 @@
     justify-content: center;
 }
 
+.formulary{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.formulary div{
+    width: 90%;
+}
+
 .donor-form {
-    width: 140%;
-    max-width: 400px;
+    max-height: 90vh;
+    width: 100%;
+    max-width: 800px;
     margin: 0 auto;
     padding: 20px;
+    padding-right: 0px;
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 8px;

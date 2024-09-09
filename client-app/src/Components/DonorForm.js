@@ -1,7 +1,7 @@
 // DonorForm.js
 
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import '../css/DonorForm.css';
 
 const DonorForm = () => {
@@ -139,6 +139,8 @@ const DonorForm = () => {
         style={{ backgroundColor: 'green' }}>
         {successMessage}</p>}
       <form onSubmit={handleSubmit}>
+      <div class="formulary">
+        <div class="section1">
         <div className="mb-4">
           <label htmlFor="donor_firstName" className="block text-sm font-semibold mb-1">First Name:</label>
           <input
@@ -200,6 +202,8 @@ const DonorForm = () => {
             className="w-full px-3 py-2 rounded border border-gray-300"
           />
         </div>
+        </div>
+        <div class="section2">
         <div className="mb-4">
           <label htmlFor="donor_address_line2" className="block text-sm font-semibold mb-1">Address Line 2:</label>
           <input
@@ -279,16 +283,18 @@ const DonorForm = () => {
           style={{ backgroundColor: 'blue' }}>
           Add Donor
         </button>
-        <button 
-          type="button" 
+        <button
+          type="button"
           className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full button-margin"
           style={{ backgroundColor: 'blue' }}
           //onClick={() => setFormData({ ...formData, email_opt_in: '' })}
           >
           Refresh
         </button>
+        </div>
+        </div>
       </form>
-     </div> 
+     </div>
     </div>
   );
 };
