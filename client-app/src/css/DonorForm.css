@@ -1,19 +1,130 @@
-.button-margin {
-    margin-left: 10px; /* Adjust the margin value as needed */
-}
-
+/* Outer container to center the form and make it stand out */
 .outer-container {
+    max-width: 750px; 
+    margin: 50px auto;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
+    background-color: #1f2833; 
+    border-radius: 12px;
+    font-family: 'Poppins', sans-serif; 
+    color: #fff; 
+  }
+  
+  /* Flexbox layout to place the form fields in two columns */
+  .form-grid {
     display: flex;
-    justify-content: center;
-}
-
-.donor-form {
-    width: 140%;
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
+    flex-wrap: wrap;
+    gap: 15px; 
+    margin-bottom: 10px;
+  }
+  
+  /* Each input field takes half of the container width */
+  .form-grid > div {
+    flex: 1 1 45%; 
+  }
+  
+  /* Styling for input fields */
+  input[type="text"],
+  input[type="email"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    margin-bottom: 10px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+    border: 1px solid #66fcf1; 
+    font-size: 14px;
+    background-color: #f9f9f9; 
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    color: #333; 
+  }
+  
+  /* On focus, inputs will have a teal border and shadow */
+  input[type="text"]:focus,
+  input[type="email"]:focus {
+    border-color: #45a29e; 
+    box-shadow: 0 0 5px rgba(69, 162, 158, 0.6);
+  }
+  
+  /* Full-width fields for larger inputs like email opt-in and buttons */
+  .email-opt-in, .button-container {
+    flex: 1 1 100%;
+  }
+  
+  /* Radio button alignment */
+  .radio-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+    align-items: center;
+  }
+  
+  /* Styling for buttons */
+  button {
+    margin-top: 15px;
+    padding: 10px 25px;
+    background-color: #45a29e; 
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  /* Button hover effect */
+  button:hover {
+    background-color: #0b0c10; 
+    transform: translateY(-2px); 
+  }
+  
+  /* Button focus state */
+  button:focus {
+    outline: none;
+    box-shadow: 0 0 8px rgba(69, 162, 158, 0.6);
+  }
+  
+  /* Button margin */
+  button + button {
+    margin-left: 10px;
+  }
+  
+  /* General font adjustments */
+  label {
+    font-weight: 600;
+    color: #fff; 
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  /* Remove colon from labels */
+  label::after {
+    content: ''; 
+  }
+  
+  /* Add hover effect for input fields */
+  input[type="text"]:hover,
+  input[type="email"]:hover {
+    border-color: #45a29e;
+  }
+  
+  /* Interactive style for labels */
+  label:hover {
+    color: #45a29e; 
+  }
+  
+  /* Spacing adjustments for the buttons */
+  .button-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+  
+  /* Add margin for better spacing between form title and form elements */
+  h1 {
+    font-size: 1.8em;
+    color: #66fcf1; 
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+  
