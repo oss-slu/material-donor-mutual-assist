@@ -1,21 +1,19 @@
-// // DonorForm.js
-
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import '../css/DonorForm.css';
+import React, { useState } from "react";
+import axios from "axios";
+import "../css/DonorForm.css";
 
 const DonorForm = () => {
   const [formData, setFormData] = useState({
-    donor_firstName: '',
-    donor_lastName: '',
-    donor_contact: '',
-    donor_email: '',
-    donor_address_line1: '',
-    donor_address_line2: '',
-    donor_state: '',
-    donor_city: '',
-    donor_zipcode: '',
-    email_opt_in: ''
+    firstName: "",
+    lastName: "",
+    contact: "",
+    email: "",
+    addressLine1: "",
+    addressLine2: "",
+    state: "",
+    city: "",
+    zipcode: "",
+    emailOptIn: false, // Changed to boolean to match schema
   });
 
   const [errors, setErrors] = useState({});
@@ -23,9 +21,13 @@ const DonorForm = () => {
   const [successMessage, setSuccessMessage] = useState(null);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: '' });
+    const { name, value, type, checked } = e.target;
+    if (type === "checkbox") {
+      setFormData((prevState) => ({ ...prevState, [name]: checked }));
+    } else {
+      setFormData((prevState) => ({ ...prevState, [name]: value }));
+    }
+    setErrors((prevState) => ({ ...prevState, [name]: "" }));
     setErrorMessage(null);
     setSuccessMessage(null);
   };
@@ -39,263 +41,126 @@ const DonorForm = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.donor_firstName.trim()) {
-      newErrors.donor_firstName = 'First Name is required';
+    if (!formData.firstName.trim())
+      newErrors.firstName = "First Name is required";
+    if (!formData.lastName.trim()) newErrors.lastName = "Last Name is required";
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Invalid email format";
     }
-    if (!formData.donor_lastName.trim()) {
-      newErrors.donor_lastName = 'Last Name is required';
-    }
-    if (!formData.donor_email.trim()) {
-      newErrors.donor_email = 'Email is required';
-    } else if (!isValidEmail(formData.donor_email)) {
-      newErrors.donor_email = 'Invalid email format';
-    }
-    if (!formData.donor_zipcode.trim()) {
-      newErrors.donor_zipcode = 'Zip Code is required';
-    } else if (!isValidZipCode(formData.donor_zipcode)) {
-      newErrors.donor_zipcode = 'Invalid zip code format';
+    if (!formData.zipcode.trim()) {
+      newErrors.zipcode = "Zip Code is required";
+    } else if (!/^\d{5}$/.test(formData.zipcode)) {
+      newErrors.zipcode = "Invalid zip code format";
     }
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; 
-  };
-
-  const isValidEmail = (email) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  };
-
-  const isValidZipCode = (zipCode) => {
-    const regex = /^\d{5}$/;
-    return regex.test(zipCode);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const isFormValid = validateForm();
-    if (isFormValid) {
+    if (validateForm()) {
       try {
-        const response = await axios.post('http://localhost:5000/donor', formData);
+        const response = await axios.post(
+          "http://localhost:5000/donor",
+          formData
+        );
         if (response.status === 201) {
-          setSuccessMessage('Donor added successfully!');
-          try {
-            const donor_name = formData.donor_firstName + " " + formData.donor_lastName;
-            const email = formData.donor_email;
-            const emailresponse = await axios.post('http://localhost:5001/send-email/', {
-              donor_name,
-              email,
-            });
-            if (emailresponse.status === 200) {
-              setSuccessMessage('Email sent successfully!');
-            } else {
-              setErrorMessage('Email not sent');
-            }
-          } catch (errorResponse) {
-            console.error('Error sending email:', errorResponse);
-          }
+          setSuccessMessage("Donor added successfully!");
+          setFormData({
+            firstName: "",
+            lastName: "",
+            contact: "",
+            email: "",
+            addressLine1: "",
+            addressLine2: "",
+            state: "",
+            city: "",
+            zipcode: "",
+            emailOptIn: false,
+          });
         } else {
-          setErrorMessage('Donor not added');
+          setErrorMessage("Donor not added");
         }
-        setFormData({
-          donor_firstName: '',
-          donor_lastName: '',
-          donor_contact: '',
-          donor_email: '',
-          donor_address_line1: '',
-          donor_address_line2: '',
-          donor_state: '',
-          donor_city: '',
-          donor_zipcode: '',
-          email_opt_in: ''
-        });
       } catch (error) {
-        setErrorMessage(error.response?.data?.message || 'Error adding donor');
+        setErrorMessage(error.response?.data?.message || "Error adding donor");
       }
     } else {
-      setErrorMessage('Form has validation errors');
+      setErrorMessage("Form has validation errors");
     }
   };
 
   return (
-    <div className="outer-container">
+    <div className="outer-container mx-auto p-4">
       <div className="donor-form">
         <h1 className="text-2xl font-bold mb-4">Add Donor Details</h1>
         {errorMessage && (
-          <p className="block text-sm font-semibold mb-1" style={{ backgroundColor: 'red' }}>
+          <p
+            className="block text-sm font-semibold mb-1"
+            style={{ backgroundColor: "red" }}
+          >
             {errorMessage}
           </p>
         )}
         {successMessage && (
-          <p className="block text-sm font-semibold mb-1" style={{ backgroundColor: 'green' }}>
+          <p
+            className="block text-sm font-semibold mb-1"
+            style={{ backgroundColor: "green" }}
+          >
             {successMessage}
           </p>
         )}
-        <form onSubmit={handleSubmit} className="form-grid">
-          <div>
-            <label htmlFor="donor_firstName" className="block text-sm font-semibold mb-1">
-              First Name:
-            </label>
-            <input
-              type="text"
-              id="donor_firstName"
-              name="donor_firstName"
-              value={formData.donor_firstName}
-              onChange={handleChange}
-              className={`w-full px-3 py-2 rounded border ${errors.donor_firstName ? 'border-red-500' : ''}`}
-            />
-            {errors.donor_firstName && <p className="text-red-500 text-sm mt-1">{errors.donor_firstName}</p>}
-          </div>
-
-          <div>
-            <label htmlFor="donor_lastName" className="block text-sm font-semibold mb-1">
-              Last Name:
-            </label>
-            <input
-              type="text"
-              id="donor_lastName"
-              name="donor_lastName"
-              value={formData.donor_lastName}
-              onChange={handleChange}
-              className={`w-full px-3 py-2 rounded border ${errors.donor_lastName ? 'border-red-500' : ''}`}
-            />
-            {errors.donor_lastName && <p className="text-red-500 text-sm mt-1">{errors.donor_lastName}</p>}
-          </div>
-
-          <div>
-            <label htmlFor="donor_contact" className="block text-sm font-semibold mb-1">
-              Contact Number:
-            </label>
-            <input
-              type="text"
-              id="donor_contact"
-              name="donor_contact"
-              value={formData.donor_contact}
-              onChange={handleChange}
-              className="w-full px-3 py-2 rounded border border-gray-300"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="donor_email" className="block text-sm font-semibold mb-1">
-              Email:
-            </label>
-            <input
-              type="email"
-              id="donor_email"
-              name="donor_email"
-              value={formData.donor_email}
-              onChange={handleChange}
-              className={`w-full px-3 py-2 rounded border ${errors.donor_email ? 'border-red-500' : ''}`}
-            />
-            {errors.donor_email && <p className="text-red-500 text-sm mt-1">{errors.donor_email}</p>}
-          </div>
-
-          <div>
-            <label htmlFor="donor_address_line1" className="block text-sm font-semibold mb-1">
-              Address Line 1:
-            </label>
-            <input
-              type="text"
-              id="donor_address_line1"
-              name="donor_address_line1"
-              value={formData.donor_address_line1}
-              onChange={handleChange}
-              className="w-full px-3 py-2 rounded border border-gray-300"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="donor_address_line2" className="block text-sm font-semibold mb-1">
-              Address Line 2:
-            </label>
-            <input
-              type="text"
-              id="donor_address_line2"
-              name="donor_address_line2"
-              value={formData.donor_address_line2}
-              onChange={handleChange}
-              className="w-full px-3 py-2 rounded border border-gray-300"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="donor_state" className="block text-sm font-semibold mb-1">
-              State:
-            </label>
-            <input
-              type="text"
-              id="donor_state"
-              name="donor_state"
-              value={formData.donor_state}
-              onChange={handleChange}
-              className="w-full px-3 py-2 rounded border border-gray-300"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="donor_city" className="block text-sm font-semibold mb-1">
-              City:
-            </label>
-            <input
-              type="text"
-              id="donor_city"
-              name="donor_city"
-              value={formData.donor_city}
-              onChange={handleChange}
-              className="w-full px-3 py-2 rounded border border-gray-300"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="donor_zipcode" className="block text-sm font-semibold mb-1">
-              Zip Code:
-            </label>
-            <input
-              type="text"
-              id="donor_zipcode"
-              name="donor_zipcode"
-              value={formData.donor_zipcode}
-              onChange={handleChange}
-              className={`w-full px-3 py-2 rounded border ${errors.donor_zipcode ? 'border-red-500' : ''}`}
-            />
-            {errors.donor_zipcode && <p className="text-red-500 text-sm mt-1">{errors.donor_zipcode}</p>}
-          </div>
-
-          <div className="email-opt-in">
-            <label>Email Opt-in:</label>
-            <div className="radio-group">
-              <label htmlFor="email_opt_in_yes">
+        <form onSubmit={handleSubmit}>
+          {/* Form fields dynamically generated based on formData */}
+          {Object.keys(formData).map((key) =>
+            key === "emailOptIn" ? (
+              <div key={key} className="mb-4">
+                <label>
+                  Email Opt-in:
+                  <input
+                    type="checkbox"
+                    name={key}
+                    checked={formData[key]}
+                    onChange={handleChange}
+                  />
+                </label>
+              </div>
+            ) : (
+              <div key={key} className="mb-4">
+                <label
+                  htmlFor={key}
+                  className="block text-sm font-semibold mb-1"
+                >
+                  {key.charAt(0).toUpperCase() +
+                    key
+                      .slice(1)
+                      .replace(/([A-Z])/g, " $1")
+                      .trim()}
+                  :
+                </label>
                 <input
-                  type="radio"
-                  id="email_opt_in_yes"
-                  name="email_opt_in"
-                  value="Yes"
-                  checked={formData.email_opt_in === 'Yes'}
+                  type={key.includes("email") ? "email" : "text"}
+                  id={key}
+                  name={key}
+                  value={formData[key]}
                   onChange={handleChange}
+                  className={`w-full px-3 py-2 rounded border ${
+                    errors[key] ? "border-red-500" : "border-gray-300"
+                  }`}
                 />
-                Yes
-              </label>
-              <label htmlFor="email_opt_in_no">
-                <input
-                  type="radio"
-                  id="email_opt_in_no"
-                  name="email_opt_in"
-                  value="No"
-                  checked={formData.email_opt_in === 'No'}
-                  onChange={handleChange}
-                />
-                No
-              </label>
-            </div>
-          </div>
-
-          <div className="button-container">
-            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full">
-              Add Donor
-            </button>
-            <button type="button" className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full ml-4">
-              Refresh
-            </button>
-          </div>
+                {errors[key] && (
+                  <p className="text-red-500 text-sm mt-1">{errors[key]}</p>
+                )}
+              </div>
+            )
+          )}
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full"
+          >
+            Add Donor
+          </button>
         </form>
       </div>
     </div>
@@ -303,4 +168,3 @@ const DonorForm = () => {
 };
 
 export default DonorForm;
-
