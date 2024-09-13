@@ -11,6 +11,7 @@ router.post('/', donorValidator, async (req: Request, res: Response) => {
     });
     console.log('New donor created:', newDonor);
     res.status(201).json(newDonor);
+    
   } catch (error) {
     console.error('Error creating donor:', error);
     res.status(500).json({ message: 'Error creating donor' });

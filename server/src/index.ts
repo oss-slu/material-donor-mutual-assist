@@ -5,6 +5,9 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
 
+import { PrismaClient } from '@prisma/client'; // Import Prisma
+const prisma = new PrismaClient(); // Initialize Prisma Client
+
 // import indexRouter from './routes/index';
 // import usersRouter from './routes/users';
 // import donorsListRouter from './routes/donor-details/donorsList';
@@ -17,6 +20,7 @@ import donorRouter from './routes/donorRoutes';
 const app = express();
 
 app.use(cors({ origin: 'http://localhost:3000' }));
+
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -47,9 +51,35 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.render('error');
 });
 
-const port = process.env.PORT || 5000; // Use environment variable or default to 3001
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+// const port = process.env.PORT || 3001; // Use environment variable or default to 3001
+// app.listen(port, () => {
+//   console.log(`Server running on http://localhost:${port}`);
+// });
+
+// Logging the DB connection and starting server
+const startServer = async () => {
+  try {
+    // Connect to the database
+    await prisma.$connect(); 
+    console.log('The logger: Connected to the database successfully!'); 
+
+    // Start the server
+    const port = process.env.PORT || 3001;
+    app.listen(port, () => {
+      console.log(`Server running on http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.error('Error connecting to the database:', error);
+  }
+};
+
+// Call the startServer function to start the server and connect to the DB
+startServer();
+
+process.on('SIGINT', async () => {
+  await prisma.$disconnect();
+  console.log('Prisma client disconnected');
+  process.exit(0);
 });
 
 export default app;
