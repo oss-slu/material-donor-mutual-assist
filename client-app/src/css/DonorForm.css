@@ -129,24 +129,25 @@ label .text-red-500 {
 /* Adjust spacing for email opt-in */
 .email-opt-in {
   display: flex;
-  align-items: center;
-  margin-top: 10px;
+  flex-direction: column;
 }
 
 .email-opt-in label {
   margin-right: 10px;
-  margin-bottom: 0; 
 }
 
-.email-opt-in .checkbox-container {
-  margin-left: 10px; 
+.checkbox-container {
+  display: flex;
+  align-items: center;
 }
 
-.email-opt-in input[type="checkbox"] {
+.checkbox-container input[type="checkbox"] {
   transform: scale(1.2);
+  margin-right: 5px;
 }
 
-/* Adjust spacing between email opt-in and checkbox */
-.email-opt-in {
-  gap: 10px;
+/* Ensure proper spacing between checkbox and message */
+.checkbox-message {
+  margin-left: 5px;
+  color: #ddd;
 }
