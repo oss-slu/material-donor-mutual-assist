@@ -20,6 +20,18 @@ const DonorForm = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
+  // List of mandatory fields
+  const mandatoryFields = [
+    "firstName",
+    "lastName",
+    "contact",
+    "email",
+    "addressLine1",
+    "state",
+    "city",
+    "zipcode",
+  ];
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (type === "checkbox") {
@@ -43,12 +55,21 @@ const DonorForm = () => {
     const newErrors = {};
     if (!formData.firstName.trim())
       newErrors.firstName = "First Name is required";
-    if (!formData.lastName.trim()) newErrors.lastName = "Last Name is required";
+    if (!formData.lastName.trim())
+      newErrors.lastName = "Last Name is required";
+    if (!formData.contact.trim())
+      newErrors.contact = "Contact Number is required";
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Invalid email format";
     }
+    if (!formData.addressLine1.trim())
+      newErrors.addressLine1 = "Address Line 1 is required";
+    if (!formData.state.trim())
+      newErrors.state = "State is required";
+    if (!formData.city.trim())
+      newErrors.city = "City is required";
     if (!formData.zipcode.trim()) {
       newErrors.zipcode = "Zip Code is required";
     } else if (!/^\d{5}$/.test(formData.zipcode)) {
@@ -84,7 +105,9 @@ const DonorForm = () => {
           setErrorMessage("Donor not added");
         }
       } catch (error) {
-        setErrorMessage(error.response?.data?.message || "Error adding donor");
+        setErrorMessage(
+          error.response?.data?.message || "Error adding donor"
+        );
       }
     } else {
       setErrorMessage("Form has validation errors");
@@ -115,16 +138,18 @@ const DonorForm = () => {
           {/* Form fields dynamically generated based on formData */}
           {Object.keys(formData).map((key) =>
             key === "emailOptIn" ? (
-              <div key={key} className="form-field full-width">
-                <label>
-                  Email Opt-in:
+              <div key={key} className="form-field full-width email-opt-in">
+                <label className="block text-sm font-semibold mb-1">
+                  Email Opt-in
+                </label>
+                <div className="checkbox-container">
                   <input
                     type="checkbox"
                     name={key}
                     checked={formData[key]}
                     onChange={handleChange}
                   />
-                </label>
+                </div>
               </div>
             ) : (
               <div key={key} className="form-field">
@@ -132,12 +157,19 @@ const DonorForm = () => {
                   htmlFor={key}
                   className="block text-sm font-semibold mb-1"
                 >
-                  {key.charAt(0).toUpperCase() +
-                    key
-                      .slice(1)
-                      .replace(/([A-Z])/g, " $1")
-                      .trim()}
-                  :
+                  {key
+                    .charAt(0)
+                    .toUpperCase()
+                    .concat(
+                      key
+                        .slice(1)
+                        .replace(/([A-Z])/g, " $1")
+                        .trim()
+                    )}
+                  {/* Add asterisk for mandatory fields */}
+                  {mandatoryFields.includes(key) && (
+                    <span className="text-red-500">*</span>
+                  )}
                 </label>
                 <input
                   type={key.includes("email") ? "email" : "text"}
@@ -155,7 +187,7 @@ const DonorForm = () => {
               </div>
             )
           )}
-          <div className="form-field full-width">
+          <div className="form-field full-width button-container">
             <button
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full"
