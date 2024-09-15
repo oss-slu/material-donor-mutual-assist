@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import ItemStatus from '../constants/Enums';
 import '../css/StatusDisplayPage.css';
 
 const StatusDisplayPage = () => {
@@ -12,13 +13,14 @@ const StatusDisplayPage = () => {
     email: '',
     phone: '',
     address: '',
-    status: {
+    /*status: {
       donated: false,
       inStorageFacility: false,
       refurbished: false,
       received: false,
       sold: false
-    },
+    },*/
+    status: null,
     image: null
   });
 
@@ -31,13 +33,14 @@ const StatusDisplayPage = () => {
       email: 'donor@example.com',
       phone: '123-456-7890',
       address: '123 Main St',
-      status: {
+      /*status: {
         donated: true,
         inStorageFacility: true,
         refurbished: true,
         received: true,
         sold: true
-      }
+      }*/
+     status: null
     };
     setDonorInfo(dummyData);
   }, []);
@@ -100,7 +103,9 @@ const StatusDisplayPage = () => {
           <input
             type="radio"
             name="status"
-            checked={donorInfo.status.donated}
+            value={ItemStatus.DONATED}
+            checked={donorInfo.status === ItemStatus.DONATED}
+            //checked={donorInfo.status.donated}
             onChange={handleCheckboxChange}
           />
           Donated
@@ -110,7 +115,9 @@ const StatusDisplayPage = () => {
           <input
             type="radio"
             name="status"
-            checked={donorInfo.status.inStorageFacility}
+            value={ItemStatus.IN_STORAGE}
+            checked={donorInfo.status === ItemStatus.IN_STORAGE}
+            //checked={donorInfo.status.inStorageFacility}
             onChange={handleCheckboxChange}
           />
           In Storage Facility
@@ -120,7 +127,9 @@ const StatusDisplayPage = () => {
           <input
             type="radio"
             name="status"
-            checked={donorInfo.status.refurbished}
+            value={ItemStatus.REFURBISHED}
+            checked={donorInfo.status === ItemStatus.REFURBISHED}
+            //checked={donorInfo.status.refurbished}
             onChange={handleCheckboxChange}
           />
           Refurbished
@@ -130,7 +139,9 @@ const StatusDisplayPage = () => {
           <input
             type="radio"
             name="status"
-            checked={donorInfo.status.received}
+            value={ItemStatus.RECEIVED}
+            checked={donorInfo.status === ItemStatus.RECEIVED}
+            //checked={donorInfo.status.received}
             onChange={handleCheckboxChange}
           />
           Received
@@ -140,7 +151,9 @@ const StatusDisplayPage = () => {
           <input
             type="radio"
             name="status"
-            checked={donorInfo.status.sold}
+            value={ItemStatus.SOLD}
+            checked={donorInfo.status === ItemStatus.SOLD}
+            //checked={donorInfo.status.sold}
             onChange={handleCheckboxChange}
           />
           Sold
