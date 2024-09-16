@@ -114,9 +114,9 @@ const DonorForm: React.FC = () => {
   };
 
   return (
-    <div className="outer-container mx-auto p-4">
+    <div className="outer-container mx-auto p-10">
       <div className="donor-form">
-        <h1 className="text-2xl font-bold mb-4">Add Donor Details</h1>
+        <h1 className="text-2xl font-bold">Add Donor Details</h1>
         {errorMessage && <p className="block text-sm font-semibold mb-1" style={{ backgroundColor: 'red' }}>{errorMessage}</p>}
         {successMessage && <p className="block text-sm font-semibold mb-1" style={{ backgroundColor: 'green' }}>{successMessage}</p>}
         <form onSubmit={handleSubmit} className="form-grid">
