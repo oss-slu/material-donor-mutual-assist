@@ -37,7 +37,7 @@
   flex: 1 1 100%;
 }
 
-/* Style for input fields within the donor form */
+/* Style for input fields */
 .donor-form input[type="text"],
 .donor-form input[type="email"] {
   width: 100%;
@@ -77,11 +77,6 @@
   font-size: 14px;
   font-weight: 600;
   color: #fff;
-}
-
-/* Add two-letter spacing between checkbox and message */
-.donor-form .form-field label input[type="checkbox"] + span {
-  margin-left: 2px;
 }
 
 /* Button styling */
