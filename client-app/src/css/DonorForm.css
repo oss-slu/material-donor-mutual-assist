@@ -1,8 +1,8 @@
-/* Outer container to center the form and make it stand out */
-.outer-container {
+/* Outer container styling for the donor form */
+.donor-form.outer-container {
   max-width: 750px;
   margin: 50px auto;
-  padding: 50px; 
+  padding: 50px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   background-color: #1f2833;
   border-radius: 12px;
@@ -10,29 +10,36 @@
   color: #fff;
 }
 
-/* Flexbox layout to place the form fields in two columns */
-.form-grid {
-  display: flex;
-  flex-wrap: wrap;
-  column-gap: 50px; 
-  row-gap: 20px;
-  margin-bottom: 10px;
-  margin-top: 50px;
+/* Center and style the heading */
+.heading-centered {
+  text-align: center;
+  color: #66fcf1; /* Light teal color for heading */
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
 }
 
-/* Each input field takes half of the container width */
-.form-grid > .form-field {
+/* Grid styling for the form */
+.donor-form .form-grid {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 50px;
+  row-gap: 20px;
+  margin-bottom: 20px;
+  margin-top: 30px;
+}
+
+.donor-form .form-field {
   flex: 1 1 45%;
 }
 
-/* Full-width fields for larger inputs like email opt-in and buttons */
-.full-width {
+.donor-form .full-width {
   flex: 1 1 100%;
 }
 
-/* Styling for input fields */
-input[type="text"],
-input[type="email"] {
+/* Style for input fields within the donor form */
+.donor-form input[type="text"],
+.donor-form input[type="email"] {
   width: 100%;
   padding: 8px;
   margin-top: 4px;
@@ -41,20 +48,44 @@ input[type="email"] {
   border: 1px solid #66fcf1;
   font-size: 14px;
   background-color: #f9f9f9;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
   color: #333;
 }
 
-/* On focus, inputs will have a teal border and shadow */
-input[type="text"]:focus,
-input[type="email"]:focus {
+/* Focus and hover styles for input fields */
+.donor-form input[type="text"]:focus,
+.donor-form input[type="email"]:focus {
   border-color: #45a29e;
   box-shadow: 0 0 5px rgba(69, 162, 158, 0.6);
 }
 
-/* Styling for buttons */
-button {
-  margin-top: 15px;
+.donor-form input[type="text"]:hover,
+.donor-form input[type="email"]:hover,
+.donor-form label:hover {
+  border-color: #45a29e;
+  color: #45a29e;
+}
+
+/* Email Opt-in checkbox section */
+.donor-form .form-field input[type="checkbox"] {
+  transform: scale(1.2);
+  margin-right: 5px;
+}
+
+.donor-form .form-field label {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Add two-letter spacing between checkbox and message */
+.donor-form .form-field label input[type="checkbox"] + span {
+  margin-left: 2px;
+}
+
+/* Button styling */
+.donor-form .submit-button {
   padding: 10px 25px;
   background-color: #45a29e;
   color: white;
@@ -63,93 +94,41 @@ button {
   cursor: pointer;
   font-size: 14px;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  font-family: 'Poppins', sans-serif;
+  margin-right: 20px; /* Space between Add Donor and Refresh buttons */
+}
+
+.donor-form .refresh-button {
+  padding: 10px 25px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 /* Button hover effect */
-button:hover {
-  background-color: #0b0c10;
+.donor-form .submit-button:hover,
+.donor-form .refresh-button:hover {
   transform: translateY(-2px);
 }
 
-/* Button focus state */
-button:focus {
-  outline: none;
-  box-shadow: 0 0 8px rgba(69, 162, 158, 0.6);
-}
-
-/* Button margin */
-button + button {
-  margin-left: 10px;
-}
-
-/* General font adjustments */
-label {
-  font-weight: 600;
-  color: #fff;
-  font-family: 'Poppins', sans-serif;
-}
-
-/* Remove colon from labels */
-label::after {
-  content: '';
-}
-
-/* Add hover effect for input fields */
-input[type="text"]:hover,
-input[type="email"]:hover {
-  border-color: #45a29e;
-}
-
-/* Interactive style for labels */
-label:hover {
-  color: #45a29e;
-}
-
-/* Spacing adjustments for the buttons */
-.button-container {
-  display: flex;
-  justify-content: flex-start;
-  gap: 10px;
-}
-
-/* Add margin for better spacing between form title and form elements */
-h1 {
-  font-size: 1.8em;
-  color: #66fcf1;
+/* Error and success message styling */
+.donor-form .error-message {
+  background-color: red;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  border-radius: 4px;
   text-align: center;
-  margin-bottom: 20px;
-  font-weight: 700;
 }
 
-/* Style for asterisk */
-label .text-red-500 {
-  color: red;
-  margin-left: 2px;
-}
-
-/* Adjust spacing for email opt-in */
-.email-opt-in {
-  display: flex;
-  flex-direction: column;
-}
-
-.email-opt-in label {
-  margin-right: 10px;
-}
-
-.checkbox-container {
-  display: flex;
-  align-items: center;
-}
-
-.checkbox-container input[type="checkbox"] {
-  transform: scale(1.2);
-  margin-right: 5px;
-}
-
-/* Ensure proper spacing between checkbox and message */
-.checkbox-message {
-  margin-left: 5px;
-  color: #ddd;
+.donor-form .success-message {
+  background-color: green;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  border-radius: 4px;
+  text-align: center;
 }
