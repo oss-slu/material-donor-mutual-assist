@@ -126,7 +126,7 @@ const DonorForm: React.FC = () => {
   const renderFormField = (label: string, name: keyof FormData, type = 'text', required = true) => (
     <div className="form-field">
       <label htmlFor={name} className="block text-sm font-semibold mb-1">
-        {label} {required && <span className="text-red-500">*</span>}
+        {label}{required && <span className="text-red-500">&nbsp;*</span>}
       </label>
       {type === 'checkbox' ? (
         <input
@@ -167,23 +167,22 @@ const DonorForm: React.FC = () => {
         {renderFormField('City', 'city')}
         {renderFormField('Zip Code', 'zipcode')}
         
-        
-         {/* Email Opt-In Field */}
-           <div className="form-field">
-            <label htmlFor="emailOptIn" className="block text-sm font-semibold mb-1">
-               Email Opt-in
-             </label>
-             <div className="checkbox-container">
-               <input
-                 type="checkbox"
-                 id="emailOptIn"
-                 name="emailOptIn"
-                 checked={formData.emailOptIn}
-                 onChange={handleChange}
-               />
-               <span className="checkbox-message"> Stay updated with donation progress</span>
-             </div>
-           </div>
+        {/* Email Opt-In Field */}
+        <div className="form-field">
+          <label htmlFor="emailOptIn" className="block text-sm font-semibold mb-1">
+            Email Opt-in
+          </label>
+          <div className="checkbox-container">
+            <input
+              type="checkbox"
+              id="emailOptIn"
+              name="emailOptIn"
+              checked={formData.emailOptIn}
+              onChange={handleChange}
+            />
+            <span className="checkbox-message"> Stay updated with donation progress</span>
+          </div>
+        </div>
 
         <div className="form-field full-width button-container">
           <button type="submit" className="submit-button">Add Donor</button>
