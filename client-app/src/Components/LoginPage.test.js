@@ -22,7 +22,6 @@ describe('LoginPage Component', () => {
 
         // //const tree = render.create(<BrowserRouter><LoginPage /></BrowserRouter>);
 
-
         // fireEvent.change(screen.getByPlaceholderText('Username'), { target: { value: 'user' } });
         // fireEvent.change(screen.getByPlaceholderText('Password*'), { target: { value: 'dts@123' } });
 

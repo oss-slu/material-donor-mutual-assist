@@ -37,19 +37,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/donor', donorRouter);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-  next(createError(404));
+    next(createError(404));
 });
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  res.status(err.status || 500);
-  res.render('error');
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+    res.status(err.status || 500);
+    res.render('error');
 });
 
 const port = process.env.PORT || 5000; // Use environment variable or default to 3001
 app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+    console.log(`Server running on http://localhost:${port}`);
 });
 
 export default app;

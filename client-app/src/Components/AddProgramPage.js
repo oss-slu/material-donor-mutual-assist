@@ -10,7 +10,7 @@ function AddProgramPage({ onAddProgram }) {
         aimAndCause: '',
     });
 
-    const handleChange = (e) => {
+    const handleChange = e => {
         const { name, value } = e.target;
         setFormData({
             ...formData,
@@ -38,23 +38,58 @@ function AddProgramPage({ onAddProgram }) {
             <form className="form">
                 <div className="form-group">
                     <label className="label">Name:</label>
-                    <input className="input" type="text" name="name" value={formData.name} onChange={handleChange} />
+                    <input
+                        className="input"
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                    />
                 </div>
                 <div className="form-group">
                     <label className="label">Description:</label>
-                    <input className="input" type="text" name="description" value={formData.description} onChange={handleChange} />
+                    <input
+                        className="input"
+                        type="text"
+                        name="description"
+                        value={formData.description}
+                        onChange={handleChange}
+                    />
                 </div>
                 <div className="form-group">
                     <label className="label">Start Date:</label>
-                    <input className="input" type="date" name="startDate" value={formData.startDate} onChange={handleChange} />
+                    <input
+                        className="input"
+                        type="date"
+                        name="startDate"
+                        value={formData.startDate}
+                        onChange={handleChange}
+                    />
                 </div>
                 <div className="form-group">
                     <label className="label">Aim and Cause:</label>
-                    <textarea className="textarea" name="aimAndCause" value={formData.aimAndCause} onChange={handleChange} />
+                    <textarea
+                        className="textarea"
+                        name="aimAndCause"
+                        value={formData.aimAndCause}
+                        onChange={handleChange}
+                    />
                 </div>
                 <div className="button-group">
-                    <button className="save-button" type="button" onClick={handleSave}>Save</button>
-                    <button className="clear-button" type="button" onClick={handleClear}>Clear</button>
+                    <button
+                        className="save-button"
+                        type="button"
+                        onClick={handleSave}
+                    >
+                        Save
+                    </button>
+                    <button
+                        className="clear-button"
+                        type="button"
+                        onClick={handleClear}
+                    >
+                        Clear
+                    </button>
                 </div>
             </form>
             {/* Link to navigate back to ProgramsPage */}
