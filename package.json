@@ -1,5 +1,9 @@
 {
-  "dependencies": {
-    "pg": "^8.11.3"
+  "devDependencies": {
+    "prettier": "^3.3.3"
+  },
+  "scripts": {
+    "prettier:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,css,scss,html}\"",
+    "prettier:write": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,html}\""
   }
 }
