@@ -40,18 +40,22 @@ const DonorForm: React.FC = () => {
   // Handle input change for all fields
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
       [name]: type === 'checkbox' ? checked : value,
     }));
-    setErrors(prevState => ({ ...prevState, [name]: '' })); // Reset errors on change
+    setErrors((prevState) => ({ ...prevState, [name]: '' })); // Reset errors on change
     setErrorMessage(null);
     setSuccessMessage(null);
   };
 
   // Generalized validation function to reduce code repetition
   const validateField = (name: string, value: string) => {
-    if (!value.trim()) return `${name} is required`;
+    const requiredFields = ['firstName', 'lastName', 'contact', 'email', 'addressLine1', 'state', 'city', 'zipcode'];
+    
+    if (requiredFields.includes(name) && !value.trim()) {
+      return `${name.replace(/([A-Z])/g, ' $1')} is required`; // Add spaces to camelCase names
+    }
     if (name === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
       return 'Invalid email format';
     }
@@ -61,9 +65,10 @@ const DonorForm: React.FC = () => {
     return '';
   };
 
+  // Validation for entire form
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
-    ['firstName', 'lastName', 'contact', 'email', 'addressLine1', 'state', 'city', 'zipcode'].forEach(field => {
+    Object.keys(formData).forEach((field) => {
       const error = validateField(field, (formData as any)[field]);
       if (error) newErrors[field] = error;
     });
@@ -71,7 +76,7 @@ const DonorForm: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Function to submit the form
+  // Handle form submission
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (validateForm()) {
@@ -103,7 +108,7 @@ const DonorForm: React.FC = () => {
     }
   };
 
-  // Function to reset all form fields
+  // Handle form reset
   const handleRefresh = () => {
     setFormData({
       firstName: '',
@@ -122,7 +127,7 @@ const DonorForm: React.FC = () => {
     setSuccessMessage(null);
   };
 
-  // Reusable function to render form fields (for text and checkbox types)
+  // Reusable function to render form fields (text and checkbox)
   const renderFormField = (label: string, name: keyof FormData, type = 'text', required = true) => (
     <div className="form-field">
       <label htmlFor={name} className="block text-sm font-semibold mb-1">
@@ -133,7 +138,7 @@ const DonorForm: React.FC = () => {
           type="checkbox"
           id={name}
           name={name}
-          checked={formData[name] as boolean} // Handle checkbox separately
+          checked={formData[name] as boolean}
           onChange={handleChange}
           className="w-full px-3 py-2 rounded border"
         />
@@ -142,7 +147,7 @@ const DonorForm: React.FC = () => {
           type={type}
           id={name}
           name={name}
-          value={formData[name] as string} // Ensure value is string for text inputs
+          value={formData[name] as string}
           onChange={handleChange}
           className={`w-full px-3 py-2 rounded border ${errors[name] ? 'border-red-500' : 'border-gray-300'}`}
         />
@@ -161,12 +166,12 @@ const DonorForm: React.FC = () => {
         {renderFormField('Last Name', 'lastName')}
         {renderFormField('Contact', 'contact')}
         {renderFormField('Email', 'email', 'email')}
-        {renderFormField('Address Line 1', 'addressLine1')} {/* Mandatory with * */}
-        {renderFormField('Address Line 2', 'addressLine2', 'text', false)} {/* Not required */}
+        {renderFormField('Address Line 1', 'addressLine1')}
+        {renderFormField('Address Line 2', 'addressLine2', 'text', false)}
         {renderFormField('State', 'state')}
         {renderFormField('City', 'city')}
         {renderFormField('Zip Code', 'zipcode')}
-        
+
         {/* Email Opt-In Field */}
         <div className="form-field">
           <label htmlFor="emailOptIn" className="block text-sm font-semibold mb-1">
@@ -194,3 +199,4 @@ const DonorForm: React.FC = () => {
 };
 
 export default DonorForm;
+
