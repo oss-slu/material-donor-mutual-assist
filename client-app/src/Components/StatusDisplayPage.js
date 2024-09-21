@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-//import ItemStatus from '../constants/Enums';
+import ItemStatus from '../constants/Enums';
 import '../css/StatusDisplayPage.css';
 
 const StatusDisplayPage = () => {
@@ -20,7 +20,6 @@ const StatusDisplayPage = () => {
       received: false,
       sold: false
     },
-    //status: null,
     image: null
   });
 
@@ -40,7 +39,6 @@ const StatusDisplayPage = () => {
         received: true,
         sold: true
       }
-     //status: null
     };
     setDonorInfo(dummyData);
   }, []);
@@ -103,60 +101,50 @@ const StatusDisplayPage = () => {
           <input
             type="radio"
             name="status"
-            //value={ItemStatus.DONATED}
-            //checked={donorInfo.status === ItemStatus.DONATED}
             checked={donorInfo.status.donated}
             onChange={handleCheckboxChange}
           />
-          Donated
+          {ItemStatus.DONATED} 
         </label>
         <br />
         <label>
           <input
             type="radio"
             name="status"
-            //value={ItemStatus.IN_STORAGE}
-            //checked={donorInfo.status === ItemStatus.IN_STORAGE}
             checked={donorInfo.status.inStorageFacility}
             onChange={handleCheckboxChange}
           />
-          In Storage Facility
+          {ItemStatus.IN_STORAGE}
         </label>
         <br />
         <label>
           <input
             type="radio"
             name="status"
-            //value={ItemStatus.REFURBISHED}
-            //checked={donorInfo.status === ItemStatus.REFURBISHED}
             checked={donorInfo.status.refurbished}
             onChange={handleCheckboxChange}
           />
-          Refurbished
+          {ItemStatus.REFURBISHED}
         </label>
         <br />
         <label>
           <input
             type="radio"
             name="status"
-            //value={ItemStatus.RECEIVED}
-            //checked={donorInfo.status === ItemStatus.RECEIVED}
             checked={donorInfo.status.received}
             onChange={handleCheckboxChange}
           />
-          Received
+          {ItemStatus.RECEIVED}
         </label>
         <br />
         <label>
           <input
             type="radio"
             name="status"
-            //value={ItemStatus.SOLD}
-            //checked={donorInfo.status === ItemStatus.SOLD}
             checked={donorInfo.status.sold}
             onChange={handleCheckboxChange}
           />
-          Sold
+          {ItemStatus.SOLD}
         </label>
         <br></br>
         <label>
