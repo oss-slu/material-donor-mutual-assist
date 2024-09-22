@@ -133,25 +133,14 @@ const DonorForm: React.FC = () => {
       <label htmlFor={name} className="block text-sm font-semibold mb-1">
         {label}{required && <span className="text-red-500">&nbsp;*</span>}
       </label>
-      {type === 'checkbox' ? (
-        <input
-          type="checkbox"
-          id={name}
-          name={name}
-          checked={formData[name] as boolean}
-          onChange={handleChange}
-          className="w-full px-3 py-2 rounded border"
-        />
-      ) : (
-        <input
+      <input
           type={type}
           id={name}
           name={name}
           value={formData[name] as string}
           onChange={handleChange}
           className={`w-full px-3 py-2 rounded border ${errors[name] ? 'border-red-500' : 'border-gray-300'}`}
-        />
-      )}
+      />
       {errors[name] && <p className="text-red-500 text-sm mt-1">{errors[name]}</p>}
     </div>
   );
