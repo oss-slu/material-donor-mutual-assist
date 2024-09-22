@@ -72,103 +72,103 @@ const StatusDisplayPage = () => {
         return <div>No item information found</div>;
     }
 
-  return (
-    <div className="status-display">
-      <div className="donor-form">
-        <img
-          src="https://www.bworks.org/wp-content/themes/bworks/library/images/logo-bworks.png"
-          alt="BWorks Logo"
-          className="bworks-logo"
-        />
-        <label>Item: {itemInfo.id}</label>
-        <label>
-          Donor Full Name: {itemInfo.donor}
-        </label>
-        <br />
-        <label>
-          Email Address: {donorInfo.email}
-        </label>
-        <br />
-        <label>
-          Phone Number: {donorInfo.phone}
-        </label>
-        <br />
-        <label>
-          Address: {donorInfo.address}
-        </label>
-        <br />
-        <label>
-          <input
-            type="radio"
-            name="status"
-            checked={donorInfo.status.donated}
-            onChange={handleCheckboxChange}
-          />
-          {ItemStatus.DONATED} 
-        </label>
-        <br />
-        <label>
-          <input
-            type="radio"
-            name="status"
-            checked={donorInfo.status.inStorageFacility}
-            onChange={handleCheckboxChange}
-          />
-          {ItemStatus.IN_STORAGE}
-        </label>
-        <br />
-        <label>
-          <input
-            type="radio"
-            name="status"
-            checked={donorInfo.status.refurbished}
-            onChange={handleCheckboxChange}
-          />
-          {ItemStatus.REFURBISHED}
-        </label>
-        <br />
-        <label>
-          <input
-            type="radio"
-            name="status"
-            checked={donorInfo.status.received}
-            onChange={handleCheckboxChange}
-          />
-          {ItemStatus.RECEIVED}
-        </label>
-        <br />
-        <label>
-          <input
-            type="radio"
-            name="status"
-            checked={donorInfo.status.sold}
-            onChange={handleCheckboxChange}
-          />
-          {ItemStatus.SOLD}
-        </label>
-        <br></br>
-        <label>
-          Upload Image of current Status:
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-          />
-        </label>
-        <br></br>
-        {/* Display uploaded image */}
-        {donorInfo.image && (
-          <img src={donorInfo.image} alt="Uploaded" style={{ maxWidth: '100%', maxHeight: '200px' }} />
-        )}
-        <br />
-        
-        <br />
-        <button type="button" onClick={handleCancel}>Cancel</button>
-        <br />
-        <button type="submit" onClick={handleSaveChanges}>Save Changes</button>
-      </div>
-    </div>
-  );
+    return (
+        <div className="status-display">
+            <div className="donor-form">
+                <img
+                    src="https://www.bworks.org/wp-content/themes/bworks/library/images/logo-bworks.png"
+                    alt="BWorks Logo"
+                    className="bworks-logo"
+                />
+                <label>Item: {itemInfo.id}</label>
+                <label>Donor Full Name: {itemInfo.donor}</label>
+                <br />
+                <label>Email Address: {donorInfo.email}</label>
+                <br />
+                <label>Phone Number: {donorInfo.phone}</label>
+                <br />
+                <label>Address: {donorInfo.address}</label>
+                <br />
+                <label>
+                    <input
+                        type="radio"
+                        name="status"
+                        checked={donorInfo.status.donated}
+                        onChange={handleCheckboxChange}
+                    />
+                    {ItemStatus.DONATED}
+                </label>
+                <br />
+                <label>
+                    <input
+                        type="radio"
+                        name="status"
+                        checked={donorInfo.status.inStorageFacility}
+                        onChange={handleCheckboxChange}
+                    />
+                    {ItemStatus.IN_STORAGE}
+                </label>
+                <br />
+                <label>
+                    <input
+                        type="radio"
+                        name="status"
+                        checked={donorInfo.status.refurbished}
+                        onChange={handleCheckboxChange}
+                    />
+                    {ItemStatus.REFURBISHED}
+                </label>
+                <br />
+                <label>
+                    <input
+                        type="radio"
+                        name="status"
+                        checked={donorInfo.status.received}
+                        onChange={handleCheckboxChange}
+                    />
+                    {ItemStatus.RECEIVED}
+                </label>
+                <br />
+                <label>
+                    <input
+                        type="radio"
+                        name="status"
+                        checked={donorInfo.status.sold}
+                        onChange={handleCheckboxChange}
+                    />
+                    {ItemStatus.SOLD}
+                </label>
+                <br></br>
+                <label>
+                    Upload Image of current Status:
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                    />
+                </label>
+                <br></br>
+                {/* Display uploaded image */}
+                {donorInfo.image && (
+                    <img
+                        src={donorInfo.image}
+                        alt="Uploaded"
+                        style={{ maxWidth: '100%', maxHeight: '200px' }}
+                    />
+                )}
+                <br />
+
+                <br />
+                <button type="button" onClick={handleCancel}>
+                    Cancel
+                </button>
+                <br />
+                <button type="submit" onClick={handleSaveChanges}>
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    );
 };
 
 export default StatusDisplayPage;

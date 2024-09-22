@@ -25,17 +25,23 @@ function DonatedItemsList() {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const navigate = useNavigate();
 
-  const handleSearch = () => {
-    const filtered = donatedItems.filter(item =>
-      item.id.toString().includes(searchInput) ||
-      item.name.toLowerCase().includes(searchInput.toLowerCase()) ||
-      item.donor.toLowerCase().includes(searchInput.toLowerCase()) ||
-      item.date.includes(searchInput) ||
-      item.program.toLowerCase().includes(searchInput.toLowerCase()) ||
-      Object.values(ItemStatus).includes(item.status) && item.status.toLowerCase().includes(searchInput.toLowerCase())
-    );
-    setFilteredItems(filtered);
-  };
+    const handleSearch = () => {
+        const filtered = donatedItems.filter(
+            item =>
+                item.id.toString().includes(searchInput) ||
+                item.name.toLowerCase().includes(searchInput.toLowerCase()) ||
+                item.donor.toLowerCase().includes(searchInput.toLowerCase()) ||
+                item.date.includes(searchInput) ||
+                item.program
+                    .toLowerCase()
+                    .includes(searchInput.toLowerCase()) ||
+                (Object.values(ItemStatus).includes(item.status) &&
+                    item.status
+                        .toLowerCase()
+                        .includes(searchInput.toLowerCase())),
+        );
+        setFilteredItems(filtered);
+    };
 
     const handleSort = event => {
         // Implement your sorting logic here
@@ -106,29 +112,66 @@ function DonatedItemsList() {
         navigate('/donation-form');
     };
 
-  // Sample data for demonstration
-  const [donatedItems, setDonatedItems] = useState([
-    { id: 811253, name: 'Bicycle', donor: 'Mary', date: '2024-02-25', program: 'Not Assigned', status: ItemStatus.DONATED },
-    { id: 811249, name: 'Computer', donor: 'James', date: '2024-02-06', program: 'Not Assigned', status: ItemStatus.IN_STORAGE },
-    { id: 811247, name: 'Computer', donor: 'Vivian', date: '2024-01-26', program: 'Not Assigned', status: ItemStatus.REFURBISHED },
-    { id: 811246, name: 'Bicycle', donor: 'Elizabeth', date: '2024-01-21', program: 'Not Assigned', status: ItemStatus.SOLD },
-    { id: 811240, name: 'Bicycle', donor: 'Peter', date: '2024-01-13', program: 'Not Assigned', status: ItemStatus.RECEIVED }
-    // Add more items here...
-  ]);
-  const downloadBarcode = (id) => {
-    const barcodeElement = document.getElementById(`barcode-${id}`);
-    html2canvas(barcodeElement)
-      .then((canvas) => {
-        const image = canvas.toDataURL("image/png");
-        const link = document.createElement('a');
-        link.href = image;
-        link.download = `barcode-${id}.png`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      })
-      .catch(err => console.error('Error downloading the barcode: ', err));
-  };
+    // Sample data for demonstration
+    const [donatedItems, setDonatedItems] = useState([
+        {
+            id: 811253,
+            name: 'Bicycle',
+            donor: 'Mary',
+            date: '2024-02-25',
+            program: 'Not Assigned',
+            status: ItemStatus.DONATED,
+        },
+        {
+            id: 811249,
+            name: 'Computer',
+            donor: 'James',
+            date: '2024-02-06',
+            program: 'Not Assigned',
+            status: ItemStatus.IN_STORAGE,
+        },
+        {
+            id: 811247,
+            name: 'Computer',
+            donor: 'Vivian',
+            date: '2024-01-26',
+            program: 'Not Assigned',
+            status: ItemStatus.REFURBISHED,
+        },
+        {
+            id: 811246,
+            name: 'Bicycle',
+            donor: 'Elizabeth',
+            date: '2024-01-21',
+            program: 'Not Assigned',
+            status: ItemStatus.SOLD,
+        },
+        {
+            id: 811240,
+            name: 'Bicycle',
+            donor: 'Peter',
+            date: '2024-01-13',
+            program: 'Not Assigned',
+            status: ItemStatus.RECEIVED,
+        },
+        // Add more items here...
+    ]);
+    const downloadBarcode = id => {
+        const barcodeElement = document.getElementById(`barcode-${id}`);
+        html2canvas(barcodeElement)
+            .then(canvas => {
+                const image = canvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                link.href = image;
+                link.download = `barcode-${id}.png`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            })
+            .catch(err =>
+                console.error('Error downloading the barcode: ', err),
+            );
+    };
 
     return (
         <>
@@ -205,20 +248,33 @@ function DonatedItemsList() {
                                 ))}
                             </select>
 
-              {/* Filter by Status */}
-              <select className="filter-options" onChange={handleFilterByStatus}>
-                <option value="" disabled selected>
-                  Filter by Status
-                </option>
-                <option value={ItemStatus.DONATED}>Donated</option>
-                <option value={ItemStatus.IN_STORAGE}>In Storage Facility</option>
-                <option value={ItemStatus.REFURBISHED}>Refurbished</option>
-                <option value={ItemStatus.RECEIVED}>Received</option>
-                <option value={ItemStatus.SOLD}>Item Sold</option>
-              </select>
-            </div>
-          </div>
-        </div>
+                            {/* Filter by Status */}
+                            <select
+                                className="filter-options"
+                                onChange={handleFilterByStatus}
+                            >
+                                <option value="" disabled selected>
+                                    Filter by Status
+                                </option>
+                                <option value={ItemStatus.DONATED}>
+                                    Donated
+                                </option>
+                                <option value={ItemStatus.IN_STORAGE}>
+                                    In Storage Facility
+                                </option>
+                                <option value={ItemStatus.REFURBISHED}>
+                                    Refurbished
+                                </option>
+                                <option value={ItemStatus.RECEIVED}>
+                                    Received
+                                </option>
+                                <option value={ItemStatus.SOLD}>
+                                    Item Sold
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="div-updateprogram">
                     {assignProgramClicked && (
