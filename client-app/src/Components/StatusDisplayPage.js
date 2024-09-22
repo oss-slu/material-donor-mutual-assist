@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import ItemStatus from '../constants/Enums';
 import '../css/StatusDisplayPage.css';
 
 const StatusDisplayPage = () => {
@@ -103,7 +104,7 @@ const StatusDisplayPage = () => {
             checked={donorInfo.status.donated}
             onChange={handleCheckboxChange}
           />
-          Donated
+          {ItemStatus.DONATED} 
         </label>
         <br />
         <label>
@@ -113,7 +114,7 @@ const StatusDisplayPage = () => {
             checked={donorInfo.status.inStorageFacility}
             onChange={handleCheckboxChange}
           />
-          In Storage Facility
+          {ItemStatus.IN_STORAGE}
         </label>
         <br />
         <label>
@@ -123,7 +124,7 @@ const StatusDisplayPage = () => {
             checked={donorInfo.status.refurbished}
             onChange={handleCheckboxChange}
           />
-          Refurbished
+          {ItemStatus.REFURBISHED}
         </label>
         <br />
         <label>
@@ -133,7 +134,7 @@ const StatusDisplayPage = () => {
             checked={donorInfo.status.received}
             onChange={handleCheckboxChange}
           />
-          Received
+          {ItemStatus.RECEIVED}
         </label>
         <br />
         <label>
@@ -143,7 +144,7 @@ const StatusDisplayPage = () => {
             checked={donorInfo.status.sold}
             onChange={handleCheckboxChange}
           />
-          Sold
+          {ItemStatus.SOLD}
         </label>
         <br></br>
         <label>

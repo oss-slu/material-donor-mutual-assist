@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaSearch, FaPlus } from 'react-icons/fa';
 import Barcode from 'react-barcode';
 import Modal from 'react-modal';
+import ItemStatus from '../constants/Enums.js';
 import '../css/AdminHeader.css';
 import '../css/DonatedItemsList.css';
 import html2canvas from 'html2canvas';
@@ -25,7 +26,7 @@ function DonatedItemsList() {
       item.donor.toLowerCase().includes(searchInput.toLowerCase()) ||
       item.date.includes(searchInput) ||
       item.program.toLowerCase().includes(searchInput.toLowerCase()) ||
-      item.status.toLowerCase().includes(searchInput.toLowerCase())
+      Object.values(ItemStatus).includes(item.status) && item.status.toLowerCase().includes(searchInput.toLowerCase())
     );
     setFilteredItems(filtered);
   };
@@ -95,11 +96,11 @@ function DonatedItemsList() {
 
   // Sample data for demonstration
   const [donatedItems, setDonatedItems] = useState([
-    { id: 811253, name: 'Bicycle', donor: 'Mary', date: '2024-02-25', program: 'Not Assigned', status: 'Donated' },
-    { id: 811249, name: 'Computer', donor: 'James', date: '2024-02-06', program: 'Not Assigned', status: 'In Storage Facility' },
-    { id: 811247, name: 'Computer', donor: 'Vivian', date: '2024-01-26', program: 'Not Assigned', status: 'Refurbished' },
-    { id: 811246, name: 'Bicycle', donor: 'Elizabeth', date: '2024-01-21', program: 'Not Assigned', status: 'Item Sold' },
-    { id: 811240, name: 'Bicycle', donor: 'Peter', date: '2024-01-13', program: 'Not Assigned', status: 'Received' }
+    { id: 811253, name: 'Bicycle', donor: 'Mary', date: '2024-02-25', program: 'Not Assigned', status: ItemStatus.DONATED },
+    { id: 811249, name: 'Computer', donor: 'James', date: '2024-02-06', program: 'Not Assigned', status: ItemStatus.IN_STORAGE },
+    { id: 811247, name: 'Computer', donor: 'Vivian', date: '2024-01-26', program: 'Not Assigned', status: ItemStatus.REFURBISHED },
+    { id: 811246, name: 'Bicycle', donor: 'Elizabeth', date: '2024-01-21', program: 'Not Assigned', status: ItemStatus.SOLD },
+    { id: 811240, name: 'Bicycle', donor: 'Peter', date: '2024-01-13', program: 'Not Assigned', status: ItemStatus.RECEIVED }
     // Add more items here...
   ]);
   const downloadBarcode = (id) => {
@@ -173,11 +174,11 @@ function DonatedItemsList() {
                 <option value="" disabled selected>
                   Filter by Status
                 </option>
-                <option value="Donated">Donated</option>
-                <option value="In Storage Facility">In Storage Facility</option>
-                <option value="Refurbished">Refurbished</option>
-                <option value="Received">Received</option>
-                <option value="Item Sold">Item Sold</option>
+                <option value={ItemStatus.DONATED}>Donated</option>
+                <option value={ItemStatus.IN_STORAGE}>In Storage Facility</option>
+                <option value={ItemStatus.REFURBISHED}>Refurbished</option>
+                <option value={ItemStatus.RECEIVED}>Received</option>
+                <option value={ItemStatus.SOLD}>Item Sold</option>
               </select>
             </div>
           </div>
