@@ -51,20 +51,6 @@
   color: #333;
 }
 
-/* Focus and hover styles for input fields */
-.donor-form input[type="text"]:focus,
-.donor-form input[type="email"]:focus {
-  border-color: #45a29e;
-  box-shadow: 0 0 5px rgba(69, 162, 158, 0.6);
-}
-
-.donor-form input[type="text"]:hover,
-.donor-form input[type="email"]:hover,
-.donor-form label:hover {
-  border-color: #45a29e;
-  color: #45a29e;
-}
-
 /* Email Opt-in checkbox section */
 .donor-form .form-field input[type="checkbox"] {
   transform: scale(1.2);
