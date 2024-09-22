@@ -58,8 +58,9 @@ const DonorForm: React.FC = () => {
     }
     if (name === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
       return 'Invalid email format';
-    }
-    if (name === 'zipcode' && !/^\d{5}$/.test(value)) {
+    } else if (name === 'contact' && value && !/^[0-9]{10}$/.test(value)) {
+      return 'Contact must be a 10-digit number';
+    } else if (name === 'zipcode' && !/^\d{5}$/.test(value)) {
       return 'Invalid zip code format';
     }
     return '';
