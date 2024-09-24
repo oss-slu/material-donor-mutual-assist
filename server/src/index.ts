@@ -41,7 +41,7 @@ const startServer = async () => {
     console.log(`[${timestamp}] Logger: Connected to the database successfully!`);
 
     // Start the server
-    const port = process.env.PORT || 3001;
+    const port = process.env.PORT || 5000;
     app.listen(port, () => {
       console.log(`[${timestamp}] Server running on http://localhost:${port}`);
     });
