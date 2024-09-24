@@ -10,15 +10,15 @@ const RegisterPage = () => {
         dateOfBirth: '',
         email: '',
         contactNumber: '',
-        address: ''
+        address: '',
     });
 
-    const handleChange = (e) => {
+    const handleChange = e => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = e => {
         e.preventDefault();
         // Handle registration logic here
         console.log(formData);

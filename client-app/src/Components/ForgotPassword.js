@@ -9,7 +9,7 @@ const ForgotPassword = () => {
     const [otpSent, setOtpSent] = useState(false);
     const [otpValidated, setOtpValidated] = useState(false);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async e => {
         e.preventDefault();
 
         // Generate OTP
@@ -17,21 +17,27 @@ const ForgotPassword = () => {
 
         // Send OTP via Email
         try {
-
             var templateParams = {
                 mailto: email,
-                otp: otp_val
-              };
-              
-              await emailjs.send('service_colowdq', 'template_auqd04h', templateParams, 'N55r1ckjMp3Ax_S0_').then(
-                (response) => {
-                  console.log('SUCCESS!', response.status, response.text);
-                },
-                (error) => {
-                  console.log('FAILED...', error);
-                },
-              );
-            
+                otp: otp_val,
+            };
+
+            await emailjs
+                .send(
+                    'service_colowdq',
+                    'template_auqd04h',
+                    templateParams,
+                    'N55r1ckjMp3Ax_S0_',
+                )
+                .then(
+                    response => {
+                        console.log('SUCCESS!', response.status, response.text);
+                    },
+                    error => {
+                        console.log('FAILED...', error);
+                    },
+                );
+
             setOtp(otp_val);
             setOtpSent(true);
         } catch (error) {
@@ -43,13 +49,13 @@ const ForgotPassword = () => {
     const handleOtpVerification = () => {
         if (otp === parseInt(otp)) {
             setOtpValidated(true);
-            navigate('/resetpassword',{ state: { email } });
+            navigate('/resetpassword', { state: { email } });
         } else {
             alert('Invalid OTP');
         }
     };
 
-    const handleChange = (e) => {
+    const handleChange = e => {
         setEmail(e.target.value);
     };
 
@@ -57,14 +63,21 @@ const ForgotPassword = () => {
         <div>
             <h2>Forgot Password</h2>
             <form onSubmit={handleSubmit}>
-                <input type="email" value={email} onChange={handleChange} placeholder="Enter your email" />
+                <input
+                    type="email"
+                    value={email}
+                    onChange={handleChange}
+                    placeholder="Enter your email"
+                />
                 <button type="submit">Submit</button>
             </form>
 
             {otpSent && !otpValidated && (
                 <div>
                     <input type="number" placeholder="Enter OTP" />
-                    <button id="otp-btn" onClick={handleOtpVerification}>Verify OTP</button>
+                    <button id="otp-btn" onClick={handleOtpVerification}>
+                        Verify OTP
+                    </button>
                 </div>
             )}
         </div>

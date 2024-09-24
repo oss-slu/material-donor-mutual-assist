@@ -6,12 +6,14 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter> {/* Wrap your App component with BrowserRouter */}
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <BrowserRouter>
+            {' '}
+            {/* Wrap your App component with BrowserRouter */}
+            <App />
+        </BrowserRouter>
+    </React.StrictMode>,
+    document.getElementById('root'),
 );
 
 reportWebVitals();

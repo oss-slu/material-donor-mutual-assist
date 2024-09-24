@@ -12,7 +12,6 @@ const app = express();
 
 app.use(cors({ origin: 'http://localhost:3000' }));
 
-
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
@@ -24,39 +23,46 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/donor', donorRouter);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-  next(createError(404));
+    next(createError(404));
 });
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  res.status(err.status || 500);
-  res.render('error');
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+    res.status(err.status || 500);
+    res.render('error');
 });
 const startServer = async () => {
-  const timestamp = new Date().toISOString(); // Get the current timestamp
+    const timestamp = new Date().toISOString(); // Get the current timestamp
 
-  try {
-    // Connect to the database
-    await prisma.$connect(); 
-    console.log(`[${timestamp}] Logger: Connected to the database successfully!`);
+    try {
+        // Connect to the database
+        await prisma.$connect();
+        console.log(
+            `[${timestamp}] Logger: Connected to the database successfully!`,
+        );
 
-    // Start the server
-    const port = process.env.PORT || 5000;
-    app.listen(port, () => {
-      console.log(`[${timestamp}] Server running on http://localhost:${port}`);
-    });
-  } catch (error) {
-    console.error('Error connecting to the database:', error);
-    console.error(`[${timestamp}] Error connecting to the database:`, (error as Error).message);
-    console.error('Stack Trace:', (error as Error).stack);
-  }
+        // Start the server
+        const port = process.env.PORT || 5000;
+        app.listen(port, () => {
+            console.log(
+                `[${timestamp}] Server running on http://localhost:${port}`,
+            );
+        });
+    } catch (error) {
+        console.error('Error connecting to the database:', error);
+        console.error(
+            `[${timestamp}] Error connecting to the database:`,
+            (error as Error).message,
+        );
+        console.error('Stack Trace:', (error as Error).stack);
+    }
 };
 // Call the startServer function to start the server and connect to the DB
 startServer();
 process.on('SIGINT', async () => {
-  await prisma.$disconnect();
-  console.log('Prisma client disconnected');
-  process.exit(0);
+    await prisma.$disconnect();
+    console.log('Prisma client disconnected');
+    process.exit(0);
 });
 
 export default app;
