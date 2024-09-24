@@ -17,7 +17,8 @@
     "cors": "^2.8.5",
     "express": "^4.20.0",
     "joi": "^17.13.3",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "portfinder": "^1.0.32"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.7",

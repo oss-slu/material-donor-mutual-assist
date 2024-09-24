@@ -22,7 +22,6 @@ const Login = (props) => {
             setErrorMessage("Incorrect CAPTCHA. Please try again.");
             return;
         }
-
         // const response = await fetch("http://localhost:5000/api/auth/login", {
         //     method: 'POST',
         //     headers: {
@@ -35,6 +34,7 @@ const Login = (props) => {
         // if (json.success) {
         //     localStorage.setItem('token', json.authtoken);
         //     localStorage.setItem('name', json.name);
+
         localStorage.setItem('isLogged', true)
             window.location.href = '/Donations';
         // } else {
