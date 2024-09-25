@@ -42,7 +42,7 @@ const startServer = async () => {
         );
 
         // Start the server
-        const port = process.env.PORT || 5000;
+        const port = process.env.PORT;
         app.listen(port, () => {
             console.log(
                 `[${timestamp}] Server running on http://localhost:${port}`,

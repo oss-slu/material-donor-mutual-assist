@@ -32,17 +32,24 @@ Follow these steps to set up your development environment.
   - Right-click on 'Databases', then select 'Create' -> 'Database'.
   - Enter the desired name for your database in the 'Database Name' field and save.
 
-### 2. Create Environment Variables
+### 2. Navigate to the server directory
 
-Create a `.env` file in the root directory of your project and define the necessary environment variables:
+To navigate to the server directory where your backend files reside, run:
+
+    cd server
+
+### 3. Create Environment Variables
+
+Create a `.env` file and define the necessary environment variables:
 
 ```plaintext
 DATABASE_URL="postgresql://username:password@localhost:5432/dbname"
+PORT=5000
 ```
 
 Replace `username`, `password`, and `dbname` with your PostgreSQL username, password, and the name of the database you created.
 
-### 3. Install Dependencies
+### 4. Install Dependencies
 
 Run the following command in your project directory to install required dependencies:
 
@@ -50,7 +57,7 @@ Run the following command in your project directory to install required dependen
 
 This command installs all the packages defined in your `package.json` file (both dependencies and devDependencies).
 
-### 4. Run Migrations
+### 5. Run Migrations
 
 To synchronize your database schema with your Prisma model and update the Prisma Client, run:
 
@@ -58,7 +65,7 @@ To synchronize your database schema with your Prisma model and update the Prisma
 
 This command applies all pending migrations to your database and updates the Prisma Client to ensure it matches the new schema. This is crucial for keeping all developers' environments in sync with the latest database schema.
 
-### 5. Start the Development Server
+### 6. Start the Development Server
 
 Start your development server by running:
 
@@ -66,7 +73,7 @@ Start your development server by running:
 
 This command starts the server using `nodemon`, which will automatically restart the server if any changes are detected in your source files.
 
-### 6. Access the Server
+### 7. Access the Server
 
 Once the server is running, it will be accessible at:
 
@@ -74,7 +81,22 @@ Once the server is running, it will be accessible at:
 
 You can access your API endpoints via this URL using a web browser or tools like Postman for testing API requests.
 
+## Prisma Commands
+After updating the Prisma schema, you have to generate migrations to keep your database schema in sync with your application's data model. Use the following command:
+
+``` bash
+npx prisma migrate dev --name migration-name
+```
+
+For example, if you add a new model called `DonatedItem` to your Prisma schema, you can run:
+
+``` bash
+npx prisma migrate dev --name create-donateditem
+```
+This command creates and applies a new migration based on the changes in your Prisma schema, ensuring your database schema is up-to-date.
+
+
 ## Additional Information
 
-- **Keeping Schema in Sync**: It is important to run migrations whenever changes are made to your Prisma models. This keeps your database schema in sync with your application's data model (relevant commands will be added here soon).
+- **Keeping Schema in Sync**: It is important to run migrations whenever changes are made to your Prisma models. This keeps your database schema in sync with your application's data model.
 - **Environment Variables**: Ensure that your `.env` file is never committed to your version control system. Add it to your `.gitignore` file to prevent it from being uploaded to shared repositories.
