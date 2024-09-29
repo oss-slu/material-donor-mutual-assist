@@ -6,10 +6,20 @@ const router = Router();
 // Route to create a new program
 router.post('/', async (req: Request, res: Response) => {
     try {
+        const { name, description, startDate, aimAndCause } = req.body;
+
+        // Convert the date to include time (e.g., "YYYY-MM-DDT00:00:00Z")
+        const dateTime = new Date(`${startDate}T00:00:00Z`);
+
+        // Create the new program with the full DateTime for startDate
         const newProgram = await prisma.program.create({
-            data: req.body,
+            data: {
+                name,
+                description,
+                startDate: dateTime,  // Pass the DateTime to backend
+                aimAndCause,
+            },
         });
-        console.log('New program created:', newProgram);
         res.status(201).json(newProgram);
     } catch (error) {
         console.error('Error creating program:', error);
