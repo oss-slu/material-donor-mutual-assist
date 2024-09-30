@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main, test-github-workflows, 19-set-up-a-cicd-pipeline-for-triggering-tests ]
   pull_request:
-    branches: [ main, test-github-workflows, 19-set-up-a-cicd-pipeline-for-triggering-tests ]
+    branches: [ main, test-github-workflows ]
 
 jobs:
   build:
