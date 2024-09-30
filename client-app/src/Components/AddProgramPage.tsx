@@ -73,6 +73,7 @@ const AddProgramPage = () => {
     };
 
     return (
+        <div className="container">
         <form className="form" onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
             <h1 className="heading">Add Program</h1>
             <div className="form-group">
@@ -93,7 +94,7 @@ const AddProgramPage = () => {
                     Description <span className="required">*</span>
                 </label>
                 <input
-                    className="input"
+                    className="textarea"
                     type="text"
                     name="description"
                     value={formData.description}
@@ -142,6 +143,7 @@ const AddProgramPage = () => {
                 </Link>
             </div>
         </form>
+        </div>
     );
 };
 
