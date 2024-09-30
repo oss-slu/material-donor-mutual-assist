@@ -189,7 +189,7 @@ const DonorForm: React.FC = () => {
         setSuccessMessage(null);
     };
 
-    // Reusable function to render form fields (text, dropdown, date, file upload, and checkbox)
+    // Reusable function to render form fields (text, dropdown, date, and file upload)
     const renderFormField = (
         label: string,
         name: keyof FormData,
@@ -260,8 +260,9 @@ const DonorForm: React.FC = () => {
                 {renderFormField('Current Status', 'currentStatus')}
                 {renderFormField('Donor Email', 'donorEmail', 'text', true, donorEmailOptions)}
                 {renderFormField('Program', 'program', 'text', true, programOptions)}
-                {renderFormField('Image Upload', 'imageUpload', 'file')}
                 {renderFormField('Date Donated', 'dateDonated', 'date')}
+                {renderFormField('Image Upload', 'imageUpload', 'file')}
+                
 
 
                 <div className="form-field full-width button-container">
