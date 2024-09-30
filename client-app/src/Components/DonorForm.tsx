@@ -8,7 +8,7 @@ interface FormData {
     currentStatus: string;
     donorEmail: string;
     program: string;
-    imageUpload: string;
+    imageUpload: string[];
     dateDonated: string;
 }
 
@@ -22,7 +22,7 @@ const DonorForm: React.FC = () => {
         currentStatus: 'Received',
         donorEmail: '',
         program: '',
-        imageUpload: '',
+        imageUpload: [],
         dateDonated: '',
     });
 
@@ -45,28 +45,37 @@ const DonorForm: React.FC = () => {
         {value: 'earnAComputer', label: 'Earn-a-computer'},
     ]
 
+    const convertToBase64 = (file: File): Promise<string> => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = error => reject(error);
+        });
+    };
+
     const [errors, setErrors] = useState<FormErrors>({});
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
     // Handle input change for all fields
-    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        //const { name, value, type, checked } = e.target;
+    const handleChange = async (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const {name, type, value, files} = e.target as HTMLInputElement;
 
-        if (type === 'file' && files) {
+        if (name === 'imageUpload' && files) {
+            const fileArray = Array.from(files);
+            const base64Images = await Promise.all(fileArray.map(file=>convertToBase64(file)));
             if (files.length > 5) {
                 setErrorMessage('Please limit to 5 images only.');
                 return;
             }
             setFormData(prevState => ({
                 ...prevState,
-                [name]: Array.from(files),
+                [name]: base64Images,
             }));
         } else {
             setFormData(prevState => ({
                 ...prevState,
-                //[name]: type === 'checkbox' ? checked : value,
                 [name] : value,
             }));
         }
@@ -126,12 +135,18 @@ const DonorForm: React.FC = () => {
                 );
                 if (response.status === 201) {
                     setSuccessMessage('Donor added successfully!');
+                    console.log('Item Type: ' + formData.itemType);
+                    console.log('Current Status ' + formData.currentStatus);
+                    console.log('Donor Email: ' + formData.donorEmail);
+                    console.log('Program: ' + formData.program);
+                    console.log('Image Upload: ' + formData.imageUpload);
+                    console.log('Date Donated: ' + formData.dateDonated);
                     setFormData({
                         itemType: '',
                         currentStatus: 'Received',
                         donorEmail: '',
                         program: '',
-                        imageUpload: '',
+                        imageUpload: [],
                         dateDonated: '',
                     });
                 } else {
@@ -155,7 +170,7 @@ const DonorForm: React.FC = () => {
             currentStatus: 'Received',
             donorEmail: '',
             program: '',
-            imageUpload: '',
+            imageUpload: [],
             dateDonated: '',
         });
         setErrors({});
@@ -219,6 +234,7 @@ const DonorForm: React.FC = () => {
         </div>
     );
 
+    // HTML portion
     return (
         <div className="donor-form outer-container mx-auto p-10">
             <h1 className="text-2xl font-bold heading-centered">
