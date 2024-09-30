@@ -19,7 +19,7 @@ interface FormErrors {
 const DonorForm: React.FC = () => {
     const [formData, setFormData] = useState<FormData>({
         itemType: '',
-        currentStatus: '',
+        currentStatus: 'Received',
         donorEmail: '',
         program: '',
         imageUpload: '',
@@ -52,19 +52,31 @@ const DonorForm: React.FC = () => {
     // Handle input change for all fields
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         //const { name, value, type, checked } = e.target;
-        const {name, value} = e.target;
-        setFormData(prevState => ({
-            ...prevState,
-            //[name]: type === 'checkbox' ? checked : value,
-            [name] : value,
-        }));
+        const {name, type, value, files} = e.target as HTMLInputElement;
+
+        if (type === 'file' && files) {
+            if (files.length > 5) {
+                setErrorMessage('Please limit to 5 images only.');
+                return;
+            }
+            setFormData(prevState => ({
+                ...prevState,
+                [name]: Array.from(files),
+            }));
+        } else {
+            setFormData(prevState => ({
+                ...prevState,
+                //[name]: type === 'checkbox' ? checked : value,
+                [name] : value,
+            }));
+        }
         setErrors(prevState => ({ ...prevState, [name]: '' })); // Reset errors on change
         setErrorMessage(null);
         setSuccessMessage(null);
     };
 
     // Generalized validation function to reduce code repetition
-    const validateField = (name: string, value: string) => {
+    const validateField = (name: string, value: any) => {
         const requiredFields = [
             'itemType',
             'currentStatus',
@@ -74,11 +86,20 @@ const DonorForm: React.FC = () => {
             'dateDonated',
         ];
 
-        if (requiredFields.includes(name) && !value.trim()) {
-            return `${name.replace(/([A-Z])/g, ' $1')} is required`; // Add spaces to camelCase names
+        if (requiredFields.includes(name)) {
+            if (name === 'imageUpload') {
+                if (!value || value.length === 0) {
+                    return 'Please upload at least one image.';
+                }
+            } else if (typeof value === 'string' && !value.trim()) {
+                return `${name.replace(/([A-Z])/g, ' $1')} is required`;
+            }
         }
-        if (name === 'donorEmail' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-            return 'Invalid email format';
+
+        if (name === 'donorEmail') {
+            if (!value) {
+                return 'Donor email is required.'
+            }
         }
         return '';
     };
@@ -107,7 +128,7 @@ const DonorForm: React.FC = () => {
                     setSuccessMessage('Donor added successfully!');
                     setFormData({
                         itemType: '',
-                        currentStatus: '',
+                        currentStatus: 'Received',
                         donorEmail: '',
                         program: '',
                         imageUpload: '',
@@ -131,7 +152,7 @@ const DonorForm: React.FC = () => {
     const handleRefresh = () => {
         setFormData({
             itemType: '',
-            currentStatus: '',
+            currentStatus: 'Received',
             donorEmail: '',
             program: '',
             imageUpload: '',
@@ -142,20 +163,31 @@ const DonorForm: React.FC = () => {
         setSuccessMessage(null);
     };
 
-    // Reusable function to render form fields (text, dropdown, and checkbox)
+    // Reusable function to render form fields (text, dropdown, date, file upload, and checkbox)
     const renderFormField = (
         label: string,
         name: keyof FormData,
         type = 'text',
         required = true,
-        options?: {value: string; label: string}[],
+        options?: {value: string; label: string}[], 
     ) => (
         <div className="form-field">
             <label htmlFor={name} className="block text-sm font-semibold mb-1">
                 {label}
                 {required && <span className="text-red-500">&nbsp;*</span>}
             </label>
-            {options ? (
+            {type === 'file' ? (
+                <input
+                    type = "file"
+                    id = {name}
+                    name = {name}
+                    onChange = {handleChange}
+                    multiple
+                    accept = "image/*"
+                    className = {`w-full px-3 py-2 rounded border ${errors[name] ? 'border-red-500' : 'border-gray-300'}`}
+                    title = "Upload 1-5 images in JPG or PNG format"         
+                />
+            ) : options ? ( // Only executes if there are options available
             <select
                 id={name}
                 name={name}
@@ -178,6 +210,7 @@ const DonorForm: React.FC = () => {
                 value={formData[name] as string}
                 onChange={handleChange}
                 className={`w-full px-3 py-2 rounded border ${errors[name] ? 'border-red-500' : 'border-gray-300'}`}
+                disabled = {name === 'currentStatus'}
             />
         )}
         {errors[name] && (
@@ -200,8 +233,8 @@ const DonorForm: React.FC = () => {
                 {renderFormField('Current Status', 'currentStatus')}
                 {renderFormField('Donor Email', 'donorEmail', 'text', true, donorEmailOptions)}
                 {renderFormField('Program', 'program', 'text', true, programOptions)}
-                {renderFormField('Image Upload', 'imageUpload')}
-                {renderFormField('Date Donated', 'dateDonated')}
+                {renderFormField('Image Upload', 'imageUpload', 'file')}
+                {renderFormField('Date Donated', 'dateDonated', 'date')}
 
 
                 <div className="form-field full-width button-container">
