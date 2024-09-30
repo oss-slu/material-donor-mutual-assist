@@ -181,7 +181,7 @@ const DonorForm: React.FC = () => {
                 {renderFormField('First Name', 'firstName')}
                 {renderFormField('Last Name', 'lastName')}
                 {renderFormField('Contact', 'contact')}
-                {renderFormField('Email', 'email', 'email')}
+                {renderFormField('Email ID', 'email', 'email')}
                 {renderFormField('Address Line 1', 'addressLine1')}
                 {renderFormField(
                     'Address Line 2',
