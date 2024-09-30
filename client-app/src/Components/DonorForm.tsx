@@ -31,6 +31,20 @@ const DonorForm: React.FC = () => {
         {value: 'computer', label: 'Computer'},
     ]
 
+    const donorEmailOptions = [
+        {value: 'email1', label: 'cooldude@gmail.com'},
+        {value: 'email2', label: 'cplusplushater@icloud.com'},
+        {value: 'email3', label: 'ISEBestBuilding@yahoo.com'},
+    ]
+
+    const programOptions = [
+        {value: 'youthProgram', label: 'Youth Program'},
+        {value: 'retailSales', label: 'Retail Sales'},
+        {value: 'recycle', label: 'Recycle'},
+        {value: 'earnABicycle', label: 'Earn-a-bicycle'},
+        {value: 'earnAComputer', label: 'Earn-a-computer'},
+    ]
+
     const [errors, setErrors] = useState<FormErrors>({});
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -141,20 +155,22 @@ const DonorForm: React.FC = () => {
                 {label}
                 {required && <span className="text-red-500">&nbsp;*</span>}
             </label>
+            {options ? (
             <select
                 id={name}
                 name={name}
                 value={formData[name]}
                 onChange={handleChange}
                 className={`w-full px-3 py-2 rounded border ${errors[name] ? 'border-red-500' : 'border-gray-300'}`}
-                >
-                <option value = "">Select {label}</option>
-                {options?.map(option => (
+            >
+            <option value = "">Select {label}</option>
+            {options?.map(option => (
                     <option key = {option.value} value = {option.value}>
                         {option.label}
                     </option>
                 ))}
             </select>
+        ) : (
             <input
                 type={type}
                 id={name}
@@ -163,9 +179,10 @@ const DonorForm: React.FC = () => {
                 onChange={handleChange}
                 className={`w-full px-3 py-2 rounded border ${errors[name] ? 'border-red-500' : 'border-gray-300'}`}
             />
-            {errors[name] && (
-                <p className="text-red-500 text-sm mt-1">{errors[name]}</p>
-            )}
+        )}
+        {errors[name] && (
+            <p className="text-red-500 text-sm mt-1">{errors[name]}</p>
+        )}
         </div>
     );
 
@@ -181,8 +198,8 @@ const DonorForm: React.FC = () => {
             <form onSubmit={handleSubmit} className="form-grid">
                 {renderFormField('Item Type', 'itemType', 'text', true, itemTypeOptions)}
                 {renderFormField('Current Status', 'currentStatus')}
-                {renderFormField('Donor Email', 'donorEmail')}
-                {renderFormField('Program', 'program', 'program')}
+                {renderFormField('Donor Email', 'donorEmail', 'text', true, donorEmailOptions)}
+                {renderFormField('Program', 'program', 'text', true, programOptions)}
                 {renderFormField('Image Upload', 'imageUpload')}
                 {renderFormField('Date Donated', 'dateDonated')}
 
