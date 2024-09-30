@@ -1,20 +1,10 @@
-.programs-container {
-    padding: 20px;
-    text-align: center;
-}
-
-.program-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-}
-
 .program-card {
-    background-color: #f4f4f4;
-    border: 1px solid #ddd;
+    background-color: #e2f3fa; 
+    border: 1px solid #ccc;
     border-radius: 8px;
     padding: 20px;
     text-align: left;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Adds subtle shadow */
 }
 
 .program-card h2 {
