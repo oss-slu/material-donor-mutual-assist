@@ -8,6 +8,10 @@ import { PrismaClient } from '@prisma/client'; // Import Prisma
 const prisma = new PrismaClient(); // Initialize Prisma Client
 import donorRouter from './routes/donorRoutes';
 
+import donatedItemRouter from './routes/donatedItemRoutes'; // Import DonatedItem routes
+import donatedItemStatusRouter from './routes/donatedItemStatusRoutes'; // Import DonatedItemStatus routes
+
+
 const app = express();
 
 app.use(cors({ origin: 'http://localhost:3000' }));
@@ -21,6 +25,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/donor', donorRouter);
+
+app.use('/donatedItem', donatedItemRouter); // Use DonatedItem routes
+app.use('/donatedItem/status', donatedItemStatusRouter); // Use DonatedItemStatus routes
+
 
 app.use((req: Request, res: Response, next: NextFunction) => {
     next(createError(404));
@@ -42,7 +50,9 @@ const startServer = async () => {
         );
 
         // Start the server
-        const port = process.env.PORT;
+        // const port = process.env.PORT || 4000;
+        const port = process.env.PORT
+
         app.listen(port, () => {
             console.log(
                 `[${timestamp}] Server running on http://localhost:${port}`,
@@ -64,5 +74,6 @@ process.on('SIGINT', async () => {
     console.log('Prisma client disconnected');
     process.exit(0);
 });
+
 
 export default app;

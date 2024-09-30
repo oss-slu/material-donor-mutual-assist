@@ -26,3 +26,24 @@ model Donor {
   zipcode      String  @db.VarChar(20)
   emailOptIn   Boolean
 }
+
+model DonatedItem {
+  id            Int                 @id @default(autoincrement())
+  itemType      String              @db.VarChar(50) // Define as VARCHAR(50)
+  currentStatus String              @db.VarChar(20) // Define as VARCHAR(20)
+  donorEmail    String              @db.VarChar(100) // Define as VARCHAR(100)
+  program       String              @db.VarChar(50) // Define as VARCHAR(50)
+  dateDonated   DateTime
+  lastUpdated   DateTime            @updatedAt
+  statuses      DonatedItemStatus[] // Relation to DonatedItemStatus
+}
+
+model DonatedItemStatus {
+  id            Int         @id @default(autoincrement())
+  dateModified  DateTime
+  statusType    String      @db.VarChar(20) // Define as VARCHAR(20)
+  donatedItemId Int
+  donatedItem   DonatedItem @relation(fields: [donatedItemId], references: [id])
+
+  @@index([donatedItemId])
+}
