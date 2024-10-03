@@ -3,8 +3,14 @@ name: Node.js Server CI
 on:
   push:
     branches: main
+    paths:
+      - 'server/**'
+      - '.github/workflows/**'
   pull_request:
     branches: main
+    paths:
+      - 'server/**'
+      - '.github/workflows/**'
 
 jobs:
   build:

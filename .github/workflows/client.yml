@@ -3,8 +3,14 @@ name: React Client CI
 on:
   push:
     branches: main
+    paths:
+      - 'client-app/**'
+      - '.github/workflows/**'
   pull_request:
     branches: main
+    paths:
+      - 'client-app/**'
+      - '.github/workflows/**'
 
 jobs:
   build:
