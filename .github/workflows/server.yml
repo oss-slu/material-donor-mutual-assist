@@ -1,0 +1,28 @@
+name: Node.js Server CI
+
+on:
+  push:
+    branches: main
+    paths:
+      - 'server/**'
+      - '.github/workflows/**'
+  pull_request:
+    branches: main
+    paths:
+      - 'server/**'
+      - '.github/workflows/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+    - run: cd server && npm install
+    - run: cd server && npm test
+      env:
+        CI: true
