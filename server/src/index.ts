@@ -7,6 +7,7 @@ import cors from 'cors';
 import { PrismaClient } from '@prisma/client'; // Import Prisma
 const prisma = new PrismaClient(); // Initialize Prisma Client
 import donorRouter from './routes/donorRoutes';
+import programRouter  from './routes/programRoutes';
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/donor', donorRouter);
+app.use('/program', programRouter);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
     next(createError(404));

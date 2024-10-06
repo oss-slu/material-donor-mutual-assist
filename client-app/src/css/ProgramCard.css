@@ -1,0 +1,32 @@
+.program-card {
+    background-color: #e2f3fa; 
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: left;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Adds subtle shadow */
+    max-width: 500px;
+    width:100%;
+}
+
+.program-list {
+    display: flex;
+    flex-wrap: wrap; /* Allow multiple cards to wrap to the next line */
+    justify-content: center; /* Center the cards */
+    gap: 20px; /* Add spacing between cards */
+}
+
+.program-card h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.program-card p {
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.program-card p strong {
+    font-weight: bold;
+}
