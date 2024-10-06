@@ -49,18 +49,14 @@
     font-size: 14px;
     background-color: #f9f9f9;
     color: #333;
-    box-sizing: border-box; 
-    text-align: left;
-    vertical-align: top; /* Ensure text starts from the top */
-    text-align: left !important;
+    box-sizing: border-box;
 }
 
 /* Increasing size of description and aimAndCause text areas */
 .textarea {
+    width: 100%;
     min-height: 100px;
     padding: 8px; /* Ensure text starts from top-left corner */
-    text-align: left;
-    vertical-align: top; /* Align text to start from the top */
     resize: none; /* Disable resizing if not required */
     box-sizing: border-box;
     overflow: auto; /* Allow scrolling if content exceeds size */

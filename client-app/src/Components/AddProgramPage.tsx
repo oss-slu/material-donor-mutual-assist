@@ -93,9 +93,8 @@ const AddProgramPage = () => {
                 <label className="label">
                     Description <span className="required">*</span>
                 </label>
-                <input
+                <textarea
                     className="textarea"
-                    type="text"
                     name="description"
                     value={formData.description}
                     onChange={handleChange}
