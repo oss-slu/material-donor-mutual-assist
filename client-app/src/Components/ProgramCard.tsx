@@ -12,6 +12,12 @@ interface ProgramProps {
 }
 
 const ProgramCard: React.FC<ProgramProps> = ({ program }) => {
+    // Function to format date and remove time
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        return date.toISOString().split('T')[0]; // Extract only the date part (YYYY-MM-DD)
+    };
+
     return (
         <div className="program-card">
             <h2>{program.name}</h2>
@@ -19,7 +25,7 @@ const ProgramCard: React.FC<ProgramProps> = ({ program }) => {
                 <strong>Description:</strong> {program.description}
             </p>
             <p>
-                <strong>Start Date:</strong> {program.startDate}
+                <strong>Start Date:</strong> {formatDate(program.startDate)}
             </p>
             <p>
                 <strong>Aim and Cause:</strong> {program.aimAndCause}

@@ -41,13 +41,14 @@ function Programs() {
                 </Link>
             </div>
             <div className="program-list">
-                {error && <p className="error-message">{error}</p>}
-                {programs.length > 0 ? (
+                {error ?( <p className="error-message">Server Connection Refused</p>) : (
+                programs.length > 0 ? (
                     programs.map((program) => (
                         <ProgramCard key={program.id} program={program} />
                     ))
                 ) : (
                     <p>No programs available.</p>
+                )
                 )}
             </div>
         </div>

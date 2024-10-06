@@ -41,19 +41,29 @@
 .input,
 .textarea {
     width: 100%;
-    padding: 6px !important;
+    padding: 8px !important;
     margin-top: 4px;
     margin-bottom: 0 !important;
     border-radius: 8px;
     border: 1px solid #66fcf1;
-    font-size: 10px;
+    font-size: 14px;
     background-color: #f9f9f9;
     color: #333;
+    box-sizing: border-box; 
+    text-align: left;
+    vertical-align: top; /* Ensure text starts from the top */
+    text-align: left !important;
 }
 
 /* Increasing size of description and aimAndCause text areas */
 .textarea {
     min-height: 100px;
+    padding: 8px; /* Ensure text starts from top-left corner */
+    text-align: left;
+    vertical-align: top; /* Align text to start from the top */
+    resize: none; /* Disable resizing if not required */
+    box-sizing: border-box;
+    overflow: auto; /* Allow scrolling if content exceeds size */
 }
 
 /* Centering the button group */
@@ -65,7 +75,15 @@
 }
 
 /* Styling for save and clear buttons */
-.save-button,
+.save-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #28a745; 
+    color: white;
+    cursor: pointer;
+}
+
 .clear-button {
     padding: 10px 20px;
     border: none;
@@ -79,24 +97,29 @@
     padding: 5px 20px;
     border: none;
     border-radius: 4px;
-    background-color: #007bff;
+    background-color: #a56f25;
     color: white;
     cursor: pointer;
+    margin: 0 auto;
     text-align: center;
-    display: block; /* Block-level button */
-    grid-column: 1 / -1; /* Span the entire width of the grid */
+    display: block; 
+    grid-column: 1 / -1; 
 }
 
-/* No hover effect changes */
-.save-button:hover,
-.clear-button:hover,
+/* Hover effect changes */
+.save-button:hover {
+    background-color: #4dac63;
+}
+.clear-button:hover {
+    background-color: #43a0c8;
+}
 .back-button:hover {
-    background-color: #007bff;
+    background-color: #a96403;
 }
 
 /* Success message styling for better visibility */
 .success-message {
-    color: white; /* White color for better visibility */
+    color: white; 
     font-weight: bold;
     text-align: center;
     margin-top: 10px;
