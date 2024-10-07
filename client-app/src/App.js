@@ -10,9 +10,10 @@ import DonatedItemsList from './Components/DonatedItemsList';
 import DonorForm from './Components/DonorForm.tsx';
 import DonationForm from './Components/DonationForm';
 import StatusDisplayPage from './Components/StatusDisplayPage';
-import ProgramsPage from './Components/ProgramsPage';
+import Programs from './Components/Programs';
 import AddProgramPage from './Components/AddProgramPage'; // Import AddProgramPage correctly
-import AddDonor from './Components/AddDonor';
+import NewItemForm from './Components/NewItemForm.tsx';
+import AddDonor from './Components/AddDonor'; // Why is this here?
 
 function App() {
     // Define handleAddProgram function here
@@ -37,8 +38,9 @@ function App() {
                 <Route path="/donorform" element={<DonorForm />} />
                 <Route path="/donations" element={<DonatedItemsList />} />
                 <Route path="/donation-form" element={<DonationForm />} />
-                <Route path="/programs" element={<ProgramsPage />} />
+                <Route path="/programs" element={<Programs />} />
                 <Route path="/addprogram" element={<AddProgramPage />} />
+                <Route path="/adddonation" element={<NewItemForm />} />
                 <Route
                     path="/addprogram"
                     element={<AddProgramPage onAddProgram={handleAddProgram} />}

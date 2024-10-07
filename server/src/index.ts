@@ -7,6 +7,7 @@ import cors from 'cors';
 import { PrismaClient } from '@prisma/client'; // Import Prisma
 const prisma = new PrismaClient(); // Initialize Prisma Client
 import donorRouter from './routes/donorRoutes';
+import programRouter from './routes/programRoutes';
 
 import donatedItemRouter from './routes/donatedItemRoutes'; // Import DonatedItem routes
 import donatedItemStatusRouter from './routes/donatedItemStatusRoutes'; // Import DonatedItemStatus routes
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/donor', donorRouter);
+app.use('/program', programRouter);
 
 app.use('/donatedItem', donatedItemRouter); // Use DonatedItem routes
 app.use('/donatedItem/status', donatedItemStatusRouter); // Use DonatedItemStatus routes

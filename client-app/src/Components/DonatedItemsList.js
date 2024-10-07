@@ -112,6 +112,11 @@ function DonatedItemsList() {
         navigate('/donation-form');
     };
 
+    const handleAddNewDonationClick = () => {
+        // Navigate to NewItemForm page
+        navigate('/adddonation');
+    };
+
     // Sample data for demonstration
     const [donatedItems, setDonatedItems] = useState([
         {
@@ -299,6 +304,10 @@ function DonatedItemsList() {
                         {assignProgramClicked
                             ? 'Hide Assign Program'
                             : 'Assign Program'}
+                    </button>
+
+                    <button onClick={handleAddNewDonationClick}>
+                        Add New Donation
                     </button>
                 </div>
 

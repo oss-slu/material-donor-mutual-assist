@@ -47,3 +47,11 @@ model DonatedItemStatus {
 
   @@index([donatedItemId])
 }
+
+model Program {
+  id          Int      @id @default(autoincrement()) 
+  name        String   @db.VarChar(100)              
+  description String   @db.VarChar(500)              
+  startDate   DateTime     @db.Date                          
+  aimAndCause String   @db.VarChar(500)              
+}

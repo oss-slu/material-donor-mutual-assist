@@ -1,39 +1,86 @@
 .container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
+    justify-content: center;
 }
 
+/* Styling for the form as a grid layout */
 .form {
-    width: 400px;
+    display: grid;
+    grid-template-columns: 1fr; /* Single-column grid for all fields */
+    gap: 20px; /* Space between each grid item */
+    width: 50vw;
+    max-width: 500px;
+    background-color: #212430; /* Darker background for the form */
+    padding: 15px 25px 15px 25px;
+    border-radius: 25px;
+    box-shadow: 0 4px 8px rgba(63, 60, 60, 0.1); /* Adding box shadow for better visibility */
+    margin-top: 30px;
 }
 
-.form-group {
-    margin-bottom: 15px;
+/* Styling for the title inside the form */
+.heading {
+    color: #66fcf1; /* Sky blue color for the heading */
+    text-align: center;
+    font-size: 28px; /* Font size for the heading */
+    grid-column: 1 / -1; /* Span the entire width of the grid */
+    margin-bottom: 5px;
 }
 
 .label {
     display: block;
     margin-bottom: 5px;
+    color: #ffffff; /* Label text color to stand out against the dark background */
 }
 
+/* Red asterisk for required fields */
+.required {
+    color: red;
+}
+
+/* Styling for input and textarea fields */
 .input,
 .textarea {
     width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 8px !important;
+    margin-top: 4px;
+    margin-bottom: 0 !important;
+    border-radius: 8px;
+    border: 1px solid #66fcf1;
+    font-size: 14px;
+    background-color: #f9f9f9;
+    color: #333;
+    box-sizing: border-box;
 }
 
+/* Increasing size of description and aimAndCause text areas */
+.textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 8px; /* Ensure text starts from top-left corner */
+    resize: none; /* Disable resizing if not required */
+    box-sizing: border-box;
+    overflow: auto; /* Allow scrolling if content exceeds size */
+}
+
+/* Centering the button group */
 .button-group {
     display: flex;
     justify-content: center;
+    gap: 10px; /* Add space between the buttons */
+    grid-column: 1 / -1; /* Span the entire width of the grid */
 }
 
-.save-button,
+/* Styling for save and clear buttons */
+.save-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+}
+
 .clear-button {
-    margin-right: 10px;
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
@@ -43,5 +90,43 @@
 }
 
 .back-button {
-    margin-top: 20px;
+    padding: 5px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #a56f25;
+    color: white;
+    cursor: pointer;
+    margin: 0 auto;
+    text-align: center;
+    display: block;
+    grid-column: 1 / -1;
+}
+
+/* Hover effect changes */
+.save-button:hover {
+    background-color: #4dac63;
+}
+.clear-button:hover {
+    background-color: #43a0c8;
+}
+.back-button:hover {
+    background-color: #a96403;
+}
+
+/* Success message styling for better visibility */
+.success-message {
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+/* Error message */
+.error-message {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: center;
 }

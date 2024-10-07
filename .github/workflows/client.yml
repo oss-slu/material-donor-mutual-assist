@@ -1,0 +1,28 @@
+name: React Client CI
+
+on:
+  push:
+    branches: main
+    paths:
+      - 'client-app/**'
+      - '.github/workflows/**'
+  pull_request:
+    branches: main
+    paths:
+      - 'client-app/**'
+      - '.github/workflows/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+    - run: cd client-app && npm install
+    - run: cd client-app && npm test
+      env:
+        CI: true
