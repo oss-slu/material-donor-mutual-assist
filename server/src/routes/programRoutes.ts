@@ -16,7 +16,7 @@ router.post('/', async (req: Request, res: Response) => {
             data: {
                 name,
                 description,
-                startDate: dateTime,  // Pass the DateTime to backend
+                startDate: dateTime, // Pass the DateTime to backend
                 aimAndCause,
             },
         });

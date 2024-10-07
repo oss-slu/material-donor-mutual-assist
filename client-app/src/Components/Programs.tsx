@@ -20,7 +20,7 @@ function Programs() {
         const fetchPrograms = async () => {
             try {
                 const response = await axios.get<Program[]>(
-                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}program`
+                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}program`,
                 );
                 setPrograms(response.data);
             } catch (err) {
@@ -41,14 +41,14 @@ function Programs() {
                 </Link>
             </div>
             <div className="program-list">
-                {error ?( <p className="error-message">Server Connection Refused</p>) : (
-                programs.length > 0 ? (
-                    programs.map((program) => (
+                {error ? (
+                    <p className="error-message">Server Connection Refused</p>
+                ) : programs.length > 0 ? (
+                    programs.map(program => (
                         <ProgramCard key={program.id} program={program} />
                     ))
                 ) : (
                     <p>No programs available.</p>
-                )
                 )}
             </div>
         </div>

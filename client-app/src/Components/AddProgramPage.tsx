@@ -22,7 +22,9 @@ const AddProgramPage = () => {
     const [success, setSuccess] = useState<string | null>(null);
     const navigate = useNavigate();
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ) => {
         const { name, value } = e.target;
         setFormData({
             ...formData,
@@ -34,7 +36,7 @@ const AddProgramPage = () => {
         try {
             const response = await axios.post(
                 `${process.env.REACT_APP_BACKEND_API_BASE_URL}program`,
-                formData
+                formData,
             );
 
             if (response.status === 201) {
@@ -57,7 +59,8 @@ const AddProgramPage = () => {
             }
         } catch (error: unknown) {
             const message =
-                (error as any).response?.data?.message || 'Error creating program';
+                (error as any).response?.data?.message ||
+                'Error creating program';
             setError(message);
             setSuccess(null);
         }
@@ -74,74 +77,86 @@ const AddProgramPage = () => {
 
     return (
         <div className="container">
-        <form className="form" onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
-            <h1 className="heading">Add Program</h1>
-            <div className="form-group">
-                <label className="label">
-                    Name <span className="required">*</span>
-                </label>
-                <input
-                    className="input"
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <div className="form-group">
-                <label className="label">
-                    Description <span className="required">*</span>
-                </label>
-                <textarea
-                    className="textarea"
-                    name="description"
-                    value={formData.description}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <div className="form-group">
-                <label className="label">
-                    Start Date <span className="required">*</span>
-                </label>
-                <input
-                    className="input"
-                    type="date"
-                    name="startDate"
-                    value={formData.startDate}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <div className="form-group">
-                <label className="label">
-                    Aim and Cause <span className="required">*</span>
-                </label>
-                <textarea
-                    className="textarea"
-                    name="aimAndCause"
-                    value={formData.aimAndCause}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            {error && <p className="error-message">{error}</p>}
-            {success && <p className="success-message">{success}</p>}
-            <div className="button-group">
-                <button className="save-button" type="submit">
-                    Save
-                </button>
-                <button className="clear-button" type="button" onClick={handleClear}>
-                    Clear
-                </button>
-            </div>
-            <div className="back-to-programs">
-                <Link to="/programs">
-                    <button className="back-button">Back to Programs</button>
-                </Link>
-            </div>
-        </form>
+            <form
+                className="form"
+                onSubmit={e => {
+                    e.preventDefault();
+                    handleSave();
+                }}
+            >
+                <h1 className="heading">Add Program</h1>
+                <div className="form-group">
+                    <label className="label">
+                        Name <span className="required">*</span>
+                    </label>
+                    <input
+                        className="input"
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label className="label">
+                        Description <span className="required">*</span>
+                    </label>
+                    <textarea
+                        className="textarea"
+                        name="description"
+                        value={formData.description}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label className="label">
+                        Start Date <span className="required">*</span>
+                    </label>
+                    <input
+                        className="input"
+                        type="date"
+                        name="startDate"
+                        value={formData.startDate}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label className="label">
+                        Aim and Cause <span className="required">*</span>
+                    </label>
+                    <textarea
+                        className="textarea"
+                        name="aimAndCause"
+                        value={formData.aimAndCause}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                {error && <p className="error-message">{error}</p>}
+                {success && <p className="success-message">{success}</p>}
+                <div className="button-group">
+                    <button className="save-button" type="submit">
+                        Save
+                    </button>
+                    <button
+                        className="clear-button"
+                        type="button"
+                        onClick={handleClear}
+                    >
+                        Clear
+                    </button>
+                </div>
+                <div className="back-to-programs">
+                    <Link to="/programs">
+                        <button className="back-button">
+                            Back to Programs
+                        </button>
+                    </Link>
+                </div>
+            </form>
         </div>
     );
 };
