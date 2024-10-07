@@ -75,7 +75,7 @@
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
-    background-color: #28a745; 
+    background-color: #28a745;
     color: white;
     cursor: pointer;
 }
@@ -98,8 +98,8 @@
     cursor: pointer;
     margin: 0 auto;
     text-align: center;
-    display: block; 
-    grid-column: 1 / -1; 
+    display: block;
+    grid-column: 1 / -1;
 }
 
 /* Hover effect changes */
@@ -115,7 +115,7 @@
 
 /* Success message styling for better visibility */
 .success-message {
-    color: white; 
+    color: white;
     font-weight: bold;
     text-align: center;
     margin-top: 10px;
