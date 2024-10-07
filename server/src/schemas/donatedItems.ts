@@ -12,5 +12,5 @@ export const donatedItemSchema = Joi.object({
 export const donatedItemStatusSchema = Joi.object({
     statusType: Joi.string().valid('Received', 'Pending', 'Processed', 'Delivered').required(),
     donatedItemId: Joi.number().integer().required(), // Ensures it's a valid integer
-    dateModified: Joi.date().required(), // Validates as a proper date
+    dateModified: Joi.date(), // Validates as a proper date
 });

@@ -35,7 +35,7 @@ model DonatedItem {
   program       String              @db.VarChar(50) // Define as VARCHAR(50)
   dateDonated   DateTime
   lastUpdated   DateTime            @updatedAt
-  statuses      DonatedItemStatus[] // Relation to DonatedItemStatus
+  statuses      DonatedItemStatus[]  @relation(onDelete: Cascade)// Relation to DonatedItemStatus
 }
 
 model DonatedItemStatus {

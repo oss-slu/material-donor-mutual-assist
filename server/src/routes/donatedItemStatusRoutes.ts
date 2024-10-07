@@ -7,10 +7,13 @@ const router = Router();
 // PUT /donatedItem/status/:id - Update the status of a DonatedItem
 router.put('/:id', donatedItemStatusValidator, async (req: Request, res: Response) => {
     try {
+        const {statusType, dateModified}=req.body;
+        
+        // Update the donated item's current status and lastUpdated fields
         const updatedStatus = await prisma.donatedItem.update({
             where: { id: Number(req.params.id) },
             data: {
-                currentStatus: req.body.statusType,
+                currentStatus: statusType,
                 lastUpdated: new Date(),
             },
         });
@@ -18,8 +21,8 @@ router.put('/:id', donatedItemStatusValidator, async (req: Request, res: Respons
         // Create a new entry in DonatedItemStatus to track the status change
         const newStatus = await prisma.donatedItemStatus.create({
             data: {
-                statusType: req.body.statusType,
-                dateModified: new Date(),
+                statusType: statusType,
+                dateModified: dateModified ? new Date(dateModified) : new Date(),
                 donatedItemId: Number(req.params.id),
             },
         });

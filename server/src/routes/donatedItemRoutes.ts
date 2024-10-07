@@ -1,14 +1,26 @@
 import { Router, Request, Response } from 'express';
 import prisma from '../prismaClient'; // Import Prisma client
 import { donatedItemValidator } from '../validators/donatedItemValidator'; // Import the validator
+import { date } from 'joi';
 
 const router = Router();
 
 // POST /donatedItem - Create a new DonatedItem
 router.post('/', donatedItemValidator, async (req: Request, res: Response) => {
     try {
+
+        const {dateDonated, ...rest }=req.body;
+
+        const dateDonatedDateTime= new Date(dateDonated);
+        dateDonatedDateTime.setUTCHours(0,0,0,0); // Set time to 00:00:00 UTC
+
         const newItem = await prisma.donatedItem.create({
-            data: req.body,
+            data:{
+                ...rest, //spread the rest of the fields
+                dateDonated: dateDonatedDateTime,
+                // dateDonated: new Date(dateDonated),
+                // dateDonated: new Date(dateDonated).setUTCHours(0,0,0,0), // Set time to 00:00:00 UTC
+            },
         });
         console.log('New donated item created:', newItem);
         res.status(201).json(newItem);
@@ -48,6 +60,7 @@ router.put('/details/:id', donatedItemValidator, async (req: Request, res: Respo
     }
 });
 
+//Added cascade deletion of statuses
 // DELETE /donatedItem/:id - Delete a DonatedItem with cascading deletion of its statuses
 router.delete('/:id', async (req: Request, res: Response) => {
     try {
