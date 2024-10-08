@@ -26,24 +26,24 @@ const NewItemForm: React.FC = () => {
     });
 
     const itemTypeOptions = [
-        {value: 'bicycle', label: 'Bicycle'},
-        {value: 'computer', label: 'Computer'},
+        { value: 'bicycle', label: 'Bicycle' },
+        { value: 'computer', label: 'Computer' },
         // More item type options can be added here
-    ]
+    ];
 
     const donorEmailOptions = [
-        {value: 'email1', label: 'cooldude@gmail.com'},
-        {value: 'email2', label: 'cplusplushater@icloud.com'},
-        {value: 'email3', label: 'ISEBestBuilding@yahoo.com'},
-    ]
+        { value: 'email1', label: 'cooldude@gmail.com' },
+        { value: 'email2', label: 'cplusplushater@icloud.com' },
+        { value: 'email3', label: 'ISEBestBuilding@yahoo.com' },
+    ];
 
     const programOptions = [
-        {value: 'youthProgram', label: 'Youth Program'},
-        {value: 'retailSales', label: 'Retail Sales'},
-        {value: 'recycle', label: 'Recycle'},
-        {value: 'earnABicycle', label: 'Earn-a-bicycle'},
-        {value: 'earnAComputer', label: 'Earn-a-computer'},
-    ]
+        { value: 'youthProgram', label: 'Youth Program' },
+        { value: 'retailSales', label: 'Retail Sales' },
+        { value: 'recycle', label: 'Recycle' },
+        { value: 'earnABicycle', label: 'Earn-a-bicycle' },
+        { value: 'earnAComputer', label: 'Earn-a-computer' },
+    ];
 
     const convertToBase64 = (file: File): Promise<string> => {
         return new Promise((resolve, reject) => {
@@ -59,12 +59,16 @@ const NewItemForm: React.FC = () => {
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
     // Handle input change for all fields
-    const handleChange = async (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const {name, type, value, files} = e.target as HTMLInputElement;
+    const handleChange = async (
+        e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    ) => {
+        const { name, type, value, files } = e.target as HTMLInputElement;
 
         if (name === 'imageUpload' && files) {
             const fileArray = Array.from(files);
-            const base64Images = await Promise.all(fileArray.map(file=>convertToBase64(file)));
+            const base64Images = await Promise.all(
+                fileArray.map(file => convertToBase64(file)),
+            );
             setFormData(prevState => ({
                 ...prevState,
                 [name]: base64Images,
@@ -72,7 +76,7 @@ const NewItemForm: React.FC = () => {
         } else {
             setFormData(prevState => ({
                 ...prevState,
-                [name] : value,
+                [name]: value,
             }));
         }
         setErrors(prevState => ({ ...prevState, [name]: '' })); // Reset errors on change
@@ -94,29 +98,29 @@ const NewItemForm: React.FC = () => {
         if (requiredFields.includes(name)) {
             if (name === 'itemType') {
                 if (!value || value.length === 0) {
-                    return "Please select an item type"
+                    return 'Please select an item type';
                 }
             } else if (name === 'currentStatus') {
                 if (!value || value.length === 0) {
-                    return "Please enter a status"
+                    return 'Please enter a status';
                 }
             } else if (name === 'donorEmail') {
                 if (!value || value.length === 0) {
-                    return "Please select the donor's email"
+                    return "Please select the donor's email";
                 }
             } else if (name === 'program') {
                 if (!value || value.length === 0) {
-                    return "Please select a program"
+                    return 'Please select a program';
                 }
             } else if (name === 'imageUpload') {
                 if (!value || value.length === 0) {
                     return 'Please upload at least one image';
                 } else if (value.length > 5) {
-                    return 'Please keep under 5 images'
+                    return 'Please keep under 5 images';
                 }
             } else if (name === 'dateDonated') {
                 if (!value || value.length === 0) {
-                    return 'Please select a date'
+                    return 'Please select a date';
                 }
             } else if (typeof value === 'string' && !value.trim()) {
                 return `${name.replace(/([A-Z])/g, ' $1')} is required`;
@@ -196,7 +200,7 @@ const NewItemForm: React.FC = () => {
         name: keyof FormData,
         type = 'text',
         required = true,
-        options?: {value: string; label: string}[], 
+        options?: { value: string; label: string }[],
     ) => (
         <div className="form-field">
             <label htmlFor={name} className="block text-sm font-semibold mb-1">
@@ -205,44 +209,44 @@ const NewItemForm: React.FC = () => {
             </label>
             {type === 'file' ? (
                 <input
-                    type = "file"
-                    id = {name}
-                    name = {name}
-                    onChange = {handleChange}
+                    type="file"
+                    id={name}
+                    name={name}
+                    onChange={handleChange}
                     multiple
-                    accept = "image/*"
-                    className = {`w-full px-3 py-2 rounded border ${errors[name] ? 'border-red-500' : 'border-gray-300'}`}
-                    title = "Upload 1-5 images in JPG or PNG format"         
+                    accept="image/*"
+                    className={`w-full px-3 py-2 rounded border ${errors[name] ? 'border-red-500' : 'border-gray-300'}`}
+                    title="Upload 1-5 images in JPG or PNG format"
                 />
             ) : options ? ( // Only executes if there are options available
-            <select
-                id={name}
-                name={name}
-                value={formData[name]}
-                onChange={handleChange}
-                className={`w-full px-3 py-2 rounded border ${errors[name] ? 'border-red-500' : 'border-gray-300'}`}
-            >
-            <option value = "">Select {label}</option>
-            {options?.map(option => (
-                    <option key = {option.value} value = {option.value}>
-                        {option.label}
-                    </option>
-                ))}
-            </select>
-        ) : (
-            <input
-                type={type}
-                id={name}
-                name={name}
-                value={formData[name] as string}
-                onChange={handleChange}
-                className={`w-full px-3 py-2 rounded border ${errors[name] ? 'border-red-500' : 'border-gray-300'}`}
-                disabled = {name === 'currentStatus'}
-            />
-        )}
-        {errors[name] && (
-            <p className="text-red-500 text-sm mt-1">{errors[name]}</p>
-        )}
+                <select
+                    id={name}
+                    name={name}
+                    value={formData[name]}
+                    onChange={handleChange}
+                    className={`w-full px-3 py-2 rounded border ${errors[name] ? 'border-red-500' : 'border-gray-300'}`}
+                >
+                    <option value="">Select {label}</option>
+                    {options?.map(option => (
+                        <option key={option.value} value={option.value}>
+                            {option.label}
+                        </option>
+                    ))}
+                </select>
+            ) : (
+                <input
+                    type={type}
+                    id={name}
+                    name={name}
+                    value={formData[name] as string}
+                    onChange={handleChange}
+                    className={`w-full px-3 py-2 rounded border ${errors[name] ? 'border-red-500' : 'border-gray-300'}`}
+                    disabled={name === 'currentStatus'}
+                />
+            )}
+            {errors[name] && (
+                <p className="text-red-500 text-sm mt-1">{errors[name]}</p>
+            )}
         </div>
     );
 
@@ -257,14 +261,30 @@ const NewItemForm: React.FC = () => {
                 <p className="success-message">{successMessage}</p>
             )}
             <form onSubmit={handleSubmit} className="form-grid">
-                {renderFormField('Item Type', 'itemType', 'text', true, itemTypeOptions)}
+                {renderFormField(
+                    'Item Type',
+                    'itemType',
+                    'text',
+                    true,
+                    itemTypeOptions,
+                )}
                 {renderFormField('Current Status', 'currentStatus')}
-                {renderFormField('Donor Email', 'donorEmail', 'text', true, donorEmailOptions)}
-                {renderFormField('Program', 'program', 'text', true, programOptions)}
+                {renderFormField(
+                    'Donor Email',
+                    'donorEmail',
+                    'text',
+                    true,
+                    donorEmailOptions,
+                )}
+                {renderFormField(
+                    'Program',
+                    'program',
+                    'text',
+                    true,
+                    programOptions,
+                )}
                 {renderFormField('Date Donated', 'dateDonated', 'date')}
                 {renderFormField('Image Upload', 'imageUpload', 'file')}
-                
-
 
                 <div className="form-field full-width button-container">
                     <button type="submit" className="submit-button">
