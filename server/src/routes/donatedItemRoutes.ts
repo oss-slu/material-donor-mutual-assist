@@ -8,14 +8,13 @@ const router = Router();
 // POST /donatedItem - Create a new DonatedItem
 router.post('/', donatedItemValidator, async (req: Request, res: Response) => {
     try {
+        const { dateDonated, ...rest } = req.body;
 
-        const {dateDonated, ...rest }=req.body;
-
-        const dateDonatedDateTime= new Date(dateDonated);
-        dateDonatedDateTime.setUTCHours(0,0,0,0); // Set time to 00:00:00 UTC
+        const dateDonatedDateTime = new Date(dateDonated);
+        dateDonatedDateTime.setUTCHours(0, 0, 0, 0); // Set time to 00:00:00 UTC
 
         const newItem = await prisma.donatedItem.create({
-            data:{
+            data: {
                 ...rest, //spread the rest of the fields
                 dateDonated: dateDonatedDateTime,
                 // dateDonated: new Date(dateDonated),
@@ -46,19 +45,25 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 // PUT /donatedItem/details/:id - Update non-status details of a DonatedItem
-router.put('/details/:id', donatedItemValidator, async (req: Request, res: Response) => {
-    try {
-        const updatedItem = await prisma.donatedItem.update({
-            where: { id: Number(req.params.id) },
-            data: { ...req.body, lastUpdated: new Date() },
-        });
-        console.log('Donated item updated:', updatedItem);
-        res.json(updatedItem);
-    } catch (error) {
-        console.error('Error updating donated item details:', error);
-        res.status(500).json({ message: 'Error updating donated item details' });
-    }
-});
+router.put(
+    '/details/:id',
+    donatedItemValidator,
+    async (req: Request, res: Response) => {
+        try {
+            const updatedItem = await prisma.donatedItem.update({
+                where: { id: Number(req.params.id) },
+                data: { ...req.body, lastUpdated: new Date() },
+            });
+            console.log('Donated item updated:', updatedItem);
+            res.json(updatedItem);
+        } catch (error) {
+            console.error('Error updating donated item details:', error);
+            res.status(500).json({
+                message: 'Error updating donated item details',
+            });
+        }
+    },
+);
 
 //Added cascade deletion of statuses
 // DELETE /donatedItem/:id - Delete a DonatedItem with cascading deletion of its statuses
