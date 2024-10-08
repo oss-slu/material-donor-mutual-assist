@@ -35,7 +35,7 @@ model DonatedItem {
   program       String              @db.VarChar(50) // Define as VARCHAR(50)
   dateDonated   DateTime
   lastUpdated   DateTime            @updatedAt
-  statuses      DonatedItemStatus[]  @relation(onDelete: Cascade)// Relation to DonatedItemStatus
+  statuses      DonatedItemStatus[]  // Relation to DonatedItemStatus
 }
 
 model DonatedItemStatus {
@@ -43,7 +43,7 @@ model DonatedItemStatus {
   dateModified  DateTime
   statusType    String      @db.VarChar(20) // Define as VARCHAR(20)
   donatedItemId Int
-  donatedItem   DonatedItem @relation(fields: [donatedItemId], references: [id])
+  donatedItem   DonatedItem @relation(fields: [donatedItemId], references: [id], onDelete: Cascade)
 
   @@index([donatedItemId])
 }
