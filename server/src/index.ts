@@ -12,7 +12,6 @@ import programRouter from './routes/programRoutes';
 import donatedItemRouter from './routes/donatedItemRoutes'; // Import DonatedItem routes
 import donatedItemStatusRouter from './routes/donatedItemStatusRoutes'; // Import DonatedItemStatus routes
 
-
 const app = express();
 
 app.use(cors({ origin: 'http://localhost:3000' }));
@@ -30,7 +29,6 @@ app.use('/program', programRouter);
 
 app.use('/donatedItem', donatedItemRouter); // Use DonatedItem routes
 app.use('/donatedItem/status', donatedItemStatusRouter); // Use DonatedItemStatus routes
-
 
 app.use((req: Request, res: Response, next: NextFunction) => {
     next(createError(404));
@@ -52,7 +50,7 @@ const startServer = async () => {
         );
 
         // Start the server
-        const port = process.env.PORT
+        const port = process.env.PORT;
 
         app.listen(port, () => {
             console.log(
@@ -75,6 +73,5 @@ process.on('SIGINT', async () => {
     console.log('Prisma client disconnected');
     process.exit(0);
 });
-
 
 export default app;

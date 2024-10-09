@@ -47,7 +47,6 @@ model DonatedItemStatus {
   statusType    String      @db.VarChar(20) // Define as VARCHAR(20)
   donatedItemId Int
   donatedItem   DonatedItem @relation(fields: [donatedItemId], references: [id], onDelete: Cascade)
-
   @@index([donatedItemId])
 }
 
