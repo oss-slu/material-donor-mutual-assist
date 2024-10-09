@@ -25,17 +25,20 @@ model Donor {
   city         String? @db.VarChar(15)
   zipcode      String  @db.VarChar(20)
   emailOptIn   Boolean
+  donatedItems DonatedItem[] // Add reverse relation to DonatedItem
 }
 
 model DonatedItem {
   id            Int                 @id @default(autoincrement())
   itemType      String              @db.VarChar(50) // Define as VARCHAR(50)
   currentStatus String              @db.VarChar(20) // Define as VARCHAR(20)
-  donorEmail    String              @db.VarChar(100) // Define as VARCHAR(100)
-  program       String              @db.VarChar(50) // Define as VARCHAR(50)
   dateDonated   DateTime
   lastUpdated   DateTime            @updatedAt
-  statuses      DonatedItemStatus[]  
+  donorId       Int                 // Foreign key for Donor
+  programId     Int                 // Foreign key for Program
+  donor         Donor               @relation(fields: [donorId], references: [id])
+  program       Program             @relation(fields: [programId], references: [id])
+  statuses      DonatedItemStatus[]  // Relation to DonatedItemStatus
 }
 
 model DonatedItemStatus {
@@ -52,5 +55,6 @@ model Program {
   name        String   @db.VarChar(100)              
   description String   @db.VarChar(500)              
   startDate   DateTime     @db.Date                          
-  aimAndCause String   @db.VarChar(500)              
+  aimAndCause String   @db.VarChar(500)  
+  donatedItems DonatedItem[] // Add reverse relation to DonatedItem            
 }
