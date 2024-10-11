@@ -28,17 +28,10 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 // Route to get all programs
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
     try {
-        //const program = await prisma.program.findMany();
-        const program = await prisma.program.findUnique({
-            where: { id: Number(req.params.id) }
-          });
-      
-          if (!program) {
-            return res.status(404).json({ error: 'Program not found' });
-          }
-        res.json(program);
+        const programs = await prisma.program.findMany();
+        res.json(programs);
     } catch (error) {
         console.error('Error fetching programs:', error);
         res.status(500).json({ message: 'Error fetching programs' });
