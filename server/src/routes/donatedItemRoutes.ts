@@ -35,6 +35,8 @@ router.get('/', async (req: Request, res: Response) => {
         const items = await prisma.donatedItem.findMany({
             include: {
                 statuses: true, // Include related status updates
+                program:true,
+                donor:true,
             },
         });
         res.json(items);
@@ -50,6 +52,24 @@ router.put(
     donatedItemValidator,
     async (req: Request, res: Response) => {
         try {
+            // Validate Donor ID
+            const donor = await prisma.donor.findUnique({
+                where: { id: req.body.donorId }
+            });
+
+            if (!donor) {
+                return res.status(400).json({ error: `Donor with ID: ${req.body.donorId} does not exist.` });
+            }
+
+            // Validate Program ID
+            const program = await prisma.program.findUnique({
+                where: { id: req.body.programId }
+            });
+
+            if (!program) {
+                return res.status(400).json({ error: `No program found with the ID: ${req.body.programId}` });
+            }
+
             const updatedItem = await prisma.donatedItem.update({
                 where: { id: Number(req.params.id) },
                 data: { ...req.body, lastUpdated: new Date() },

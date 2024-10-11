@@ -5,8 +5,8 @@ export const donatedItemSchema = Joi.object({
     currentStatus: Joi.string()
         .valid('Received', 'Pending', 'Processed', 'Delivered')
         .required(),
-    donorEmail: Joi.string().email().required(),
-    program: Joi.string().required(),
+    donorId: Joi.number().integer().required(),
+    programId: Joi.number().integer().required(),
     dateDonated: Joi.date().required(), // Validates as a proper date
 });
 
