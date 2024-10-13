@@ -1,6 +1,8 @@
 import { Router, Request, Response } from 'express';
 import prisma from '../prismaClient'; // Import Prisma client
 import { donatedItemValidator } from '../validators/donatedItemValidator'; // Import the validator
+import { validateDonor } from '../services/donorService';
+import { validateProgram } from '../services/programService';
 import { date } from 'joi';
 
 const router = Router();
@@ -11,26 +13,15 @@ router.post('/', donatedItemValidator, async (req: Request, res: Response) => {
         
         const { dateDonated, ...rest } = req.body;
         
-        // Validate donorId
-        const donorExists = await prisma.donor.findUnique({
-            where: { id: req.body.donorId }
-        });
-
-        
-        if (!donorExists) {
-            return res.status(400).json({ error: "Donor ID is not valid or does not exist." });
+        try {
+            await validateDonor(req.body.donorId);
+            await validateProgram(req.body.programId);
+        } catch (error) {
+            if (error instanceof Error) {
+                return res.status(400).json({ error: error.message });
+            }
+            return res.status(400).json({ error: "An unexpected error occurred" });
         }
-
-        // Validate programId
-        const programExists = await prisma.program.findUnique({
-            where: { id: req.body.programId }
-        });
-
-        
-        if (!programExists) {
-            return res.status(400).json({ error: "Program ID is not valid or does not exist." });
-        }
-
         const dateDonatedDateTime = new Date(dateDonated);
         dateDonatedDateTime.setUTCHours(0, 0, 0, 0); // Set time to 00:00:00 UTC
 
@@ -43,7 +34,6 @@ router.post('/', donatedItemValidator, async (req: Request, res: Response) => {
             },
         });
         const newStatus = await prisma.donatedItemStatus.create({
-            //where: { id: Number(req.params.id) },
             data: {
                 statusType: 'Received',
                 dateModified: dateDonatedDateTime, // Use the same date as dateDonated
@@ -86,22 +76,14 @@ router.put(
     donatedItemValidator,
     async (req: Request, res: Response) => {
         try {
-            // Validate Donor ID
-            const donor = await prisma.donor.findUnique({
-                where: { id: req.body.donorId }
-            });
-
-            if (!donor) { 
-                return res.status(400).json({ error: `Donor with ID: ${req.body.donorId} does not exist.` });
-            }
-
-            // Validate Program ID
-            const program = await prisma.program.findUnique({
-                where: { id: req.body.programId }
-            });
-
-            if (!program) {
-                return res.status(400).json({ error: `No program found with the ID: ${req.body.programId}` });
+            try {
+                await validateDonor(req.body.donorId);
+                await validateProgram(req.body.programId);
+            } catch (error) {
+                if (error instanceof Error) {
+                    return res.status(400).json({ error: error.message });
+                }
+                return res.status(400).json({ error: "An unexpected error occurred" });
             }
 
             const updatedItem = await prisma.donatedItem.update({
