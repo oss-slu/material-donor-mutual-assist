@@ -35,11 +35,6 @@ function Programs() {
     return (
         <div className="programs-container">
             <h1>Programs</h1>
-            <div className="add-program">
-                <Link to="/addprogram">
-                    <button className="add-program-button">Add Program</button>
-                </Link>
-            </div>
             <div className="program-list">
                 {error ? (
                     <p className="error-message">Server Connection Refused</p>
