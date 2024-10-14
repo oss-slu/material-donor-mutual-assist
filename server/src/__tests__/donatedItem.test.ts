@@ -30,17 +30,20 @@ describe('DonatedItem API Tests', () => {
     });
 
     it('handles errors when the provided Program or Donor does not exist', async () => {
+        const programId = 99; 
+        const donorId = 29;
         mockPrismaClient.program.findUnique.mockResolvedValue(null);
         mockPrismaClient.donor.findUnique.mockResolvedValue(null);
-
+    
         const response = await request(app).post('/donatedItem').send({
             ...newItem,
-            programId: 99,
-            donorId: 29,
+            programId,
+            donorId,
             dateDonated: new Date().toISOString()
         });
         expect(response.status).toBe(400);
-        expect(response.body.error).toContain('Donor ID is not valid or does not exist.');
+        expect(response.body.error).toContain(`Donor with ID: ${donorId} does not exist.`);
+
     });
 
     // Test PUT /donatedItem/details/{id}

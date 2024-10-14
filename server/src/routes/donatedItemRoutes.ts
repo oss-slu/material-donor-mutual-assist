@@ -20,7 +20,6 @@ router.post('/', donatedItemValidator, async (req: Request, res: Response) => {
             if (error instanceof Error) {
                 return res.status(400).json({ error: error.message });
             }
-            return res.status(400).json({ error: "An unexpected error occurred" });
         }
         const dateDonatedDateTime = new Date(dateDonated);
         dateDonatedDateTime.setUTCHours(0, 0, 0, 0); // Set time to 00:00:00 UTC
@@ -83,7 +82,6 @@ router.put(
                 if (error instanceof Error) {
                     return res.status(400).json({ error: error.message });
                 }
-                return res.status(400).json({ error: "An unexpected error occurred" });
             }
 
             const updatedItem = await prisma.donatedItem.update({
