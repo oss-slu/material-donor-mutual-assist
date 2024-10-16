@@ -20,7 +20,7 @@ function Programs() {
         const fetchPrograms = async () => {
             try {
                 const response = await axios.get<Program[]>(
-                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}program`,
+                    `http://localhost:4000/program`,
                 );
                 setPrograms(response.data);
             } catch (err) {

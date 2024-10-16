@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import axios from 'axios';
 import '../css/DonorForm.css';
 
@@ -6,7 +6,9 @@ interface FormData {
     itemType: string;
     currentStatus: string;
     donorEmail: string;
+    donorId: number | null; // Store donor ID
     program: string;
+    programId: number | null; // Store program ID
     imageUpload: string[];
     dateDonated: string;
 }
@@ -15,35 +17,87 @@ interface FormErrors {
     [key: string]: string;
 }
 
+interface Option {
+    value: string;
+    label: string;
+    id?: number; // add id to Option donor/program
+}
+
 const NewItemForm: React.FC = () => {
     const [formData, setFormData] = useState<FormData>({
         itemType: '',
         currentStatus: 'Received',
         donorEmail: '',
+        donorId: null, // Initialize with null
         program: '',
+        programId: null, // Initialize with null
         imageUpload: [],
         dateDonated: '',
     });
 
-    const itemTypeOptions = [
-        { value: 'bicycle', label: 'Bicycle' },
-        { value: 'computer', label: 'Computer' },
-        // More item type options can be added here
-    ];
+    // const itemTypeOptions = [
+    //     { value: 'bicycle', label: 'Bicycle' },
+    //     { value: 'computer', label: 'Computer' },
+    //     // More item type options can be added here
+    // ];
 
-    const donorEmailOptions = [
-        { value: 'email1', label: 'cooldude@gmail.com' },
-        { value: 'email2', label: 'cplusplushater@icloud.com' },
-        { value: 'email3', label: 'ISEBestBuilding@yahoo.com' },
-    ];
+    // const donorEmailOptions = [
+    //     { value: 'email1', label: 'cooldude@gmail.com' },
+    //     { value: 'email2', label: 'cplusplushater@icloud.com' },
+    //     { value: 'email3', label: 'ISEBestBuilding@yahoo.com' },
+    // ];
 
-    const programOptions = [
-        { value: 'youthProgram', label: 'Youth Program' },
-        { value: 'retailSales', label: 'Retail Sales' },
-        { value: 'recycle', label: 'Recycle' },
-        { value: 'earnABicycle', label: 'Earn-a-bicycle' },
-        { value: 'earnAComputer', label: 'Earn-a-computer' },
-    ];
+    // const programOptions = [
+    //     { value: 'youthProgram', label: 'Youth Program' },
+    //     { value: 'retailSales', label: 'Retail Sales' },
+    //     { value: 'recycle', label: 'Recycle' },
+    //     { value: 'earnABicycle', label: 'Earn-a-bicycle' },
+    //     { value: 'earnAComputer', label: 'Earn-a-computer' },
+    // ];
+
+    const [donorEmailOptions, setDonorEmailOptions] = useState<Option[]>([]);
+    const [programOptions, setProgramOptions] = useState<Option[]>([]);
+
+    useEffect(() => {
+        //fetching the donor emails
+        const fetchDonorEmails = async () => {
+            try {
+                const response = await axios.get('http://localhost:4000/donor');
+                const emailOptions = response.data.map((donor: any) => ({
+                    value: donor.email,
+                    label: donor.email,
+                    id: donor.id, // Store the donor ID
+                }));
+                setDonorEmailOptions(emailOptions);
+            } catch (error) {
+                console.error('Error fetching donor emails', error);
+            }
+        };
+
+        const fetchPrograms = async () => {
+            try {
+                const response = await axios.get(
+                    'http://localhost:4000/program',
+                );
+                const programOptions = response.data.map((program: any) => ({
+                    value: program.name,
+                    label: program.name,
+                    id: program.id, // Store the donor ID
+                }));
+                setProgramOptions(programOptions);
+            } catch (error) {
+                console.error('Error fetching program', error);
+            }
+        };
+        console.log(
+            'the donor and email options ae :',
+            donorEmailOptions,
+            programOptions,
+        );
+        fetchDonorEmails();
+        fetchPrograms();
+    }, []);
+    // })
 
     const convertToBase64 = (file: File): Promise<string> => {
         return new Promise((resolve, reject) => {
@@ -147,7 +201,11 @@ const NewItemForm: React.FC = () => {
             try {
                 const response = await axios.post(
                     `${process.env.REACT_APP_BACKEND_API_BASE_URL}donatedItem`,
-                    formData,
+                    {
+                        ...formData,
+                        donorId: formData.donorId,
+                        programId: formData.programId,
+                    },
                 );
                 if (response.status === 201) {
                     setSuccessMessage('Item added successfully!');
@@ -161,7 +219,9 @@ const NewItemForm: React.FC = () => {
                         itemType: '',
                         currentStatus: 'Received',
                         donorEmail: '',
+                        donorId: null,
                         program: '',
+                        programId: null,
                         imageUpload: [],
                         dateDonated: '',
                     });
@@ -185,7 +245,9 @@ const NewItemForm: React.FC = () => {
             itemType: '',
             currentStatus: 'Received',
             donorEmail: '',
+            donorId: null,
             program: '',
+            programId: null,
             imageUpload: [],
             dateDonated: '',
         });
@@ -222,7 +284,7 @@ const NewItemForm: React.FC = () => {
                 <select
                     id={name}
                     name={name}
-                    value={formData[name]}
+                    value={formData[name] ?? ''}
                     onChange={handleChange}
                     className={`w-full px-3 py-2 rounded border ${errors[name] ? 'border-red-500' : 'border-gray-300'}`}
                 >
@@ -261,13 +323,7 @@ const NewItemForm: React.FC = () => {
                 <p className="success-message">{successMessage}</p>
             )}
             <form onSubmit={handleSubmit} className="form-grid">
-                {renderFormField(
-                    'Item Type',
-                    'itemType',
-                    'text',
-                    true,
-                    itemTypeOptions,
-                )}
+                {renderFormField('Item Type', 'itemType', 'text', true)}
                 {renderFormField('Current Status', 'currentStatus')}
                 {renderFormField(
                     'Donor Email',

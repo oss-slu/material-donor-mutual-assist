@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import '../css/Login.css'; // Import the CSS file
 
-const Login = props => {
+const Login = () => {
     const [credentials, setCredentials] = useState({ email: '', password: '' });
     const [captcha, setCaptcha] = useState('');
     const [captchaValue, setCaptchaValue] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-
-    localStorage.setItem('isLogged', false);
 
     const generateCaptcha = () => {
         const randomCaptcha = Math.random().toString(36).substring(7);
         setCaptcha(randomCaptcha);
     };
 
-    const handleSubmit = async e => {
+    const handleSubmit = e => {
         e.preventDefault();
 
         // Validate CAPTCHA
@@ -22,27 +21,12 @@ const Login = props => {
             setErrorMessage('Incorrect CAPTCHA. Please try again.');
             return;
         }
-        // const response = await fetch("http://localhost:5000/api/auth/login", {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({ email: credentials.email, password: credentials.password })
-        // });
-        // const json = await response.json();
 
-        // if (json.success) {
-        //     localStorage.setItem('token', json.authtoken);
-        //     localStorage.setItem('name', json.name);
+        // If successful, update local storage and redirect
         localStorage.setItem('isLogged', true);
         window.location.href = '/Donations';
-        // } else {
-        //     setErrorMessage("Invalid credentials");
-        // }
 
-        alert('Login Success');
-
-        console.log('in login page ', localStorage.getItem('isLogged'));
+        console.log('Login successful:', localStorage.getItem('isLogged'));
     };
 
     const onChange = e => {
@@ -54,56 +38,59 @@ const Login = props => {
     };
 
     return (
-        <div>
-            <form onSubmit={handleSubmit} className="my-5 container">
-                <div className="mb-3">
+        <div className="login-container">
+            <form onSubmit={handleSubmit} className="login-form">
+                <div className="form-group">
                     <label htmlFor="email" className="form-label">
                         Email address
                     </label>
                     <input
                         type="email"
                         className="form-control"
+                        name="email"
+                        id="email"
                         value={credentials.email}
                         onChange={onChange}
-                        id="email"
-                        name="email"
-                        aria-describedby="emailHelp"
                     />
-                    <div id="emailHelp" className="form-text">
+                    <small className="form-text">
                         We'll never share your email with anyone else.
-                    </div>
+                    </small>
                 </div>
-                <div className="mb-3">
+
+                <div className="form-group">
                     <label htmlFor="password" className="form-label">
                         Password
                     </label>
                     <input
                         type="password"
                         className="form-control"
-                        value={credentials.password}
-                        onChange={onChange}
                         name="password"
                         id="password"
+                        value={credentials.password}
+                        onChange={onChange}
                     />
                 </div>
-                <div className="mb-3">
+
+                <div className="form-group">
                     <label htmlFor="captcha" className="form-label">
                         CAPTCHA: {captcha}
                     </label>
                     <input
                         type="text"
                         className="form-control"
+                        name="captcha"
+                        id="captcha"
                         value={captchaValue}
                         onChange={handleCaptchaChange}
-                        id="captcha"
-                        name="captcha"
                     />
                 </div>
+
                 {errorMessage && (
                     <div className="alert alert-danger" role="alert">
                         {errorMessage}
                     </div>
                 )}
+
                 <button
                     type="submit"
                     className="btn btn-primary"
@@ -111,10 +98,11 @@ const Login = props => {
                 >
                     Submit
                 </button>
+
                 <Link to="/forgot-password" className="btn btn-link">
                     Forgot Password?
-                </Link>{' '}
-                {/* Link to Forgot Password page */}
+                </Link>
+
                 <button
                     type="button"
                     className="btn btn-secondary"
