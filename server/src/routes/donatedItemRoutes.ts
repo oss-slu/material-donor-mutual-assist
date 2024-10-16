@@ -3,6 +3,8 @@ import prisma from '../prismaClient'; // Import Prisma client
 import { donatedItemValidator } from '../validators/donatedItemValidator'; // Import the validator
 import { validateDonor } from '../services/donorService';
 import { validateProgram } from '../services/programService';
+import { validateDonatedItem } from '../services/donatedItemService';
+
 import { date } from 'joi';
 
 const router = Router();
@@ -44,8 +46,7 @@ router.post('/', donatedItemValidator, async (req: Request, res: Response) => {
             donatedItem: newItem,
             donatedItemStatus: newStatus,
         });
-        
-     
+    
     } catch (error) {
         console.error('Error creating donated item:', error);
         res.status(500).json({ message: 'Error creating donated item' });
@@ -53,19 +54,40 @@ router.post('/', donatedItemValidator, async (req: Request, res: Response) => {
 });
 
 // GET /donatedItem - Fetch all donated items
-router.get('/', async (req: Request, res: Response) => {
+router.get('/:id', async (req: Request, res: Response) => {
     try {
-        const items = await prisma.donatedItem.findMany({
+        const donatedItemId = parseInt(req.params.id);
+        if (isNaN(donatedItemId)) {
+            return res.status(400).json({ error: "Donated item ID must be an integer." });
+        }
+
+        const donatedItem = await prisma.donatedItem.findUnique({
+            where: { id: donatedItemId },
             include: {
-                statuses: true, // Include related status updates
-                program:true,
-                donor:true,
-            },
+                donor: true, // Include all donor details
+                program: true, // Include all program details
+                statuses: { 
+                    orderBy: {
+                        dateModified: 'asc' // Ensure they are ordered chronologically
+                    }
+                }
+            }
         });
-        res.json(items);
+
+        if (!donatedItem) {
+            return res.status(404).json({ error: `Donated item with ID ${donatedItemId} not found` });
+        }
+        
+        res.json(donatedItem);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error fetching donated items' });
+        if (error instanceof Error) {
+            console.error('Error fetching donated item:', error.message);
+            res.status(error.message.includes('must be an integer') ? 400 : 404).json({ error: error.message });
+        } else {
+            console.error('Error fetching donated item:', 'Unknown error');
+            res.status(500).json({ error: 'Unknown error' });
+        }
+        
     }
 });
 
