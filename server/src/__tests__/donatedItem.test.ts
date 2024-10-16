@@ -4,8 +4,7 @@ import donatedItemRoutes from '../routes/donatedItemRoutes';
 import mockPrismaClient from '../__mocks__/mockPrismaClient';
 import { newProgram } from '../__mocks__/mockProgram';
 import { newDonor } from '../__mocks__/mockDonor';
-import { newItem } from '../__mocks__/mockNewItem';
-import { updateData } from '../__mocks__/mockUpdateData';
+import { updateItem,newItem } from '../__mocks__/mockDonatedItem';
 
 const app = express();
 app.use(express.json());
@@ -18,7 +17,7 @@ describe('DonatedItem API Tests', () => {
         mockPrismaClient.program.findUnique.mockResolvedValue(newProgram);
         mockPrismaClient.donor.findUnique.mockResolvedValue(newDonor);
         mockPrismaClient.donatedItem.create.mockResolvedValue({ id: 1, ...newItem });
-        mockPrismaClient.donatedItem.update.mockResolvedValue({ id: 1, ...updateData });
+        mockPrismaClient.donatedItem.update.mockResolvedValue({ id: 1, ...updateItem });
     });
 
     // Test POST /donatedItem
@@ -48,10 +47,10 @@ describe('DonatedItem API Tests', () => {
 
     // Test PUT /donatedItem/details/{id}
     it('updates donated item details correctly', async () => {
-        const response = await request(app).put('/donatedItem/details/1').send(updateData);
+        const response = await request(app).put('/donatedItem/details/1').send(updateItem);
         expect(response.status).toBe(200);
         expect(mockPrismaClient.donatedItem.update).toHaveBeenCalled();
-        expect(response.body.itemType).toBe('Updated Book');
+        expect(response.body.itemType).toBe(updateItem.itemType);
     });
 
     it('returns error responses for invalid Program or Donor values', async () => {
@@ -62,7 +61,7 @@ describe('DonatedItem API Tests', () => {
         const programId = 99;
 
         const response = await request(app).put('/donatedItem/details/1').send({
-            ...updateData,
+            ...updateItem,
             donorId,
             programId
         });
