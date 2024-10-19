@@ -59,7 +59,7 @@ const Navbar: React.FC = () => {
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         {isLoggedIn ? (
                             <>
-                                <li className="nav-item" style={{ fontSize: '20px', paddingLeft: '10px' }}>
+                                <li className="nav-item" style={{ fontSize: '20px', paddingLeft: '10px', paddingTop: '8px' }}>
                                     <span>Welcome {user}!</span>
                                 </li>
 
