@@ -8,7 +8,6 @@ import ForgotPassword from './Components/ForgotPassword';
 import ResetPasswordPage from './Components/ResetPasswordPage';
 import DonatedItemsList from './Components/DonatedItemsList';
 import DonorForm from './Components/DonorForm.tsx';
-import DonationForm from './Components/DonationForm';
 import StatusDisplayPage from './Components/StatusDisplayPage';
 import Programs from './Components/Programs';
 import AddProgramPage from './Components/AddProgramPage'; // Import AddProgramPage correctly
@@ -37,7 +36,6 @@ function App() {
                 <Route path="/item/:itemId" element={<StatusDisplayPage />} />
                 <Route path="/donorform" element={<DonorForm />} />
                 <Route path="/donations" element={<DonatedItemsList />} />
-                <Route path="/donation-form" element={<DonationForm />} />
                 <Route path="/programs" element={<Programs />} />
                 <Route path="/addprogram" element={<AddProgramPage />} />
                 <Route path="/adddonation" element={<NewItemForm />} />
