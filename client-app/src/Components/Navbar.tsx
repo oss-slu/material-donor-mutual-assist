@@ -67,8 +67,8 @@ const Navbar: React.FC = () => {
                                     <span
                                         className="nav-link dropdown-toggle"
                                         style={{
-                                            fontWeight: location.pathname === '/donations' ? 'bold' : 'normal',
-                                            color: location.pathname === '/donations' ? 'black' : 'inherit',
+                                            fontWeight: location.pathname === '/donations' || location.pathname === '/adddonation' ? 'bold' : 'normal',
+                                            color: location.pathname === '/donations' || location.pathname === '/adddonation' ? 'black' : 'inherit',
                                             cursor: 'pointer',
                                         }}
                                         id="navbarDropdown"
@@ -89,8 +89,8 @@ const Navbar: React.FC = () => {
                                     <span
                                         className="nav-link dropdown-toggle"
                                         style={{
-                                            fontWeight: location.pathname === '/programs' ? 'bold' : 'normal',
-                                            color: location.pathname === '/programs' ? 'black' : 'inherit',
+                                            fontWeight: location.pathname === '/programs' || location.pathname === '/addprogram' ? 'bold' : 'normal',
+                                            color: location.pathname === '/programs' || location.pathname === '/addprogram' ? 'black' : 'inherit',
                                             cursor: 'pointer',
                                         }}
                                     >
@@ -119,7 +119,7 @@ const Navbar: React.FC = () => {
                                     </span>
                                     <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                                         <li>
-                                            {/*Input at a later time, once we have an all donors page */}
+                                            {/*Input at a later time, once we have an all donors page. Please also add the bold to the fontWeight and color above */}
                                             {/*<Link className="dropdown-item" to="/donations">All Donors</Link> */}
                                         </li>
                                         <li>
