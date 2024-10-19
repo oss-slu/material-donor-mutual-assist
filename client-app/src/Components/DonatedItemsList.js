@@ -107,6 +107,14 @@ function DonatedItemsList() {
         setAssignProgramClicked(!assignProgramClicked);
     };
 
+    const handleAddDonationClick = () => {
+        navigate('/donation-form');
+    };
+
+    const handleAddNewDonationClick = () => {
+        navigate('/adddonation');
+    };
+
     // Sample data for demonstration
     const [donatedItems, setDonatedItems] = useState([
         {
@@ -295,6 +303,10 @@ function DonatedItemsList() {
                             ? 'Hide Assign Program'
                             : 'Assign Program'}
                     </button>
+
+                    <button onClick={handleAddNewDonationClick}>
+                        Add New Donation
+                    </button>
                 </div>
 
                 <table className="item-list">
@@ -390,6 +402,9 @@ function DonatedItemsList() {
                 <div
                     style={{ position: 'fixed', bottom: '20px', right: '20px' }}
                 >
+                    <button onClick={() => handleAddDonationClick()}>
+                        <FaPlus size={24} />
+                    </button>
                 </div>
             </div>
         </>
