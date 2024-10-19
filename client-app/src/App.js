@@ -21,7 +21,7 @@ function App() {
         console.log('Adding new program:', formData);
     };
 
-    return ( // Remove /donation-form
+    return (
         <div className="App">
             <Navbar />
             <Routes>

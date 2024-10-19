@@ -128,12 +128,13 @@ const Navbar: React.FC = () => {
                                     </ul>
                                 </li>
                                 <li className="nav-item" style={{ fontSize: '20px', paddingLeft: '10px' }}>
+                                    {/* Will need updating if the '/' path gets updated to not be the about page */}
                                     <Link
                                         className="nav-link"
                                         to="/about"
                                         style={{
-                                            fontWeight: location.pathname === '/about' ? 'bold' : 'normal',
-                                            color: location.pathname === '/about' ? 'black' : 'inherit',
+                                            fontWeight: location.pathname === '/about' || location.pathname === '/' ? 'bold' : 'normal',
+                                            color: location.pathname === '/about' || location.pathname === '/' ? 'black' : 'inherit',
                                         }}
                                     >
                                         About
