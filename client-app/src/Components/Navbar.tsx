@@ -119,7 +119,8 @@ const Navbar: React.FC = () => {
                                     </span>
                                     <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                                         <li>
-                                            <Link className="dropdown-item" to="/donations">All Donors</Link> {/* Does not currently link to donors */}
+                                            {/*Input at a later time, once we have an all donors page */}
+                                            {/*<Link className="dropdown-item" to="/donations">All Donors</Link> */}
                                         </li>
                                         <li>
                                             <Link className="dropdown-item" to="/donorform">Add New Donor</Link>
