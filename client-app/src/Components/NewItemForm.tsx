@@ -233,28 +233,6 @@ const NewItemForm: React.FC = () => {
 
                 formDataToSubmit.append('dateDonated', formData.dateDonated);
 
-                // Append each image file directly
-                if (formData.imageUpload.length) {
-                    formData.imageUpload.forEach((image, index) => {
-                        // Convert base64 back to Blob if needed (assuming the backend expects files, not base64 strings)
-                        const byteString = atob(image.split(',')[1]);
-                        const mimeString = image
-                            .split(',')[0]
-                            .split(':')[1]
-                            .split(';')[0];
-                        const ab = new Uint8Array(byteString.length);
-                        for (let i = 0; i < byteString.length; i++) {
-                            ab[i] = byteString.charCodeAt(i);
-                        }
-                        const blob = new Blob([ab], { type: mimeString });
-                        formDataToSubmit.append(
-                            'images',
-                            blob,
-                            `image-${index}.jpg`,
-                        ); // Use a default name
-                    });
-                }
-
                 console.log('formDataToSubmit:', formDataToSubmit);
                 console.log(
                     'formDataToSubmit:',
@@ -266,7 +244,7 @@ const NewItemForm: React.FC = () => {
                     formDataToSubmit,
                     {
                         headers: {
-                            'Content-Type': 'multipart/form-data',
+                            'Content-Type': 'application/json',
                         },
                     },
                 );
@@ -409,7 +387,7 @@ const NewItemForm: React.FC = () => {
                 {''}
                 <p>Current Status</p>
                 <input
-                    style={{ color: 'white' }}
+                    style={{ color: 'black' }}
                     type="text"
                     name="currentStatus"
                     value={formData.currentStatus}

@@ -50,7 +50,7 @@ describe('NewItemForm', () => {
         });
     });
 
-    test('submits form with correct data including Program and Donor IDs', async () => {
+    test('submits form with correct data excluding images', async () => {
         mockedAxios.get.mockImplementation(url => {
             if (url.includes('/donor')) {
                 return Promise.resolve({
@@ -98,6 +98,9 @@ describe('NewItemForm', () => {
             );
             const calledFormData = mockedAxios.post.mock
                 .calls[0][1] as FormData;
+
+            // Check that the images field is excluded
+            expect(calledFormData.has('images')).toBe(false);
             expect(calledFormData.get('itemType')).toBe('Bicycle');
             expect(calledFormData.get('donorId')).toBe('1');
             expect(calledFormData.get('programId')).toBe('1');
@@ -149,11 +152,13 @@ describe('NewItemForm', () => {
             expect(mockedAxios.post).toHaveBeenCalled();
             const calledFormData = mockedAxios.post.mock
                 .calls[0][1] as FormData;
-            expect(calledFormData.get('images')).toBeFalsy();
+
+            // Check that the images field is excluded
+            expect(calledFormData.has('images')).toBe(false);
         });
     });
 
-    test('image upload preview and removal', async () => {
+    test('image upload preview and removal without sending image to backend', async () => {
         mockedAxios.get.mockResolvedValue({ data: [] });
 
         await act(async () => {
@@ -179,6 +184,17 @@ describe('NewItemForm', () => {
 
         await waitFor(() => {
             expect(screen.queryByAltText('Preview 0')).not.toBeInTheDocument();
+        });
+
+        // Ensure that image was not sent to backend upon submission
+        await act(async () => {
+            fireEvent.click(screen.getByRole('button', { name: /Submit/i }));
+        });
+
+        await waitFor(() => {
+            const calledFormData = mockedAxios.post.mock
+                .calls[0][1] as FormData;
+            expect(calledFormData.has('images')).toBe(false);
         });
     });
 });

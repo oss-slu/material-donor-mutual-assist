@@ -40,8 +40,6 @@ model DonatedItem {
   program       Program             @relation(fields: [programId], references: [id])
   statuses      DonatedItemStatus[]  // Relation to DonatedItemStatus
 
-  imageUrls     String[]            // Array of image URLs or base64 strings
-
 }
 
 model DonatedItemStatus {

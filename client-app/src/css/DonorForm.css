@@ -13,7 +13,7 @@
 /* Center and style the heading */
 .heading-centered {
     text-align: center;
-    color: #66fcf1;
+    color: #66fcf1; /* Light teal color for heading */
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 20px;
@@ -51,7 +51,7 @@
     color: #333;
 }
 
-Image upload and preview styling
+/* Image upload and preview styling */
 .donor-form .image-upload-container {
     background-color: #0b0c10;
     padding: 15px;
@@ -101,61 +101,6 @@ Image upload and preview styling
     transform: translateY(-2px);
 }
 
-/* Form input fields */
-.donor-form input[type="file"],
-.donor-form input[type="text"],
-.donor-form select {
-    background-color: #0b0c10;
-    color: #66fcf1;
-    padding: 10px;
-    border: 1px solid #66fcf1;
-    border-radius: 6px;
-    margin-bottom: 15px;
-}
-
-/* Image preview container */
-.image-preview-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-top: 10px;
-}
-
-/* Single image preview */
-.preview-item {
-    position: relative;
-}
-
-.preview-image {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 8px;
-    transition: transform 0.3s ease;
-}
-
-.preview-image:hover {
-    transform: scale(1.05);
-}
-
-/* Remove button for images */
-.remove-image-button {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background-color: rgba(255, 0, 0, 0.7);
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    padding: 4px;
-    cursor: pointer;
-    font-size: 10px;
-}
-
-.remove-image-button:hover {
-    background-color: rgba(255, 0, 0, 0.9);
-}
-
 /* Email Opt-in checkbox section */
 .donor-form .form-field input[type='checkbox'] {
     transform: scale(1.2);
@@ -182,7 +127,7 @@ Image upload and preview styling
     transition:
         background-color 0.3s ease,
         transform 0.2s ease;
-    margin-right: 20px;
+    margin-right: 20px; /* Space between Add Donor and Refresh buttons */
 }
 
 .donor-form .refresh-button {
@@ -228,4 +173,47 @@ Image upload and preview styling
     color: red;
     margin-left: 2px;
     font-weight: bold;
+}
+
+/* Image preview container */
+.image-preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+/* Single image preview */
+.preview-item {
+    position: relative;
+}
+
+.preview-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.preview-image:hover {
+    transform: scale(1.05);
+}
+
+/* Remove button for images */
+.remove-image-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(255, 0, 0, 0.7);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    padding: 4px;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+.remove-image-button:hover {
+    background-color: rgba(255, 0, 0, 0.9);
 }

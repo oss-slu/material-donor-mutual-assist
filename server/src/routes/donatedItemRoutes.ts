@@ -2,65 +2,36 @@ import { Router, Request, Response } from 'express';
 import prisma from '../prismaClient'; // Import Prisma client
 import { donatedItemValidator } from '../validators/donatedItemValidator'; // Import the validator
 import { date } from 'joi';
-import multer from 'multer';
 
 const router = Router();
 
-// Set up multer for file uploads
-const upload = multer({
-    limits: { fileSize: 5 * 1024 * 1024 }, // Set limit for each file to 5 MB
-});
-
 // POST /donatedItem - Create a new DonatedItem
-router.post(
-    '/',
-    upload.array('images', 5),
-    donatedItemValidator,
-    async (req: Request, res: Response) => {
-        try {
-            const { dateDonated, donorId, programId, ...rest } = req.body;
-            // Convert donorId and programId to integers
-            const donorIdInt = parseInt(donorId, 10);
-            const programIdInt = parseInt(programId, 10);
+router.post('/', donatedItemValidator, async (req: Request, res: Response) => {
+    try {
+        const { dateDonated, donorId, programId, ...rest } = req.body;
+        // Convert donorId and programId to integers
+        const donorIdInt = parseInt(donorId, 10);
+        const programIdInt = parseInt(programId, 10);
 
-            const dateDonatedDateTime = new Date(dateDonated);
-            dateDonatedDateTime.setUTCHours(0, 0, 0, 0); // Set time to 00:00:00 UTC
+        const dateDonatedDateTime = new Date(dateDonated);
+        dateDonatedDateTime.setUTCHours(0, 0, 0, 0); // Set time to 00:00:00 UTC
 
-            // Prepare an array to store image file paths or data
-            const imagesData =
-                (req.files as Express.Multer.File[])
-                    ?.map((file: Express.Multer.File) => ({
-                        url: file.path, // Assuming your Prisma image model has a `url` field
-                    }))
-                    .filter(image => image.url) || []; // Filter out any undefined or invalid image URLs
-
-            // Prepare an array to store image file paths or data
-            const imageUrls =
-                (req.files as Express.Multer.File[])
-                    ?.map((file: Express.Multer.File) => file.path) // Map file paths
-                    .filter(url => url !== undefined) || []; // Filter out any undefined values
-
-            const newItem = await prisma.donatedItem.create({
-                data: {
-                    ...rest, //spread the rest of the fields
-                    dateDonated: dateDonatedDateTime,
-                    donorId: donorIdInt, // Pass integer value
-                    programId: programIdInt, // Pass integer value
-                    imageUrls: imageUrls,
-                    // dateDonated: new Date(dateDonated),
-                    // dateDonated: new Date(dateDonated).setUTCHours(0,0,0,0), // Set time to 00:00:00 UTC
-                },
-            });
-            console.log('Request Body:', req.body);
-            console.log('Uploaded Files:', req.files);
-            console.log('New donated item created:', newItem);
-            res.status(201).json(newItem);
-        } catch (error) {
-            console.error('Error creating donated item:', error);
-            res.status(500).json({ message: 'Error creating donated item' });
-        }
-    },
-);
+        const newItem = await prisma.donatedItem.create({
+            data: {
+                ...rest, //spread the rest of the fields
+                dateDonated: dateDonatedDateTime,
+                donorId: donorIdInt, // Pass integer value
+                programId: programIdInt, // Pass integer value
+            },
+        });
+        console.log('Request Body:', req.body);
+        console.log('New donated item created:', newItem);
+        res.status(201).json(newItem);
+    } catch (error) {
+        console.error('Error creating donated item:', error);
+        res.status(500).json({ message: 'Error creating donated item' });
+    }
+});
 
 // GET /donatedItem - Fetch all donated items
 router.get('/', async (req: Request, res: Response) => {
