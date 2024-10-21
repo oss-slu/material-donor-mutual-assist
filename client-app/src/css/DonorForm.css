@@ -73,7 +73,9 @@
     max-height: 100px;
     border-radius: 8px;
     object-fit: cover;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
 .donor-form .image-preview img:hover {
@@ -93,7 +95,9 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition:
+        background-color 0.3s ease,
+        transform 0.2s ease;
 }
 
 .donor-form .delete-image-btn:hover {

@@ -181,7 +181,6 @@ const NewItemForm: React.FC = () => {
         setSuccessMessage(null);
     };
 
-
     // Validation for individual fields
     const validateField = (name: string, value: any) => {
         const requiredFields = [

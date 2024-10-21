@@ -17,5 +17,4 @@ const mockPrismaClient = {
     },
 };
 
-
 export default mockPrismaClient;

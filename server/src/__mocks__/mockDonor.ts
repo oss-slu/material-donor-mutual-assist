@@ -8,5 +8,5 @@ export const newDonor = {
     state: 'Missouri',
     city: 'St. Louis',
     zipcode: '63108',
-    emailOptIn: false
+    emailOptIn: false,
 };

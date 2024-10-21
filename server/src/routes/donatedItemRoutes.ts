@@ -41,8 +41,8 @@ router.get('/', async (req: Request, res: Response) => {
         const items = await prisma.donatedItem.findMany({
             include: {
                 statuses: true, // Include related status updates
-                program:true,
-                donor:true,
+                program: true,
+                donor: true,
             },
         });
         res.json(items);
@@ -77,7 +77,6 @@ router.put(
             console.error('Error updating donated item details:', error);
             res.status(500).json({
                 message: 'Error updating donated item details',
-                
             });
         }
     },

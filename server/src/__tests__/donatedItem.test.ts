@@ -4,7 +4,7 @@ import donatedItemRoutes from '../routes/donatedItemRoutes';
 import mockPrismaClient from '../__mocks__/mockPrismaClient';
 import { newProgram } from '../__mocks__/mockProgram';
 import { newDonor } from '../__mocks__/mockDonor';
-import { updateItem,newItem } from '../__mocks__/mockDonatedItem';
+import { updateItem, newItem } from '../__mocks__/mockDonatedItem';
 
 const app = express();
 app.use(express.json());
@@ -16,8 +16,14 @@ describe('DonatedItem API Tests', () => {
         // Setup mock responses
         mockPrismaClient.program.findUnique.mockResolvedValue(newProgram);
         mockPrismaClient.donor.findUnique.mockResolvedValue(newDonor);
-        mockPrismaClient.donatedItem.create.mockResolvedValue({ id: 1, ...newItem });
-        mockPrismaClient.donatedItem.update.mockResolvedValue({ id: 1, ...updateItem });
+        mockPrismaClient.donatedItem.create.mockResolvedValue({
+            id: 1,
+            ...newItem,
+        });
+        mockPrismaClient.donatedItem.update.mockResolvedValue({
+            id: 1,
+            ...updateItem,
+        });
     });
 
     // Test POST /donatedItem
@@ -25,29 +31,33 @@ describe('DonatedItem API Tests', () => {
         const response = await request(app).post('/donatedItem').send(newItem);
         expect(response.status).toBe(201);
         expect(mockPrismaClient.donatedItem.create).toHaveBeenCalled();
-    
     });
 
     it('handles errors when the provided Program or Donor does not exist', async () => {
-        const programId = 99; 
+        const programId = 99;
         const donorId = 29;
         mockPrismaClient.program.findUnique.mockResolvedValue(null);
         mockPrismaClient.donor.findUnique.mockResolvedValue(null);
-    
-        const response = await request(app).post('/donatedItem').send({
-            ...newItem,
-            programId,
-            donorId,
-            dateDonated: new Date().toISOString()
-        });
-        expect(response.status).toBe(400);
-        expect(response.body.error).toContain(`Donor with ID: ${donorId} does not exist.`);
 
+        const response = await request(app)
+            .post('/donatedItem')
+            .send({
+                ...newItem,
+                programId,
+                donorId,
+                dateDonated: new Date().toISOString(),
+            });
+        expect(response.status).toBe(400);
+        expect(response.body.error).toContain(
+            `Donor with ID: ${donorId} does not exist.`,
+        );
     });
 
     // Test PUT /donatedItem/details/{id}
     it('updates donated item details correctly', async () => {
-        const response = await request(app).put('/donatedItem/details/1').send(updateItem);
+        const response = await request(app)
+            .put('/donatedItem/details/1')
+            .send(updateItem);
         expect(response.status).toBe(200);
         expect(mockPrismaClient.donatedItem.update).toHaveBeenCalled();
         expect(response.body.itemType).toBe(updateItem.itemType);
@@ -60,12 +70,16 @@ describe('DonatedItem API Tests', () => {
         const donorId = 19;
         const programId = 99;
 
-        const response = await request(app).put('/donatedItem/details/1').send({
-            ...updateItem,
-            donorId,
-            programId
-        });
+        const response = await request(app)
+            .put('/donatedItem/details/1')
+            .send({
+                ...updateItem,
+                donorId,
+                programId,
+            });
         expect(response.status).toBe(400);
-        expect(response.body.error).toContain(`Donor with ID: ${donorId} does not exist.`);
+        expect(response.body.error).toContain(
+            `Donor with ID: ${donorId} does not exist.`,
+        );
     });
 });

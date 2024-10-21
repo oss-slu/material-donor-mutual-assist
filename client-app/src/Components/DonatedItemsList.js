@@ -295,7 +295,6 @@ function DonatedItemsList() {
                         </tr>
                     </thead>
                     <tbody>
-                        
                         {(filteredItems.length > 0
                             ? filteredItems
                             : donatedItems
@@ -384,4 +383,3 @@ function DonatedItemsList() {
 }
 
 export default DonatedItemsList;
-
