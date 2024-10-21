@@ -1,5 +1,6 @@
 import React from 'react';
 
+// If this ever gets updated to not mimic the about page, please update the code in Navbar.tsx that bolds the about page when directed here
 export default function Home() {
     return (
         <div className="bg-dark text-white p-5">

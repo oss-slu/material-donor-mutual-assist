@@ -129,13 +129,7 @@ function DonatedItemsList() {
         setAssignProgramClicked(!assignProgramClicked);
     };
 
-    const handleAddDonationClick = () => {
-        // Navigate to the DonationForm page
-        navigate('/donation-form');
-    };
-
     const handleAddNewDonationClick = () => {
-        // Navigate to NewItemForm page
         navigate('/adddonation');
     };
 

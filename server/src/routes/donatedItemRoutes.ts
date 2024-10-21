@@ -1,6 +1,8 @@
 import { Router, Request, Response } from 'express';
 import prisma from '../prismaClient'; // Import Prisma client
 import { donatedItemValidator } from '../validators/donatedItemValidator'; // Import the validator
+import { validateDonor } from '../services/donorService';
+import { validateProgram } from '../services/programService';
 import { date } from 'joi';
 
 const router = Router();
@@ -39,6 +41,8 @@ router.get('/', async (req: Request, res: Response) => {
         const items = await prisma.donatedItem.findMany({
             include: {
                 statuses: true, // Include related status updates
+                program:true,
+                donor:true,
             },
         });
         res.json(items);
@@ -54,6 +58,15 @@ router.put(
     donatedItemValidator,
     async (req: Request, res: Response) => {
         try {
+            try {
+                await validateDonor(req.body.donorId);
+                await validateProgram(req.body.programId);
+            } catch (error) {
+                if (error instanceof Error) {
+                    return res.status(400).json({ error: error.message });
+                }
+            }
+
             const updatedItem = await prisma.donatedItem.update({
                 where: { id: Number(req.params.id) },
                 data: { ...req.body, lastUpdated: new Date() },
@@ -64,6 +77,7 @@ router.put(
             console.error('Error updating donated item details:', error);
             res.status(500).json({
                 message: 'Error updating donated item details',
+                
             });
         }
     },

@@ -21,6 +21,7 @@ router.get('/', async (req: Request, res: Response) => {
         const donors = await prisma.donor.findMany();
         res.json(donors);
     } catch (error) {
+        console.error('Error fetching donor:', error);
         res.status(500).json({ message: 'Error fetching donors' });
     }
 });
