@@ -6,9 +6,19 @@ export const donatedItemValidator = (
     res: Response,
     next: NextFunction,
 ) => {
-    const { error } = donatedItemSchema.validate(req.body);
+    const { error } = donatedItemSchema.validate(req.body, {
+        abortEarly: false,
+    });
     if (error) {
-        return res.status(400).json({ message: error.details[0].message });
+        return res.status(400).json({
+            message: error.details.map(detail => detail.message).join(', '), // Return all error messages
+        });
+    }
+    // Ensure that images were uploaded if expected
+    if (!req.files || req.files.length === 0) {
+        return res
+            .status(400)
+            .json({ message: 'At least one image must be uploaded.' });
     }
     next();
 };

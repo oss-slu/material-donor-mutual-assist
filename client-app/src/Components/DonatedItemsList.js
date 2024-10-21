@@ -23,7 +23,29 @@ function DonatedItemsList() {
     const [selectedProgram, setSelectedProgram] = useState('');
     const [assignProgramClicked, setAssignProgramClicked] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [donatedItems, setDonatedItems] = useState([]); // Initialize as an empty array
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchDonatedItems = async () => {
+            try {
+                const response = await fetch(
+                    '${process.env.REACT_APP_BACKEND_API_BASE_URL}/donatedItem',
+                ); // Adjust the URL as needed
+                const data = await response.json();
+                console.log('Fetched Data:', data); // Check if the data looks correct
+                setDonatedItems(data); // Assuming the API returns an array of donated items
+            } catch (error) {
+                console.error('Error fetching donated items:', error);
+            }
+        };
+        console.log('Donated Items:', donatedItems);
+
+        fetchDonatedItems();
+    }, []);
+    useEffect(() => {
+        console.log('Donated Items Updated:', donatedItems); // This will log whenever the state changes
+    }, [donatedItems]); // This useEffect will run every time donatedItems is updated
 
     const handleSearch = () => {
         const filtered = donatedItems.filter(
@@ -117,50 +139,6 @@ function DonatedItemsList() {
         navigate('/adddonation');
     };
 
-    // Sample data for demonstration
-    const [donatedItems, setDonatedItems] = useState([
-        {
-            id: 811253,
-            name: 'Bicycle',
-            donor: 'Mary',
-            date: '2024-02-25',
-            program: 'Not Assigned',
-            status: ItemStatus.DONATED,
-        },
-        {
-            id: 811249,
-            name: 'Computer',
-            donor: 'James',
-            date: '2024-02-06',
-            program: 'Not Assigned',
-            status: ItemStatus.IN_STORAGE,
-        },
-        {
-            id: 811247,
-            name: 'Computer',
-            donor: 'Vivian',
-            date: '2024-01-26',
-            program: 'Not Assigned',
-            status: ItemStatus.REFURBISHED,
-        },
-        {
-            id: 811246,
-            name: 'Bicycle',
-            donor: 'Elizabeth',
-            date: '2024-01-21',
-            program: 'Not Assigned',
-            status: ItemStatus.SOLD,
-        },
-        {
-            id: 811240,
-            name: 'Bicycle',
-            donor: 'Peter',
-            date: '2024-01-13',
-            program: 'Not Assigned',
-            status: ItemStatus.RECEIVED,
-        },
-        // Add more items here...
-    ]);
     const downloadBarcode = id => {
         const barcodeElement = document.getElementById(`barcode-${id}`);
         html2canvas(barcodeElement)
@@ -234,8 +212,15 @@ function DonatedItemsList() {
                                 <option value="" disabled selected>
                                     Filter by Item Name
                                 </option>
-                                <option value="Bicycle">Bicycle</option>
-                                <option value="Computer">Computer</option>
+                                {Array.from(
+                                    new Set(
+                                        donatedItems.map(item => item.name),
+                                    ),
+                                ).map(name => (
+                                    <option key={name} value={name}>
+                                        {name}
+                                    </option>
+                                ))}
                             </select>
 
                             {/* Filter by Program */}
@@ -261,29 +246,19 @@ function DonatedItemsList() {
                                 <option value="" disabled selected>
                                     Filter by Status
                                 </option>
-                                <option value={ItemStatus.DONATED}>
-                                    Donated
-                                </option>
-                                <option value={ItemStatus.IN_STORAGE}>
-                                    In Storage Facility
-                                </option>
-                                <option value={ItemStatus.REFURBISHED}>
-                                    Refurbished
-                                </option>
-                                <option value={ItemStatus.RECEIVED}>
-                                    Received
-                                </option>
-                                <option value={ItemStatus.SOLD}>
-                                    Item Sold
-                                </option>
+                                {Object.values(ItemStatus).map(status => (
+                                    <option key={status} value={status}>
+                                        {status}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                     </div>
                 </div>
 
-                <div class="div-updateprogram">
+                <div className="div-updateprogram">
                     {assignProgramClicked && (
-                        <div class="div-addprogram">
+                        <div className="div-addprogram">
                             <select
                                 value={selectedProgram}
                                 onChange={handleProgramChange}
@@ -326,45 +301,33 @@ function DonatedItemsList() {
                         </tr>
                     </thead>
                     <tbody>
+                        
                         {(filteredItems.length > 0
                             ? filteredItems
                             : donatedItems
                         ).map((item, index) => (
                             <tr key={item.id}>
                                 <td>{index + 1}</td>
-                                <td>
-                                    <Link
-                                        to={`/item/${item.id}`}
-                                        state={{ itemInfo: item }}
-                                    >
-                                        {item.id}
-                                    </Link>
-                                </td>
+                                <td>{item.id}</td>
                                 <td>{item.name}</td>
                                 <td>{item.donor}</td>
                                 <td>{item.date}</td>
                                 <td>{item.program}</td>
                                 <td>{item.status}</td>
-
                                 <td>
                                     <div
+                                        id={`barcode-${item.id}`}
                                         onClick={() =>
                                             handleBarcodeClick(item.id)
                                         }
                                     >
-                                        <div id={`barcode-${item.id}`}>
-                                            <Barcode
-                                                value={item.id.toString()}
-                                            />
-                                        </div>
-                                        <button
-                                            onClick={() =>
-                                                downloadBarcode(item.id)
-                                            }
-                                        >
-                                            Download Barcode
-                                        </button>
+                                        <Barcode value={item.id.toString()} />
                                     </div>
+                                    <button
+                                        onClick={() => downloadBarcode(item.id)}
+                                    >
+                                        Download Barcode
+                                    </button>
                                 </td>
                                 {assignProgramClicked && (
                                     <td>
@@ -384,33 +347,47 @@ function DonatedItemsList() {
                     </tbody>
                 </table>
 
+                {/* Modal for displaying item details */}
                 <Modal
                     isOpen={modalIsOpen}
                     onRequestClose={() => setModalIsOpen(false)}
+                    contentLabel="Item Details"
                 >
-                    <h2>Details</h2>
+                    <h2>Item Details</h2>
                     {selectedItemDetails && (
                         <div>
-                            <p>Item ID: {selectedItemDetails.id}</p>
-                            <p>Item Name: {selectedItemDetails.name}</p>
-                            <p>Donor Name: {selectedItemDetails.donor}</p>
-                            <p>Donation Date: {selectedItemDetails.date}</p>
-                            <p>Program: {selectedItemDetails.program}</p>
-                            <p>Status: {selectedItemDetails.status}</p>
+                            <p>
+                                <strong>Item ID:</strong>{' '}
+                                {selectedItemDetails.id}
+                            </p>
+                            <p>
+                                <strong>Name:</strong>{' '}
+                                {selectedItemDetails.name}
+                            </p>
+                            <p>
+                                <strong>Donor:</strong>{' '}
+                                {selectedItemDetails.donor}
+                            </p>
+                            <p>
+                                <strong>Date:</strong>{' '}
+                                {selectedItemDetails.date}
+                            </p>
+                            <p>
+                                <strong>Program:</strong>{' '}
+                                {selectedItemDetails.program}
+                            </p>
+                            <p>
+                                <strong>Status:</strong>{' '}
+                                {selectedItemDetails.status}
+                            </p>
                         </div>
                     )}
                     <button onClick={() => setModalIsOpen(false)}>Close</button>
                 </Modal>
-                <div
-                    style={{ position: 'fixed', bottom: '20px', right: '20px' }}
-                >
-                    <button onClick={() => handleAddDonationClick()}>
-                        <FaPlus size={24} />
-                    </button>
-                </div>
             </div>
         </>
     );
 }
 
 export default DonatedItemsList;
+

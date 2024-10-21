@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
-import { donatedItemStatusSchema } from '../schemas/donatedItems';
+import { donatedItemSchema } from '../schemas/donatedItems';
 
 export const donatedItemStatusValidator = (
     req: Request,
     res: Response,
     next: NextFunction,
 ) => {
-    const { error } = donatedItemStatusSchema.validate(req.body);
+    const { error } = donatedItemSchema.validate(req.body);
     if (error) {
         return res.status(400).json({ message: error.details[0].message });
     }
