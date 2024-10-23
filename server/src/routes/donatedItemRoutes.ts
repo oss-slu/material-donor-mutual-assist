@@ -28,6 +28,9 @@ router.post('/', donatedItemValidator, async (req: Request, res: Response) => {
             data: {
                 ...rest, //spread the rest of the fields
                 dateDonated: dateDonatedDateTime,
+                donor: true,
+                program: true,
+                statuses: true,
                 // dateDonated: new Date(dateDonated),
                 // dateDonated: new Date(dateDonated).setUTCHours(0,0,0,0), // Set time to 00:00:00 UTC
             },
