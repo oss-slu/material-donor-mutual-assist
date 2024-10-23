@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaSearch, FaPlus } from 'react-icons/fa';
-import Barcode from 'react-barcode';
+// import Barcode from 'react-barcode';
 import Modal from 'react-modal';
 import ItemStatus from '../constants/Enums.js';
 import '../css/AdminHeader.css';
@@ -13,94 +13,186 @@ function DonatedItemsList() {
     const [filteredItems, setFilteredItems] = useState([]);
     const [selectedItems, setSelectedItems] = useState([]);
     const [selectedItemDetails, setSelectedItemDetails] = useState(null);
-    const [programOptions, setProgramOptions] = useState([
-        'Youth Program',
-        'Retail Sales',
-        'Recycle',
-        'Earn-a-bicycle',
-        'Earn-a-computer',
-    ]);
+
+    const [donatedItems, setDonatedItems] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [programOptions, setProgramOptions] = useState([]);
     const [selectedProgram, setSelectedProgram] = useState('');
     const [assignProgramClicked, setAssignProgramClicked] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [itemTypes, setItemTypes] = useState(new Set());
+
     const navigate = useNavigate();
 
-    const handleSearch = () => {
-        const filtered = donatedItems.filter(
-            item =>
-                item.id.toString().includes(searchInput) ||
-                item.name.toLowerCase().includes(searchInput.toLowerCase()) ||
-                item.donor.toLowerCase().includes(searchInput.toLowerCase()) ||
-                item.date.includes(searchInput) ||
-                item.program
-                    .toLowerCase()
-                    .includes(searchInput.toLowerCase()) ||
-                (Object.values(ItemStatus).includes(item.status) &&
-                    item.status
-                        .toLowerCase()
-                        .includes(searchInput.toLowerCase())),
-        );
-        setFilteredItems(filtered);
-    };
-
-    const handleSort = event => {
-        // Implement your sorting logic here
-        console.log('Sorting by:', event.target.value);
-    };
-
-    const handleCheckboxChange = itemId => {
-        if (selectedItems.includes(itemId)) {
-            setSelectedItems(selectedItems.filter(id => id !== itemId));
-        } else {
-            setSelectedItems([...selectedItems, itemId]);
+    useEffect(() => {
+        fetchDonatedItems();
+        fetchProgramOptions();
+    }, []);
+  const fetchDonatedItems = async () => {
+      try {
+          setLoading(true);
+          const response = await fetch('http://localhost:4000/donatedItem');
+          if (!response.ok) {
+              throw new Error('Failed to fetch donated items');
+          }
+          const data = await response.json();
+          console.log('Full API response:', data);
+          // Log a sample item to check structure
+          if (data.length > 0) {
+              console.log('Sample item structure:', data[0]);
+          }
+          setDonatedItems(data);
+          setLoading(false);
+      } catch (err) {
+          console.error('Error details:', err);
+          setError(err.message);
+          setLoading(false);
+      }
+  };
+    const fetchProgramOptions = async () => {
+        try {
+            const response = await fetch('http://localhost:4000/program');
+            if (!response.ok) {
+                throw new Error('Failed to fetch program options');
+            }
+            const data = await response.json();
+            console.log('Program raw  Options:', data);
+            setProgramOptions(data);
+        } catch (err) {
+            console.error('Error fetching program options:', err);
         }
     };
+
+    useEffect(() => {
+        if (donatedItems.length > 0) {
+            console.log('Sample donated item structure:', donatedItems[0]);
+            console.log('Donor info:', donatedItems[0].donor);
+            console.log('Program info:', donatedItems[0].program);
+            console.log('Statuses:', donatedItems[0].statuses);
+        }
+    }, [donatedItems]);
+    useEffect(() => {
+        const types = new Set(donatedItems.map(item => item.itemType));
+        setItemTypes(types);
+    }, [donatedItems]);
+
+const handleSearch = () => {
+    const searchTerm = searchInput.toLowerCase();
+    const filtered = donatedItems.filter(
+        item =>
+            item.id.toString().includes(searchTerm) ||
+            item.itemType.toLowerCase().includes(searchTerm) ||
+            item.currentStatus.toLowerCase().includes(searchTerm) ||
+            new Date(item.dateDonated)
+                .toLocaleDateString()
+                .includes(searchTerm) ||
+            (item.donor?.name || '').toLowerCase().includes(searchTerm) ||
+            (item.program?.name || '').toLowerCase().includes(searchTerm),
+    );
+    setFilteredItems(filtered);
+};
+
+    useEffect(() => {
+        console.log('Current donatedItems:', donatedItems);
+        console.log('Current programOptions:', programOptions);
+    }, [donatedItems, programOptions]);
+
+  const handleSort = event => {
+      const value = event.target.value;
+      const sorted = [...donatedItems].sort((a, b) => {
+          const dateA = new Date(a.dateDonated);
+          const dateB = new Date(b.dateDonated);
+
+          if (value === 'dateAsc') {
+              return dateA - dateB;
+          } else if (value === 'dateDesc') {
+              return dateB - dateA;
+          }
+          return 0;
+      });
+      setFilteredItems(sorted);
+  };
+
+   const handleCheckboxChange = itemId => {
+       setSelectedItems(prevSelected => {
+           if (prevSelected.includes(itemId)) {
+               return prevSelected.filter(id => id !== itemId);
+           } else {
+               return [...prevSelected, itemId];
+           }
+       });
+   };
 
     const handleProgramChange = event => {
         setSelectedProgram(event.target.value);
     };
 
-    const handleBarcodeClick = itemId => {
-        const selectedItem = donatedItems.find(item => item.id === itemId);
-        setSelectedItemDetails(selectedItem);
-        setModalIsOpen(true);
-    };
+    const updatePrograms = async () => {
+        try {
+            const response = await fetch('http://localhost:4000/program', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    itemIds: selectedItems,
+                    programId: parseInt(selectedProgram),
+                }),
+            });
 
-    const updatePrograms = () => {
-        const updatedItems = donatedItems.map(item => {
-            if (selectedItems.includes(item.id)) {
-                return { ...item, program: selectedProgram };
+            if (!response.ok) {
+                throw new Error('Failed to update programs');
             }
-            return item;
-        });
-        setDonatedItems(updatedItems);
-        setSelectedItems([]); // Clear selected items after updating
-        setAssignProgramClicked(false); // Hide assign program section
+
+            await fetchDonatedItems();
+            setSelectedItems([]);
+            setAssignProgramClicked(false);
+        } catch (err) {
+            console.error('Error updating programs:', err);
+            setError('Failed to update programs. Please try again.');
+        }
     };
 
     // Function to filter items by item name
-    const handleFilterByItemName = event => {
-        const filtered = donatedItems.filter(
-            item => item.name === event.target.value,
-        );
-        setFilteredItems(filtered);
-    };
+   const handleFilterByItemName = event => {
+       if (!event.target.value) {
+           setFilteredItems([]);
+           return;
+       }
+       const filtered = donatedItems.filter(
+           item =>
+               item.itemType.toLowerCase() === event.target.value.toLowerCase(),
+       );
+       setFilteredItems(filtered);
+   };
 
     // Function to filter items by program
     const handleFilterByProgram = event => {
+        if (!event.target.value) {
+            setFilteredItems([]);
+            return;
+        }
+        const programId = parseInt(event.target.value);
         const filtered = donatedItems.filter(
-            item => item.program === event.target.value,
+            item => item.programId === programId,
         );
         setFilteredItems(filtered);
     };
 
     // Function to filter items by status
-    const handleFilterByStatus = event => {
-        const filtered = donatedItems.filter(
-            item => item.status === event.target.value,
-        );
-        setFilteredItems(filtered);
-    };
+   const handleFilterByStatus = event => {
+       if (!event.target.value) {
+           setFilteredItems([]);
+           return;
+       }
+       const filtered = donatedItems.filter(
+           item =>
+               item.currentStatus.toLowerCase() ===
+               event.target.value.toLowerCase(),
+       );
+       setFilteredItems(filtered);
+   };
 
     // Function to toggle assign program section
     const toggleAssignProgram = () => {
@@ -111,66 +203,13 @@ function DonatedItemsList() {
         navigate('/adddonation');
     };
 
-    // Sample data for demonstration
-    const [donatedItems, setDonatedItems] = useState([
-        {
-            id: 811253,
-            name: 'Bicycle',
-            donor: 'Mary',
-            date: '2024-02-25',
-            program: 'Not Assigned',
-            status: ItemStatus.DONATED,
-        },
-        {
-            id: 811249,
-            name: 'Computer',
-            donor: 'James',
-            date: '2024-02-06',
-            program: 'Not Assigned',
-            status: ItemStatus.IN_STORAGE,
-        },
-        {
-            id: 811247,
-            name: 'Computer',
-            donor: 'Vivian',
-            date: '2024-01-26',
-            program: 'Not Assigned',
-            status: ItemStatus.REFURBISHED,
-        },
-        {
-            id: 811246,
-            name: 'Bicycle',
-            donor: 'Elizabeth',
-            date: '2024-01-21',
-            program: 'Not Assigned',
-            status: ItemStatus.SOLD,
-        },
-        {
-            id: 811240,
-            name: 'Bicycle',
-            donor: 'Peter',
-            date: '2024-01-13',
-            program: 'Not Assigned',
-            status: ItemStatus.RECEIVED,
-        },
-        // Add more items here...
-    ]);
-    const downloadBarcode = id => {
-        const barcodeElement = document.getElementById(`barcode-${id}`);
-        html2canvas(barcodeElement)
-            .then(canvas => {
-                const image = canvas.toDataURL('image/png');
-                const link = document.createElement('a');
-                link.href = image;
-                link.download = `barcode-${id}.png`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            })
-            .catch(err =>
-                console.error('Error downloading the barcode: ', err),
-            );
-    };
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
 
     return (
         <>
@@ -226,10 +265,13 @@ function DonatedItemsList() {
                                 onChange={handleFilterByItemName}
                             >
                                 <option value="" disabled selected>
-                                    Filter by Item Name
+                                    Filter by Item Type
                                 </option>
-                                <option value="Bicycle">Bicycle</option>
-                                <option value="Computer">Computer</option>
+                                {Array.from(itemTypes).map(type => (
+                                    <option key={type} value={type}>
+                                        {type}
+                                    </option>
+                                ))}
                             </select>
 
                             {/* Filter by Program */}
@@ -240,11 +282,15 @@ function DonatedItemsList() {
                                 <option value="" disabled selected>
                                     Filter by Program
                                 </option>
-                                {programOptions.map(option => (
-                                    <option key={option} value={option}>
-                                        {option}
-                                    </option>
-                                ))}
+                                {programOptions &&
+                                    programOptions.map(program => (
+                                        <option
+                                            key={program.id}
+                                            value={program.id}
+                                        >
+                                            {program.name}
+                                        </option>
+                                    ))}
                             </select>
 
                             {/* Filter by Status */}
@@ -277,29 +323,32 @@ function DonatedItemsList() {
 
                 <div class="div-updateprogram">
                     {assignProgramClicked && (
-                        <div class="div-addprogram">
+                        <div className="div-addprogram">
                             <select
                                 value={selectedProgram}
                                 onChange={handleProgramChange}
                             >
                                 <option value="">Select Program</option>
-                                {programOptions.map(option => (
-                                    <option key={option} value={option}>
-                                        {option}
-                                    </option>
-                                ))}
+                                {programOptions &&
+                                    programOptions.map(program => (
+                                        <option
+                                            key={program.id}
+                                            value={program.id}
+                                        >
+                                            {program.name}
+                                        </option>
+                                    ))}
                             </select>
                             <button onClick={updatePrograms}>
                                 Update Programs
                             </button>
                         </div>
-                    )}
+                    )}{' '}
                     <button onClick={toggleAssignProgram}>
                         {assignProgramClicked
                             ? 'Hide Assign Program'
                             : 'Assign Program'}
                     </button>
-
                     <button onClick={handleAddNewDonationClick}>
                         Add New Donation
                     </button>
@@ -309,13 +358,12 @@ function DonatedItemsList() {
                     <thead>
                         <tr>
                             <th>S.No</th>
-                            <th>Item_ID</th>
-                            <th>Item_Name</th>
-                            <th>Donor Name</th>
-                            <th>Donation Date</th>
-                            <th>Program</th>
+                            <th>Item ID</th>
+                            <th>Item Name</th>
                             <th>Status</th>
-                            <th>Barcode</th>
+                            <th>Donation Date</th>
+                            <th>Donor Name</th>
+                            <th>Program</th>
                             {assignProgramClicked && <th>Select</th>}
                         </tr>
                     </thead>
@@ -334,31 +382,18 @@ function DonatedItemsList() {
                                         {item.id}
                                     </Link>
                                 </td>
-                                <td>{item.name}</td>
-                                <td>{item.donor}</td>
-                                <td>{item.date}</td>
-                                <td>{item.program}</td>
-                                <td>{item.status}</td>
-
+                                <td>{item.itemType}</td>
+                                <td>{item.currentStatus}</td>
                                 <td>
-                                    <div
-                                        onClick={() =>
-                                            handleBarcodeClick(item.id)
-                                        }
-                                    >
-                                        <div id={`barcode-${item.id}`}>
-                                            <Barcode
-                                                value={item.id.toString()}
-                                            />
-                                        </div>
-                                        <button
-                                            onClick={() =>
-                                                downloadBarcode(item.id)
-                                            }
-                                        >
-                                            Download Barcode
-                                        </button>
-                                    </div>
+                                    {new Date(
+                                        item.dateDonated,
+                                    ).toLocaleDateString()}
+                                </td>
+                                <td>{item.donor ? item.donor.firstName : 'N/A'}</td>
+                                <td>
+                                    {item.program
+                                        ? item.program.name
+                                        : 'Not Assigned'}
                                 </td>
                                 {assignProgramClicked && (
                                     <td>
@@ -382,15 +417,59 @@ function DonatedItemsList() {
                     isOpen={modalIsOpen}
                     onRequestClose={() => setModalIsOpen(false)}
                 >
-                    <h2>Details</h2>
+                    <h2>Item Details</h2>
                     {selectedItemDetails && (
                         <div>
                             <p>Item ID: {selectedItemDetails.id}</p>
-                            <p>Item Name: {selectedItemDetails.name}</p>
-                            <p>Donor Name: {selectedItemDetails.donor}</p>
-                            <p>Donation Date: {selectedItemDetails.date}</p>
-                            <p>Program: {selectedItemDetails.program}</p>
-                            <p>Status: {selectedItemDetails.status}</p>
+                            <p>Item Type: {selectedItemDetails.itemType}</p>
+                            <p>
+                                Current Status:{' '}
+                                {selectedItemDetails.currentStatus}
+                            </p>
+                            <p>
+                                Date Donated:{' '}
+                                {new Date(
+                                    selectedItemDetails.dateDonated,
+                                ).toLocaleDateString()}
+                            </p>
+                            <p>
+                                Last Updated:{' '}
+                                {new Date(
+                                    selectedItemDetails.lastUpdated,
+                                ).toLocaleDateString()}
+                            </p>
+                            <p>
+                                Donor Name:{' '}
+                                {selectedItemDetails.donor
+                                    ? selectedItemDetails.donor.name
+                                    : 'N/A'}
+                            </p>
+                            <p>
+                                Program:{' '}
+                                {selectedItemDetails.program
+                                    ? selectedItemDetails.program.name
+                                    : 'Not Assigned'}
+                            </p>
+
+                            {/* Show status history if needed */}
+                            {selectedItemDetails.statuses &&
+                                selectedItemDetails.statuses.length > 0 && (
+                                    <>
+                                        <h3>Status History</h3>
+                                        <ul>
+                                            {selectedItemDetails.statuses.map(
+                                                (status, index) => (
+                                                    <li key={index}>
+                                                        {status.status} -{' '}
+                                                        {new Date(
+                                                            status.date,
+                                                        ).toLocaleDateString()}
+                                                    </li>
+                                                ),
+                                            )}
+                                        </ul>
+                                    </>
+                                )}
                         </div>
                     )}
                     <button onClick={() => setModalIsOpen(false)}>Close</button>
