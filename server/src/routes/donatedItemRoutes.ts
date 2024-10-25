@@ -1,23 +1,28 @@
 import { Router, Request, Response } from 'express';
+import multer from 'multer';
 import prisma from '../prismaClient'; // Import Prisma client
 import { donatedItemValidator } from '../validators/donatedItemValidator'; // Import the validator
 import { validateDonor } from '../services/donorService';
 import { validateProgram } from '../services/programService';
-import { date } from 'joi';
+import { uploadToAzure } from '../services/donatedItemService';
 
 const router = Router();
+const upload = multer({ storage: multer.memoryStorage() });
 
 // POST /donatedItem - Create a new DonatedItem
-router.post('/', donatedItemValidator, async (req: Request, res: Response) => {
+router.post('/', [upload.array('imageFiles'), donatedItemValidator], async (req: Request, res: Response) => {
     try {
-        
+        const imageFiles = req.files as Express.Multer.File[];
+        const donorId = parseInt(req.body.donorId);
+        const programId = parseInt(req.body.programId);
         const { dateDonated, ...rest } = req.body;
         
         try {
-            await validateDonor(req.body.donorId);
-            await validateProgram(req.body.programId);
+            await validateDonor(donorId);
+            await validateProgram(programId);
         } catch (error) {
             if (error instanceof Error) {
+                console.log('error', error)
                 return res.status(400).json({ error: error.message });
             }
         }
@@ -27,16 +32,24 @@ router.post('/', donatedItemValidator, async (req: Request, res: Response) => {
         const newItem = await prisma.donatedItem.create({
             data: {
                 ...rest, //spread the rest of the fields
+                donorId,
+                programId,
                 dateDonated: dateDonatedDateTime,
-                // dateDonated: new Date(dateDonated),
-                // dateDonated: new Date(dateDonated).setUTCHours(0,0,0,0), // Set time to 00:00:00 UTC
             },
         });
+
+        // upload images to Azure and get their filenames
+        const imageUrls = await Promise.all(imageFiles.map((file, index) => {
+            const formattedDate = new Date().toISOString();
+            return uploadToAzure(file, `item-${formattedDate}-${newItem.id}.jpg`);
+        }));
+
         const newStatus = await prisma.donatedItemStatus.create({
             data: {
                 statusType: 'Received',
                 dateModified: dateDonatedDateTime, // Use the same date as dateDonated
                 donatedItemId: newItem.id,
+                imageUrls: imageUrls
             },
         });
         

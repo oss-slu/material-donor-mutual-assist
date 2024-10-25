@@ -14,12 +14,15 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.19.1",
+    "@smcloudstore/azure-storage": "^0.2.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.20.0",
     "joi": "^17.13.3",
     "morgan": "^1.10.0",
-    "portfinder": "^1.0.32"
+    "portfinder": "^1.0.32",
+    "smcloudstore": "^0.2.1"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.7",
