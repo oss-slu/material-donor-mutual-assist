@@ -149,7 +149,7 @@ const DonatedItemsList: React.FC = () => {
     const updatePrograms = async (): Promise<void> => {
         try {
             const response = await fetch(
-                `${process.env.REACT_APP_BACKEND_API_BASE_URL}/program`,
+                `${process.env.REACT_APP_BACKEND_API_BASE_URL}program`,
                 {
                     method: 'PUT',
                     headers: {
