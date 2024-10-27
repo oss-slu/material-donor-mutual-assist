@@ -1,13 +1,16 @@
 .item-list {
-    width: 100%;
+    width: 90%;
     border-collapse: collapse;
+    margin: 0 auto; /* This will center the table horizontally */
+    
 }
 
 .item-list th,
 .item-list td {
     border: 1px solid #ddd;
     padding: 8px;
-    text-align: left;
+    text-align: center; /* Center text horizontally */
+    vertical-align: middle; /* Center text vertically */
 }
 
 .div-addprogram {
