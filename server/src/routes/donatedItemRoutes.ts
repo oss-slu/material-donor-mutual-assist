@@ -10,9 +10,8 @@ const router = Router();
 // POST /donatedItem - Create a new DonatedItem
 router.post('/', donatedItemValidator, async (req: Request, res: Response) => {
     try {
-        
         const { dateDonated, ...rest } = req.body;
-        
+
         try {
             await validateDonor(req.body.donorId);
             await validateProgram(req.body.programId);
@@ -42,13 +41,11 @@ router.post('/', donatedItemValidator, async (req: Request, res: Response) => {
                 donatedItemId: newItem.id,
             },
         });
-        
+
         res.status(201).json({
             donatedItem: newItem,
             donatedItemStatus: newStatus,
         });
-        
-     
     } catch (error) {
         console.error('Error creating donated item:', error);
         res.status(500).json({ message: 'Error creating donated item' });
@@ -61,8 +58,8 @@ router.get('/', async (req: Request, res: Response) => {
         const items = await prisma.donatedItem.findMany({
             include: {
                 statuses: true, // Include related status updates
-                program:true,
-                donor:true,
+                program: true,
+                donor: true,
             },
         });
         res.json(items);
@@ -97,7 +94,6 @@ router.put(
             console.error('Error updating donated item details:', error);
             res.status(500).json({
                 message: 'Error updating donated item details',
-                
             });
         }
     },

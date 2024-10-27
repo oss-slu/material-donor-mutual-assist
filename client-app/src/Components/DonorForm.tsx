@@ -92,7 +92,7 @@ const DonorForm: React.FC = () => {
         if (validateForm()) {
             try {
                 const response = await axios.post(
-                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}/donor`,
+                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}donor`,
                     formData,
                 );
                 if (response.status === 201) {
@@ -192,7 +192,7 @@ const DonorForm: React.FC = () => {
                 {renderFormField('State', 'state')}
                 {renderFormField('City', 'city')}
                 {renderFormField('Zip Code', 'zipcode')}
-              
+
                 <div className="form-field">
                     <label
                         htmlFor="emailOptIn"

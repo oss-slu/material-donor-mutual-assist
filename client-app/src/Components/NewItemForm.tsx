@@ -51,7 +51,7 @@ const NewItemForm: React.FC = () => {
         const fetchDonorEmails = async () => {
             try {
                 const response = await axios.get(
-                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}/donor`,
+                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}donor`,
                 );
                 const emailOptions = response.data.map((donor: any) => ({
                     value: donor.firstName,
@@ -67,7 +67,7 @@ const NewItemForm: React.FC = () => {
         const fetchPrograms = async () => {
             try {
                 const response = await axios.get(
-                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}/program`,
+                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}program`,
                 );
                 const programOptions = response.data.map((program: any) => ({
                     value: program.name,
@@ -196,16 +196,20 @@ const NewItemForm: React.FC = () => {
                 );
                 formDataToSubmit.append(
                     'donorId',
-                    formData.donorId !== null ? String(Number(formData.donorId)) : '',
+                    formData.donorId !== null
+                        ? String(Number(formData.donorId))
+                        : '',
                 );
                 formDataToSubmit.append(
                     'programId',
-                    formData.programId !== null ?String(Number(formData.programId)):'',
+                    formData.programId !== null
+                        ? String(Number(formData.programId))
+                        : '',
                 );
                 formDataToSubmit.append('dateDonated', formData.dateDonated);
 
                 const response = await axios.post(
-                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}/donatedItem`,
+                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}donatedItem`,
                     formDataToSubmit,
                     {
                         headers: {

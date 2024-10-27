@@ -45,14 +45,16 @@ const DonatedItemsList: React.FC = () => {
     const [searchInput, setSearchInput] = useState<string>('');
     const [filteredItems, setFilteredItems] = useState<DonatedItem[]>([]);
     const [selectedItems, setSelectedItems] = useState<number[]>([]);
-    const [selectedItemDetails, setSelectedItemDetails] = useState<SelectedItemDetails | null>(null);
+    const [selectedItemDetails, setSelectedItemDetails] =
+        useState<SelectedItemDetails | null>(null);
 
     const [donatedItems, setDonatedItems] = useState<DonatedItem[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [programOptions, setProgramOptions] = useState<Program[]>([]);
     const [selectedProgram, setSelectedProgram] = useState<string>('');
-    const [assignProgramClicked, setAssignProgramClicked] = useState<boolean>(false);
+    const [assignProgramClicked, setAssignProgramClicked] =
+        useState<boolean>(false);
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
     const [itemTypes, setItemTypes] = useState<Set<string>>(new Set());
 
@@ -62,7 +64,7 @@ const DonatedItemsList: React.FC = () => {
         try {
             setLoading(true);
             const response = await fetch(
-                `${process.env.REACT_APP_BACKEND_API_BASE_URL}donatedItem`,
+                `${process.env.REACT_APP_BACKEND_API_BASE_URL}/donatedItem`,
             );
             if (!response.ok) {
                 throw new Error('Failed to fetch donated items');
@@ -81,7 +83,7 @@ const DonatedItemsList: React.FC = () => {
     const fetchProgramOptions = async (): Promise<void> => {
         try {
             const response = await fetch(
-                `${process.env.REACT_APP_BACKEND_API_BASE_URL}program`,
+                `${process.env.REACT_APP_BACKEND_API_BASE_URL}/program`,
             );
             if (!response.ok) {
                 throw new Error('Failed to fetch program options');
@@ -106,13 +108,16 @@ const DonatedItemsList: React.FC = () => {
 
     const handleSearch = (): void => {
         const searchTerm = searchInput.toLowerCase();
-        const filtered = donatedItems.filter(item =>
-            item.id.toString().includes(searchTerm) ||
-            item.itemType.toLowerCase().includes(searchTerm) ||
-            item.currentStatus.toLowerCase().includes(searchTerm) ||
-            new Date(item.dateDonated).toLocaleDateString().includes(searchTerm) ||
-            (item.donor?.name || '').toLowerCase().includes(searchTerm) ||
-            (item.program?.name || '').toLowerCase().includes(searchTerm)
+        const filtered = donatedItems.filter(
+            item =>
+                item.id.toString().includes(searchTerm) ||
+                item.itemType.toLowerCase().includes(searchTerm) ||
+                item.currentStatus.toLowerCase().includes(searchTerm) ||
+                new Date(item.dateDonated)
+                    .toLocaleDateString()
+                    .includes(searchTerm) ||
+                (item.donor?.name || '').toLowerCase().includes(searchTerm) ||
+                (item.program?.name || '').toLowerCase().includes(searchTerm),
         );
         setFilteredItems(filtered);
     };
@@ -143,21 +148,26 @@ const DonatedItemsList: React.FC = () => {
         });
     };
 
-    const handleProgramChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
+    const handleProgramChange = (
+        event: React.ChangeEvent<HTMLSelectElement>,
+    ): void => {
         setSelectedProgram(event.target.value);
     };
-     const handleBarcodeClick = (itemId: number): void => {
-         const selectedItem = donatedItems.find(item => item.id === itemId);
-         if (selectedItem) {
-             setSelectedItemDetails({ ...selectedItem, statuses: selectedItem.statuses || [] });
-         }
-         setModalIsOpen(true);
-     };
+    const handleBarcodeClick = (itemId: number): void => {
+        const selectedItem = donatedItems.find(item => item.id === itemId);
+        if (selectedItem) {
+            setSelectedItemDetails({
+                ...selectedItem,
+                statuses: selectedItem.statuses || [],
+            });
+        }
+        setModalIsOpen(true);
+    };
 
     const updatePrograms = async (): Promise<void> => {
         try {
             const response = await fetch(
-                `${process.env.REACT_APP_BACKEND_API_BASE_URL}program`,
+                `${process.env.REACT_APP_BACKEND_API_BASE_URL}/program`,
                 {
                     method: 'PUT',
                     headers: {
@@ -184,34 +194,46 @@ const DonatedItemsList: React.FC = () => {
         }
     };
 
-    const handleFilterByItemName = (event: React.ChangeEvent<HTMLSelectElement>): void => {
+    const handleFilterByItemName = (
+        event: React.ChangeEvent<HTMLSelectElement>,
+    ): void => {
         if (!event.target.value) {
             setFilteredItems([]);
             return;
         }
         const filtered = donatedItems.filter(
-            item => item.itemType.toLowerCase() === event.target.value.toLowerCase()
+            item =>
+                item.itemType.toLowerCase() ===
+                event.target.value.toLowerCase(),
         );
         setFilteredItems(filtered);
     };
 
-    const handleFilterByProgram = (event: React.ChangeEvent<HTMLSelectElement>): void => {
+    const handleFilterByProgram = (
+        event: React.ChangeEvent<HTMLSelectElement>,
+    ): void => {
         if (!event.target.value) {
             setFilteredItems([]);
             return;
         }
         const programId = parseInt(event.target.value);
-        const filtered = donatedItems.filter(item => item.programId === programId);
+        const filtered = donatedItems.filter(
+            item => item.programId === programId,
+        );
         setFilteredItems(filtered);
     };
 
-    const handleFilterByStatus = (event: React.ChangeEvent<HTMLSelectElement>): void => {
+    const handleFilterByStatus = (
+        event: React.ChangeEvent<HTMLSelectElement>,
+    ): void => {
         if (!event.target.value) {
             setFilteredItems([]);
             return;
         }
         const filtered = donatedItems.filter(
-            item => item.currentStatus.toLowerCase() === event.target.value.toLowerCase()
+            item =>
+                item.currentStatus.toLowerCase() ===
+                event.target.value.toLowerCase(),
         );
         setFilteredItems(filtered);
     };

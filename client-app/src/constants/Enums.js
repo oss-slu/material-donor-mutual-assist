@@ -1,10 +1,9 @@
+const ItemStatus = Object.freeze({
+    DONATED: 'Donated',
+    IN_STORAGE: 'In Storage Facility',
+    REFURBISHED: 'Refurbished',
+    SOLD: 'Item Sold',
+    RECEIVED: 'Received',
+});
 
-const ItemStatus = {
-        DONATED: "DONATED",
-        IN_STORAGE: "IN_STORAGE",
-        REFURBISHED: "REFURBISHED",
-        RECEIVED: "RECEIVED",
-        SOLD: "SOLD"
-    };
-    export default ItemStatus;
-
+export default ItemStatus;
