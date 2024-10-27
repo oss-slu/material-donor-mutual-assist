@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaSearch, FaPlus } from 'react-icons/fa';
 import Modal from 'react-modal';
-import ItemStatus from '../constants/Enums';
 import '../css/AdminHeader.css';
 import '../css/DonatedItemsList.css';
 import html2canvas from 'html2canvas';
@@ -61,7 +60,9 @@ const DonatedItemsList: React.FC = () => {
     const fetchDonatedItems = async (): Promise<void> => {
         try {
             setLoading(true);
-            const response = await fetch('http://localhost:4000/donatedItem');
+            const response = await fetch(
+                `${process.env.REACT_APP_BACKEND_API_BASE_URL}donatedItem`,
+            );
             if (!response.ok) {
                 throw new Error('Failed to fetch donated items');
             }
@@ -78,7 +79,9 @@ const DonatedItemsList: React.FC = () => {
 
     const fetchProgramOptions = async (): Promise<void> => {
         try {
-            const response = await fetch('http://localhost:4000/program');
+            const response = await fetch(
+                `${process.env.REACT_APP_BACKEND_API_BASE_URL}program`,
+            );
             if (!response.ok) {
                 throw new Error('Failed to fetch program options');
             }
@@ -145,16 +148,19 @@ const DonatedItemsList: React.FC = () => {
 
     const updatePrograms = async (): Promise<void> => {
         try {
-            const response = await fetch('http://localhost:4000/program', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
+            const response = await fetch(
+                `${process.env.REACT_APP_BACKEND_API_BASE_URL}/program`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        itemIds: selectedItems,
+                        programId: parseInt(selectedProgram),
+                    }),
                 },
-                body: JSON.stringify({
-                    itemIds: selectedItems,
-                    programId: parseInt(selectedProgram),
-                }),
-            });
+            );
 
             if (!response.ok) {
                 throw new Error('Failed to update programs');
@@ -266,11 +272,8 @@ const DonatedItemsList: React.FC = () => {
 
                         <select className="filter-options" onChange={handleFilterByStatus}>
                             <option value="" disabled>Filter by Status</option>
-                            <option value={ItemStatus.DONATED}>Donated</option>
-                            <option value={ItemStatus.IN_STORAGE}>In Storage Facility</option>
-                            <option value={ItemStatus.REFURBISHED}>Refurbished</option>
-                            <option value={ItemStatus.RECEIVED}>Received</option>
-                            <option value={ItemStatus.SOLD}>Item Sold</option>
+                            <option value="RECEIVED">Received</option>
+                            
                         </select>
                     </div>
                 </div>
