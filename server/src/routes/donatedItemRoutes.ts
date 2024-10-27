@@ -54,13 +54,40 @@ router.post('/', donatedItemValidator, async (req: Request, res: Response) => {
 });
 
 // GET /donatedItem - Fetch all donated items
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
     try {
+    const donatedItem = await prisma.donatedItem.findMany({
+        include: {
+            donor: true, // Include all donor details
+            program: true, // Include all program details
+            statuses: { 
+                orderBy: {
+                    dateModified: 'asc' // Ensure they are ordered chronologically
+                }
+            }
+        }
+    });
+    res.json(donatedItem);
+} catch (error) {
+    if (error instanceof Error) {
+        console.error('Error fetching donated item:', error.message);
+        res.status(error.message.includes('must be an integer') ? 400 : 404).json({ error: error.message });
+    } else {
+        console.error('Error fetching donated item:', 'Unknown error');
+        res.status(500).json({ error: 'Unknown error' });
+    }
+    
+}
+});
+
+
+// GET /donatedItem - Fetch donated item by ID
+router.get('/:id', async (req: Request, res: Response) => {
         const donatedItemId = parseInt(req.params.id);
         if (isNaN(donatedItemId)) {
             return res.status(400).json({ error: "Donated item ID must be an integer." });
         }
-
+        try {
         const donatedItem = await prisma.donatedItem.findUnique({
             where: { id: donatedItemId },
             include: {
@@ -77,7 +104,6 @@ router.get('/:id', async (req: Request, res: Response) => {
         if (!donatedItem) {
             return res.status(404).json({ error: `Donated item with ID ${donatedItemId} not found` });
         }
-        
         res.json(donatedItem);
     } catch (error) {
         if (error instanceof Error) {
