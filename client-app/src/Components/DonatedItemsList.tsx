@@ -5,6 +5,7 @@ import Modal from 'react-modal';
 import '../css/AdminHeader.css';
 import '../css/DonatedItemsList.css';
 import html2canvas from 'html2canvas';
+import Barcode from 'react-barcode';
 
 // Define interfaces for our data structures
 interface Donor {
@@ -145,6 +146,13 @@ const DonatedItemsList: React.FC = () => {
     const handleProgramChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
         setSelectedProgram(event.target.value);
     };
+     const handleBarcodeClick = (itemId: number): void => {
+         const selectedItem = donatedItems.find(item => item.id === itemId);
+         if (selectedItem) {
+             setSelectedItemDetails({ ...selectedItem, statuses: selectedItem.statuses || [] });
+         }
+         setModalIsOpen(true);
+     };
 
     const updatePrograms = async (): Promise<void> => {
         try {
@@ -215,6 +223,26 @@ const DonatedItemsList: React.FC = () => {
     const handleAddNewDonationClick = (): void => {
         navigate('/adddonation');
     };
+    const downloadBarcode = (id: number) => {
+        const barcodeElement = document.getElementById(`barcode-${id}`);
+        if (barcodeElement) {
+            html2canvas(barcodeElement)
+                .then(canvas => {
+                    const image = canvas.toDataURL('image/png');
+                    const link = document.createElement('a');
+                    link.href = image;
+                    link.download = `barcode-${id}.png`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                })
+                .catch(err =>
+                    console.error('Error downloading the barcode: ', err),
+                );
+        } else {
+            console.error('Barcode element not found');
+        }
+    };
 
     if (loading) {
         return <div>Loading...</div>;
@@ -240,29 +268,46 @@ const DonatedItemsList: React.FC = () => {
                             type="text"
                             placeholder="Search using Item Id, Name, Donor, Date, Program, or Status"
                             value={searchInput}
-                            onChange={(e) => setSearchInput(e.target.value)}
+                            onChange={e => setSearchInput(e.target.value)}
                         />
-                        <button className="search-button" onClick={handleSearch}>
+                        <button
+                            className="search-button"
+                            onClick={handleSearch}
+                        >
                             <FaSearch />
                         </button>
                     </div>
 
                     <div className="dropdowns">
                         <select className="sort-options" onChange={handleSort}>
-                            <option value="" disabled defaultValue="">Sort</option>
+                            <option value="" disabled defaultValue="">
+                                Sort
+                            </option>
                             <option value="dateAsc">Date Ascending</option>
                             <option value="dateDesc">Date Descending</option>
                         </select>
 
-                        <select className="filter-options" onChange={handleFilterByItemName}>
-                            <option value="" disabled>Filter by Item Type</option>
+                        <select
+                            className="filter-options"
+                            onChange={handleFilterByItemName}
+                        >
+                            <option value="" disabled>
+                                Filter by Item Type
+                            </option>
                             {Array.from(itemTypes).map(type => (
-                                <option key={type} value={type}>{type}</option>
+                                <option key={type} value={type}>
+                                    {type}
+                                </option>
                             ))}
                         </select>
 
-                        <select className="filter-options" onChange={handleFilterByProgram}>
-                            <option value="" disabled>Filter by Program</option>
+                        <select
+                            className="filter-options"
+                            onChange={handleFilterByProgram}
+                        >
+                            <option value="" disabled>
+                                Filter by Program
+                            </option>
                             {programOptions.map(program => (
                                 <option key={program.id} value={program.id}>
                                     {program.name}
@@ -270,10 +315,14 @@ const DonatedItemsList: React.FC = () => {
                             ))}
                         </select>
 
-                        <select className="filter-options" onChange={handleFilterByStatus}>
-                            <option value="" disabled>Filter by Status</option>
+                        <select
+                            className="filter-options"
+                            onChange={handleFilterByStatus}
+                        >
+                            <option value="" disabled>
+                                Filter by Status
+                            </option>
                             <option value="RECEIVED">Received</option>
-                            
                         </select>
                     </div>
                 </div>
@@ -282,7 +331,10 @@ const DonatedItemsList: React.FC = () => {
             <div className="div-updateprogram">
                 {assignProgramClicked && (
                     <div className="div-addprogram">
-                        <select value={selectedProgram} onChange={handleProgramChange}>
+                        <select
+                            value={selectedProgram}
+                            onChange={handleProgramChange}
+                        >
                             <option value="">Select Program</option>
                             {programOptions.map(program => (
                                 <option key={program.id} value={program.id}>
@@ -290,13 +342,19 @@ const DonatedItemsList: React.FC = () => {
                                 </option>
                             ))}
                         </select>
-                        <button onClick={updatePrograms}>Update Programs</button>
+                        <button onClick={updatePrograms}>
+                            Update Programs
+                        </button>
                     </div>
                 )}
                 <button onClick={toggleAssignProgram}>
-                    {assignProgramClicked ? 'Hide Assign Program' : 'Assign Program'}
+                    {assignProgramClicked
+                        ? 'Hide Assign Program'
+                        : 'Assign Program'}
                 </button>
-                <button onClick={handleAddNewDonationClick}>Add New Donation</button>
+                <button onClick={handleAddNewDonationClick}>
+                    Add New Donation
+                </button>
             </div>
 
             <table className="item-list">
@@ -307,31 +365,64 @@ const DonatedItemsList: React.FC = () => {
                         <th>Item Name</th>
                         <th>Status</th>
                         <th>Donation Date</th>
-                        <th>Donor Name</th>
-                        <th>Program</th>
+                        {/* <th>Donor Name</th>
+                        <th>Program</th> */}
+                        <th>Barcode</th>
                         {assignProgramClicked && <th>Select</th>}
                     </tr>
                 </thead>
                 <tbody>
-                    {(filteredItems.length > 0 ? filteredItems : donatedItems).map((item, index) => (
+                    {(filteredItems.length > 0
+                        ? filteredItems
+                        : donatedItems
+                    ).map((item, index) => (
                         <tr key={item.id}>
                             <td>{index + 1}</td>
                             <td>
-                                <Link to={`/item/${item.id}`} state={{ itemInfo: item }}>
+                                <Link
+                                    to={`/item/${item.id}`}
+                                    state={{ itemInfo: item }}
+                                >
                                     {item.id}
                                 </Link>
                             </td>
                             <td>{item.itemType}</td>
                             <td>{item.currentStatus}</td>
-                            <td>{new Date(item.dateDonated).toLocaleDateString()}</td>
-                            <td>{item.donor ? item.donor.firstName : 'N/A'}</td>
-                            <td>{item.program ? item.program.name : 'Not Assigned'}</td>
+                            <td>
+                                {new Date(
+                                    item.dateDonated,
+                                ).toLocaleDateString()}
+                            </td>
+                            {/* <td>{item.donor ? item.donor.firstName : 'N/A'}</td> */}
+                            {/* <td>
+                                {item.program
+                                    ? item.program.name
+                                    : 'Not Assigned'}
+                            </td> */}
+                            <td>
+                                <div
+                                    onClick={() => handleBarcodeClick(item.id)}
+                                >
+                                    <div id={`barcode-${item.id}`}>
+                                        <Barcode value={item.id.toString()} />
+                                    </div>
+                                    <button
+                                        onClick={() => downloadBarcode(item.id)}
+                                    >
+                                        Download Barcode
+                                    </button>
+                                </div>
+                            </td>
                             {assignProgramClicked && (
                                 <td>
                                     <input
                                         type="checkbox"
-                                        checked={selectedItems.includes(item.id)}
-                                        onChange={() => handleCheckboxChange(item.id)}
+                                        checked={selectedItems.includes(
+                                            item.id,
+                                        )}
+                                        onChange={() =>
+                                            handleCheckboxChange(item.id)
+                                        }
                                     />
                                 </td>
                             )}
@@ -340,37 +431,68 @@ const DonatedItemsList: React.FC = () => {
                 </tbody>
             </table>
 
-            <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
+            <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={() => setModalIsOpen(false)}
+            >
                 <h2>Item Details</h2>
                 {selectedItemDetails && (
                     <div>
                         <p>Item ID: {selectedItemDetails.id}</p>
                         <p>Item Type: {selectedItemDetails.itemType}</p>
-                        <p>Current Status: {selectedItemDetails.currentStatus}</p>
-                        <p>Date Donated: {new Date(selectedItemDetails.dateDonated).toLocaleDateString()}</p>
+                        <p>
+                            Current Status: {selectedItemDetails.currentStatus}
+                        </p>
+                        <p>
+                            Date Donated:{' '}
+                            {new Date(
+                                selectedItemDetails.dateDonated,
+                            ).toLocaleDateString()}
+                        </p>
                         {selectedItemDetails.lastUpdated && (
-                            <p>Last Updated: {new Date(selectedItemDetails.lastUpdated).toLocaleDateString()}</p>
+                            <p>
+                                Last Updated:{' '}
+                                {new Date(
+                                    selectedItemDetails.lastUpdated,
+                                ).toLocaleDateString()}
+                            </p>
                         )}
-                        <p>Donor Name: {selectedItemDetails.donor ? selectedItemDetails.donor.name : 'N/A'}</p>
-                        <p>Program: {selectedItemDetails.program ? selectedItemDetails.program.name : 'Not Assigned'}</p>
+                        <p>
+                            Donor Name:{' '}
+                            {selectedItemDetails.donor
+                                ? selectedItemDetails.donor.name
+                                : 'N/A'}
+                        </p>
+                        <p>
+                            Program:{' '}
+                            {selectedItemDetails.program
+                                ? selectedItemDetails.program.name
+                                : 'Not Assigned'}
+                        </p>
 
-                        {selectedItemDetails.statuses && selectedItemDetails.statuses.length > 0 && (
-                            <>
-                                <h3>Status History</h3>
-                                <ul>
-                                    {selectedItemDetails.statuses.map((status, index) => (
-                                        <li key={index}>
-                                            {status.status} - {new Date(status.date).toLocaleDateString()}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </>
-                        )}
+                        {selectedItemDetails.statuses &&
+                            selectedItemDetails.statuses.length > 0 && (
+                                <>
+                                    <h3>Status History</h3>
+                                    <ul>
+                                        {selectedItemDetails.statuses.map(
+                                            (status, index) => (
+                                                <li key={index}>
+                                                    {status.status} -{' '}
+                                                    {new Date(
+                                                        status.date,
+                                                    ).toLocaleDateString()}
+                                                </li>
+                                            ),
+                                        )}
+                                    </ul>
+                                </>
+                            )}
                     </div>
                 )}
                 <button onClick={() => setModalIsOpen(false)}>Close</button>
             </Modal>
-            
+
             <div style={{ position: 'fixed', bottom: '20px', right: '20px' }}>
                 <button onClick={handleAddNewDonationClick}>
                     <FaPlus size={24} />
