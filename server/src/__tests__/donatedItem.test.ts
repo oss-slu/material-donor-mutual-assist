@@ -29,8 +29,8 @@ describe('DonatedItem API Tests', () => {
     });
 
     it('handles errors when the provided Program or Donor does not exist', async () => {
-        const programId = 99; 
-        const donorId = 29;
+        const programId = '99'; 
+        const donorId = '29';
         mockPrismaClient.program.findUnique.mockResolvedValue(null);
         mockPrismaClient.donor.findUnique.mockResolvedValue(null);
     
@@ -57,8 +57,8 @@ describe('DonatedItem API Tests', () => {
         mockPrismaClient.program.findUnique.mockResolvedValue(null);
         mockPrismaClient.donor.findUnique.mockResolvedValue(null);
 
-        const donorId = 19;
-        const programId = 99;
+        const donorId = '19';
+        const programId = '99';
 
         const response = await request(app).put('/donatedItem/details/1').send({
             ...updateItem,

@@ -4,7 +4,7 @@ import prisma from '../prismaClient'; // Import Prisma client
 import { donatedItemValidator } from '../validators/donatedItemValidator'; // Import the validator
 import { validateDonor } from '../services/donorService';
 import { validateProgram } from '../services/programService';
-import { uploadToAzure } from '../services/donatedItemService';
+import { uploadToStorage, getFileExtension } from '../services/donatedItemService';
 
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -38,10 +38,11 @@ router.post('/', [upload.array('imageFiles'), donatedItemValidator], async (req:
             },
         });
 
-        // upload images to Azure and get their filenames
-        const imageUrls = await Promise.all(imageFiles.map((file, index) => {
+        // Upload images to cloud storage and get their filenames
+        const imageUrls = await Promise.all(imageFiles.map(async (file) => {
+            const fileExtension = getFileExtension(file.mimetype);
             const formattedDate = new Date().toISOString();
-            return uploadToAzure(file, `item-${formattedDate}-${newItem.id}.jpg`);
+            return uploadToStorage(file, `item-${formattedDate}-${newItem.id}${fileExtension}`);
         }));
 
         const newStatus = await prisma.donatedItemStatus.create({
