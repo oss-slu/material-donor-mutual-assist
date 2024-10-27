@@ -89,9 +89,11 @@ router.put(
     donatedItemValidator,
     async (req: Request, res: Response) => {
         try {
+            const donorId = parseInt(req.body.donorId);
+            const programId = parseInt(req.body.programId);
             try {
-                await validateDonor(req.body.donorId);
-                await validateProgram(req.body.programId);
+                await validateDonor(donorId);
+                await validateProgram(programId);
             } catch (error) {
                 if (error instanceof Error) {
                     return res.status(400).json({ error: error.message });
@@ -100,7 +102,7 @@ router.put(
 
             const updatedItem = await prisma.donatedItem.update({
                 where: { id: Number(req.params.id) },
-                data: { ...req.body, lastUpdated: new Date() },
+                data: { ...req.body, donorId, programId, lastUpdated: new Date() },
             });
             console.log('Donated item updated:', updatedItem);
             res.json(updatedItem);

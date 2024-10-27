@@ -5,15 +5,11 @@ export const donatedItemSchema = Joi.object({
     currentStatus: Joi.string()
         .valid('Received', 'Pending', 'Processed', 'Delivered')
         .required(),
-    donorId: Joi.alternatives().try(
-        Joi.string().pattern(/^\d+$/)
-    ).required().messages({
-        'string.pattern.base': 'donorId must be a numeric string'
+    donorId: Joi.alternatives(Joi.number(), Joi.string().pattern(/^\d+$/)).required().messages({
+        'string.pattern.base': 'donorId must be either a number or a numeric string'
     }),
-    programId: Joi.alternatives().try(
-        Joi.string().pattern(/^\d+$/)
-    ).messages({
-        'string.pattern.base': 'programId must be a numeric string'
+    programId: Joi.alternatives(Joi.number(), Joi.string().pattern(/^\d+$/)).messages({
+        'string.pattern.base': 'programId must be either a number or a numeric string'
     }),
     dateDonated: Joi.date().required(), // Validates as a proper date
 });
