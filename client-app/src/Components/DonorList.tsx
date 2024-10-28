@@ -21,14 +21,7 @@ const DonorList: React.FC = () => {
     const [filteredItems, setFilteredItems] = useState<DonatedItem[]>([]);
     const [selectedItems, setSelectedItems] = useState<number[]>([]);
     const [selectedItemDetails, setSelectedItemDetails] = useState<DonatedItem | null>(null);
-    const [programOptions, setProgramOptions] = useState<string[]>([
-        'Youth Program',
-        'Retail Sales',
-        'Recycle',
-        'Earn-a-bicycle',
-        'Earn-a-computer',
-    ]);
-    const [selectedProgram, setSelectedProgram] = useState<string>('');
+
     const [assignProgramClicked, setAssignProgramClicked] = useState<boolean>(false);
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
     const [donatedItems, setDonatedItems] = useState<DonatedItem[]>([
