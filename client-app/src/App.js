@@ -12,6 +12,7 @@ import StatusDisplayPage from './Components/StatusDisplayPage';
 import Programs from './Components/Programs';
 import AddProgramPage from './Components/AddProgramPage'; // Import AddProgramPage correctly
 import NewItemForm from './Components/NewItemForm.tsx';
+import DonorList from './Components/DonorList.tsx';
 import AddDonor from './Components/AddDonor'; // Why is this here?
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
                 <Route path="/resetpassword" element={<ResetPasswordPage />} />
                 <Route path="/item/:itemId" element={<StatusDisplayPage />} />
                 <Route path="/donorform" element={<DonorForm />} />
+                <Route path="/donorlist" element={<DonorList />} />
                 <Route path="/donations" element={<DonatedItemsList />} />
                 <Route path="/programs" element={<Programs />} />
                 <Route path="/addprogram" element={<AddProgramPage />} />
