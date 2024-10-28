@@ -86,6 +86,10 @@ const DonorList: React.FC = () => {
         navigate('/donorform');
     };
 
+    const handleViewDetailsClick = () => {
+        navigate('/item');
+    };
+
     return (
         <>
         <div>
@@ -139,18 +143,15 @@ const DonorList: React.FC = () => {
                             : donatedItems
                         ).map((item, index) => (
                             <tr key={item.donorId}>
-                                <td>{index + 1}</td>
-                                <td>
-                                    <Link
-                                        to={`/item/${item.donorId}`}
-                                        state={{ itemInfo: item }}
-                                    >
-                                        {item.donorId}
-                                    </Link>
-                                </td>
+                                <td>{item.donorId}</td>
                                 <td>{item.firstName}</td>
                                 <td>{item.lastName}</td>
                                 <td>{item.email}</td>
+                                <td>
+                                    <button onClick={() => handleViewDetailsClick()}>
+                                        View More Details
+                                     </button>
+                                </td>
 
                                 {assignProgramClicked && (
                                     <td>
@@ -177,10 +178,10 @@ const DonorList: React.FC = () => {
                     <h2>Details</h2>
                     {selectedItemDetails && (
                         <div>
-                            <p>Item ID: {selectedItemDetails.donorId}</p>
-                            <p>Item Name: {selectedItemDetails.firstName}</p>
-                            <p>Donor Name: {selectedItemDetails.lastName}</p>
-                            <p>Donation Date: {selectedItemDetails.email}</p>
+                            <p>Donor ID: {selectedItemDetails.donorId}</p>
+                            <p>Donor First Name: {selectedItemDetails.firstName}</p>
+                            <p>Donor Last Name: {selectedItemDetails.lastName}</p>
+                            <p>Donor Email: {selectedItemDetails.email}</p>
                         </div>
                     )}
                     <button onClick={() => setModalIsOpen(false)}>Close</button>
