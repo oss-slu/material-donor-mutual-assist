@@ -23,6 +23,12 @@ jobs:
       with:
         node-version: '20.x'
     - run: cd server && npm install
+
+    - name: Set Environment Variables
+      run: |
+        echo "AZURE_STORAGE_ACCOUNT_NAME=${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}" >> $GITHUB_ENV
+        echo "AZURE_STORAGE_ACCESS_KEY=${{ secrets.AZURE_STORAGE_ACCESS_KEY }}" >> $GITHUB_ENV
+
     - run: cd server && npm test
       env:
         CI: true
