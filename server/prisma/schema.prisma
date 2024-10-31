@@ -48,6 +48,7 @@ model DonatedItemStatus {
   donatedItemId Int
   donatedItem   DonatedItem @relation(fields: [donatedItemId], references: [id], onDelete: Cascade)
   @@index([donatedItemId])
+  imageUrls     String[]
 }
 
 model Program {
