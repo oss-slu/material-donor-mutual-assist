@@ -8,7 +8,7 @@ export const donatedItemSchema = Joi.object({
     donorId: Joi.alternatives(Joi.number(), Joi.string().pattern(/^\d+$/)).required().messages({
         'string.pattern.base': 'donorId must be either a number or a numeric string'
     }),
-    programId: Joi.alternatives(Joi.number(), Joi.string().pattern(/^\d+$/)).messages({
+    programId: Joi.alternatives(Joi.number(), Joi.string().pattern(/^\d+$/)).allow(null).allow('').messages({
         'string.pattern.base': 'programId must be either a number or a numeric string'
     }),
     dateDonated: Joi.date().required(), // Validates as a proper date
