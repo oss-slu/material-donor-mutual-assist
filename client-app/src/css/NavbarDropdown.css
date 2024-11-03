@@ -1,0 +1,32 @@
+/* Dropdown container */
+.nav-item.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #f8f9fa;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    padding: 0.5rem 1rem;
+    z-index: 1000;
+    min-width: 150px;
+}
+
+/* Displays dropdown when hovering */
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 0.25rem 1rem;
+    color: #000;
+    text-decoration: none;
+}
+
+.dropdown-item:hover {
+    background-color: #e9ecef;
+}

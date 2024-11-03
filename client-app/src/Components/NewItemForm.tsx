@@ -1,49 +1,86 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import '../css/DonorForm.css';
 
 interface FormData {
     itemType: string;
     currentStatus: string;
-    donorEmail: string;
-    program: string;
-    imageUpload: string[];
+    donorId: number | null;
+    programId: number | null;
     dateDonated: string;
+    imageFiles: File[];
 }
 
 interface FormErrors {
     [key: string]: string;
 }
 
+interface Option {
+    value: string;
+    label: string;
+    id?: number;
+}
+
 const NewItemForm: React.FC = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState<FormData>({
         itemType: '',
         currentStatus: 'Received',
-        donorEmail: '',
-        program: '',
-        imageUpload: [],
+        donorId: null,
+        programId: null,
+        imageFiles: [],
         dateDonated: '',
     });
 
-    const itemTypeOptions = [
+    const itemTypeOptions: Option[] = [
         { value: 'bicycle', label: 'Bicycle' },
         { value: 'computer', label: 'Computer' },
-        // More item type options can be added here
     ];
 
-    const donorEmailOptions = [
-        { value: 'email1', label: 'cooldude@gmail.com' },
-        { value: 'email2', label: 'cplusplushater@icloud.com' },
-        { value: 'email3', label: 'ISEBestBuilding@yahoo.com' },
-    ];
+    const [donorEmailOptions, setDonorEmailOptions] = useState<Option[]>([]);
+    const [programOptions, setProgramOptions] = useState<Option[]>([]);
+    const [previews, setPreviews] = useState<string[]>([]);
+    const [errors, setErrors] = useState<FormErrors>({});
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-    const programOptions = [
-        { value: 'youthProgram', label: 'Youth Program' },
-        { value: 'retailSales', label: 'Retail Sales' },
-        { value: 'recycle', label: 'Recycle' },
-        { value: 'earnABicycle', label: 'Earn-a-bicycle' },
-        { value: 'earnAComputer', label: 'Earn-a-computer' },
-    ];
+    useEffect(() => {
+        const fetchDonorEmails = async () => {
+            try {
+                const response = await axios.get(
+                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}donor`,
+                );
+                const emailOptions = response.data.map((donor: any) => ({
+                    value: donor.id,
+                    label: donor.email,
+                    id: donor.id,
+                }));
+                setDonorEmailOptions(emailOptions);
+            } catch (error) {
+                console.error('Error fetching donor emails:', error);
+            }
+        };
+
+        const fetchPrograms = async () => {
+            try {
+                const response = await axios.get(
+                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}program`,
+                );
+                const programOptions = response.data.map((program: any) => ({
+                    value: program.id,
+                    label: program.name,
+                    id: program.id,
+                }));
+                setProgramOptions(programOptions);
+            } catch (error) {
+                console.error('Error fetching programs:', error);
+            }
+        };
+
+        fetchDonorEmails();
+        fetchPrograms();
+    }, []);
 
     const convertToBase64 = (file: File): Promise<string> => {
         return new Promise((resolve, reject) => {
@@ -54,24 +91,64 @@ const NewItemForm: React.FC = () => {
         });
     };
 
-    const [errors, setErrors] = useState<FormErrors>({});
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (files) {
+            const fileArray = Array.from(files);
+            setFormData(prevState => ({
+                ...prevState,
+                imageFiles: [...prevState.imageFiles, ...fileArray]
+            }));
 
-    // Handle input change for all fields
+            // Creating previews for display
+            const filePreviews = await Promise.all(fileArray.map(file => {
+                return new Promise<string>((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => resolve(reader.result as string);
+                    reader.onerror = error => reject(error);
+                });
+            }));
+
+            setPreviews(prev => [...prev, ...filePreviews]);
+        }
+    };
+
+    const removeImage = (index: number) => {
+        const updatedFiles = formData.imageFiles.filter((_, i) => i !== index);
+        const updatedPreviews = previews.filter((_, i) => i !== index);
+        setFormData(prevState => ({
+            ...prevState,
+            imageFiles: updatedFiles
+        }));
+        setPreviews(updatedPreviews);
+    };
+
     const handleChange = async (
         e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     ) => {
-        const { name, type, value, files } = e.target as HTMLInputElement;
+        const { name, value } = e.target;
 
-        if (name === 'imageUpload' && files) {
-            const fileArray = Array.from(files);
-            const base64Images = await Promise.all(
-                fileArray.map(file => convertToBase64(file)),
+        if (name === 'itemType') {
+            setFormData(prevState => ({
+                ...prevState,
+                itemType: value,
+            }));
+        } else if (name === 'donorEmail') {
+            const selectedDonor = donorEmailOptions.find(
+                option => option.value === value,
             );
             setFormData(prevState => ({
                 ...prevState,
-                [name]: base64Images,
+                donorId: selectedDonor?.id || null,
+            }));
+        } else if (name === 'program') {
+            const selectedProgram = programOptions.find(
+                option => option.value === value,
+            );
+            setFormData(prevState => ({
+                ...prevState,
+                programId: selectedProgram?.id || null,
             }));
         } else {
             setFormData(prevState => ({
@@ -79,57 +156,25 @@ const NewItemForm: React.FC = () => {
                 [name]: value,
             }));
         }
-        setErrors(prevState => ({ ...prevState, [name]: '' })); // Reset errors on change
+        setErrors(prevState => ({ ...prevState, [name]: '' }));
         setErrorMessage(null);
         setSuccessMessage(null);
     };
 
-    // Generalized validation function to reduce code repetition
     const validateField = (name: string, value: any) => {
         const requiredFields = [
             'itemType',
             'currentStatus',
             'donorEmail',
-            'program',
-            'imageUpload',
             'dateDonated',
         ];
 
-        if (requiredFields.includes(name)) {
-            if (name === 'itemType') {
-                if (!value || value.length === 0) {
-                    return 'Please select an item type';
-                }
-            } else if (name === 'currentStatus') {
-                if (!value || value.length === 0) {
-                    return 'Please enter a status';
-                }
-            } else if (name === 'donorEmail') {
-                if (!value || value.length === 0) {
-                    return "Please select the donor's email";
-                }
-            } else if (name === 'program') {
-                if (!value || value.length === 0) {
-                    return 'Please select a program';
-                }
-            } else if (name === 'imageUpload') {
-                if (!value || value.length === 0) {
-                    return 'Please upload at least one image';
-                } else if (value.length > 5) {
-                    return 'Please keep under 5 images';
-                }
-            } else if (name === 'dateDonated') {
-                if (!value || value.length === 0) {
-                    return 'Please select a date';
-                }
-            } else if (typeof value === 'string' && !value.trim()) {
-                return `${name.replace(/([A-Z])/g, ' $1')} is required`;
-            }
+        if (requiredFields.includes(name) && (!value || value.length === 0)) {
+            return `${name.replace(/([A-Z])/g, ' $1')} is required`;
         }
         return '';
     };
 
-    // Validation for entire form
     const validateForm = (): boolean => {
         const newErrors: FormErrors = {};
         Object.keys(formData).forEach(field => {
@@ -140,94 +185,120 @@ const NewItemForm: React.FC = () => {
         return Object.keys(newErrors).length === 0;
     };
 
-    // Handle form submission
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (validateForm()) {
             try {
+                const formDataToSubmit = new FormData();
+                formDataToSubmit.append('itemType', formData.itemType);
+                formDataToSubmit.append('currentStatus', formData.currentStatus);
+                formDataToSubmit.append('donorId', formData.donorId ? formData.donorId.toString() : '');
+                formDataToSubmit.append('programId', formData.programId ? formData.programId.toString() : '');
+                formDataToSubmit.append('dateDonated', formData.dateDonated);
+
+                // Append image files directly as part of the FormData
+                formData.imageFiles.forEach(file => {
+                    formDataToSubmit.append('imageFiles', file);
+                });
+                
+
                 const response = await axios.post(
                     `${process.env.REACT_APP_BACKEND_API_BASE_URL}donatedItem`,
-                    formData,
+                    formDataToSubmit,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    },
                 );
+
                 if (response.status === 201) {
                     setSuccessMessage('Item added successfully!');
-                    console.log('Item Type: ' + formData.itemType);
-                    console.log('Current Status ' + formData.currentStatus);
-                    console.log('Donor Email: ' + formData.donorEmail);
-                    console.log('Program: ' + formData.program);
-                    console.log('Image Upload: ' + formData.imageUpload);
-                    console.log('Date Donated: ' + formData.dateDonated);
-                    setFormData({
-                        itemType: '',
-                        currentStatus: 'Received',
-                        donorEmail: '',
-                        program: '',
-                        imageUpload: [],
-                        dateDonated: '',
-                    });
+                    handleRefresh();
+                    navigate('/donations');
                 } else {
                     setErrorMessage('Item not added');
                 }
-            } catch (error: unknown) {
-                const message =
-                    (error as any).response?.data?.message ||
-                    'Error adding item';
-                setErrorMessage(message);
+            } catch (error: any) {
+                setErrorMessage(error.response?.data?.message || 'Error adding item');
             }
         } else {
             setErrorMessage('Form has validation errors');
         }
     };
 
-    // Handle form reset
     const handleRefresh = () => {
         setFormData({
             itemType: '',
             currentStatus: 'Received',
-            donorEmail: '',
-            program: '',
-            imageUpload: [],
+            donorId: null,
+            programId: null,
+            imageFiles: [],
             dateDonated: '',
         });
+        setPreviews([]);
         setErrors({});
         setErrorMessage(null);
         setSuccessMessage(null);
     };
 
-    // Reusable function to render form fields (text, dropdown, date, and file upload)
     const renderFormField = (
         label: string,
         name: keyof FormData,
         type = 'text',
         required = true,
-        options?: { value: string; label: string }[],
+        options?: Option[],
     ) => (
         <div className="form-field">
             <label htmlFor={name} className="block text-sm font-semibold mb-1">
                 {label}
                 {required && <span className="text-red-500">&nbsp;*</span>}
             </label>
-            {type === 'file' ? (
-                <input
-                    type="file"
-                    id={name}
-                    name={name}
-                    onChange={handleChange}
-                    multiple
-                    accept="image/*"
-                    className={`w-full px-3 py-2 rounded border ${errors[name] ? 'border-red-500' : 'border-gray-300'}`}
-                    title="Upload 1-5 images in JPG or PNG format"
-                />
-            ) : options ? ( // Only executes if there are options available
+            {name === 'imageFiles' ? (
+                <div>
+                    <input
+                        type="file"
+                        id={name}
+                        name={name}
+                        onChange={handleImageChange}
+                        multiple
+                        accept="image/*"
+                        className={`w-full px-3 py-2 rounded border ${
+                            errors[name] ? 'border-red-500' : 'border-gray-300'
+                        }`}
+                        title="Upload 1-5 images in JPG or PNG format"
+                    />
+                    <div className="image-preview-grid mt-4">
+                        {previews.map((preview, index) => (
+                            <div key={index} className="preview-item relative">
+                                <img
+                                    src={preview}
+                                    alt={`Preview ${index + 1}`}
+                                    className="preview-image"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => removeImage(index)}
+                                    className="remove-image-button"
+                                >
+                                    Remove
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            ) : options ? (
                 <select
                     id={name}
                     name={name}
-                    value={formData[name]}
+                    value={formData[name] as string}
                     onChange={handleChange}
-                    className={`w-full px-3 py-2 rounded border ${errors[name] ? 'border-red-500' : 'border-gray-300'}`}
+                    className={`w-full px-3 py-2 rounded border ${
+                        errors[name] ? 'border-red-500' : 'border-gray-300'
+                    }`}
                 >
                     <option value="">Select {label}</option>
-                    {options?.map(option => (
+                    {options.map(option => (
                         <option key={option.value} value={option.value}>
                             {option.label}
                         </option>
@@ -240,7 +311,9 @@ const NewItemForm: React.FC = () => {
                     name={name}
                     value={formData[name] as string}
                     onChange={handleChange}
-                    className={`w-full px-3 py-2 rounded border ${errors[name] ? 'border-red-500' : 'border-gray-300'}`}
+                    className={`w-full px-3 py-2 rounded border ${
+                        errors[name] ? 'border-red-500' : 'border-gray-300'
+                    }`}
                     disabled={name === 'currentStatus'}
                 />
             )}
@@ -250,7 +323,6 @@ const NewItemForm: React.FC = () => {
         </div>
     );
 
-    // HTML portion
     return (
         <div className="donor-form outer-container mx-auto p-10">
             <h1 className="text-2xl font-bold heading-centered">
@@ -271,24 +343,29 @@ const NewItemForm: React.FC = () => {
                 {renderFormField('Current Status', 'currentStatus')}
                 {renderFormField(
                     'Donor Email',
-                    'donorEmail',
+                    'donorId',
                     'text',
                     true,
                     donorEmailOptions,
                 )}
                 {renderFormField(
                     'Program',
-                    'program',
+                    'programId',
                     'text',
-                    true,
+                    false,
                     programOptions,
                 )}
                 {renderFormField('Date Donated', 'dateDonated', 'date')}
-                {renderFormField('Image Upload', 'imageUpload', 'file')}
+                {renderFormField(
+                    'Images (Max 5)',
+                    'imageFiles',
+                    'file',
+                    false,
+                )}
 
                 <div className="form-field full-width button-container">
                     <button type="submit" className="submit-button">
-                        Add Item
+                        Submit
                     </button>
                     <button
                         type="button"

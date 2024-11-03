@@ -107,13 +107,7 @@ function DonatedItemsList() {
         setAssignProgramClicked(!assignProgramClicked);
     };
 
-    const handleAddDonationClick = () => {
-        // Navigate to the DonationForm page
-        navigate('/donation-form');
-    };
-
     const handleAddNewDonationClick = () => {
-        // Navigate to NewItemForm page
         navigate('/adddonation');
     };
 
@@ -404,7 +398,7 @@ function DonatedItemsList() {
                 <div
                     style={{ position: 'fixed', bottom: '20px', right: '20px' }}
                 >
-                    <button onClick={() => handleAddDonationClick()}>
+                    <button onClick={() => handleAddNewDonationClick()}>
                         <FaPlus size={24} />
                     </button>
                 </div>
