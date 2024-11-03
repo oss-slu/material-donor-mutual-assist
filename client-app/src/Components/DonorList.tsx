@@ -1,15 +1,13 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaSearch, FaPlus } from 'react-icons/fa';
-import Barcode from 'react-barcode';
 import Modal from 'react-modal';
-import ItemStatus from '../constants/Enums';
 import '../css/AdminHeader.css';
 import '../css/DonatedItemsList.css';
 import html2canvas from 'html2canvas';
 
 // Define types for the item and status enums
-interface DonatedItem {
+interface Donor {
     donorId: number;
     firstName: string;
     lastName: string;
@@ -18,13 +16,13 @@ interface DonatedItem {
 
 const DonorList: React.FC = () => {
     const [searchInput, setSearchInput] = useState<string>('');
-    const [filteredItems, setFilteredItems] = useState<DonatedItem[]>([]);
+    const [filteredItems, setFilteredItems] = useState<Donor[]>([]);
     const [selectedItems, setSelectedItems] = useState<number[]>([]);
-    const [selectedItemDetails, setSelectedItemDetails] = useState<DonatedItem | null>(null);
+    const [donorDetails, selectedDonorDetails] = useState<Donor | null>(null);
 
     const [assignProgramClicked, setAssignProgramClicked] = useState<boolean>(false);
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-    const [donatedItems, setDonatedItems] = useState<DonatedItem[]>([
+    const [donatedItems, setDonatedItems] = useState<Donor[]>([
         {
             donorId: 811253,
             firstName: 'Jason',
@@ -82,7 +80,7 @@ const DonorList: React.FC = () => {
         }
     };
 
-    const handleAddNewDonationClick = () => {
+    const handleAddNewDonorClick = () => {
         navigate('/donorform');
     };
 
@@ -129,7 +127,7 @@ const DonorList: React.FC = () => {
                 <table className="item-list">
                     <thead>
                         <tr>
-                            <th>Donor Number</th>
+                            <th>Donor ID</th>
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Email</th>
@@ -176,12 +174,12 @@ const DonorList: React.FC = () => {
                     onRequestClose={() => setModalIsOpen(false)}
                 >
                     <h2>Details</h2>
-                    {selectedItemDetails && (
+                    {donorDetails && (
                         <div>
-                            <p>Donor ID: {selectedItemDetails.donorId}</p>
-                            <p>Donor First Name: {selectedItemDetails.firstName}</p>
-                            <p>Donor Last Name: {selectedItemDetails.lastName}</p>
-                            <p>Donor Email: {selectedItemDetails.email}</p>
+                            <p>Donor ID: {donorDetails.donorId}</p>
+                            <p>Donor First Name: {donorDetails.firstName}</p>
+                            <p>Donor Last Name: {donorDetails.lastName}</p>
+                            <p>Donor Email: {donorDetails.email}</p>
                         </div>
                     )}
                     <button onClick={() => setModalIsOpen(false)}>Close</button>
@@ -189,7 +187,7 @@ const DonorList: React.FC = () => {
                 <div
                     style={{ position: 'fixed', bottom: '20px', right: '20px' }}
                 >
-                    <button onClick={() => handleAddNewDonationClick()}>
+                    <button onClick={() => handleAddNewDonorClick()}>
                         <FaPlus size={24} />
                     </button>
                 </div>

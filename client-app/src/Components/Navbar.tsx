@@ -110,8 +110,8 @@ const Navbar: React.FC = () => {
                                     <span
                                         className="nav-link dropdown-toggle"
                                         style={{
-                                            fontWeight: location.pathname === '/donorform' ? 'bold' : 'normal',
-                                            color: location.pathname === '/donorform' ? 'black' : 'inherit',
+                                            fontWeight: location.pathname === '/donorform' || location.pathname === '/donorlist' ? 'bold' : 'normal',
+                                            color: location.pathname === '/donorform' || location.pathname === '/donorlist' ? 'black' : 'inherit',
                                             cursor: 'pointer',
                                         }}
                                     >
@@ -119,7 +119,6 @@ const Navbar: React.FC = () => {
                                     </span>
                                     <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                                         <li>
-                                            {/*Input at a later time, once we have an all donors page. Please also add the bold to the fontWeight and color above */}
                                             <Link className="dropdown-item" to="/donorlist">All Donors</Link>
                                         </li>
                                         <li>
