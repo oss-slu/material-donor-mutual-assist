@@ -14,12 +14,16 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.19.1",
+    "@smcloudstore/azure-storage": "^0.2.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.20.0",
     "joi": "^17.13.3",
     "morgan": "^1.10.0",
-    "portfinder": "^1.0.32"
+    "multer": "^1.4.5-lts.1",
+    "portfinder": "^1.0.32",
+    "smcloudstore": "^0.2.1"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.7",
@@ -27,6 +31,7 @@
     "@types/express": "^4.17.21",
     "@types/jest": "^29.5.13",
     "@types/morgan": "^1.9.9",
+    "@types/multer": "^1.4.12",
     "@types/node": "^22.5.4",
     "@types/supertest": "^6.0.2",
     "jest": "^29.7.0",
