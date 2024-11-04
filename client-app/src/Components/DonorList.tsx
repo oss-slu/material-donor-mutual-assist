@@ -34,8 +34,7 @@ const DonorList: React.FC = () => {
         const fetchDonors = async () => {
             try {
                 const response = await axios.get<Donor[]>( // This will likely need to be updated, but this is the only way I could get this to work
-                    //`${process.env.REACT_APP_BACKEND_API_BASE_URL}/donor`
-                    'http://localhost:5000/donor'
+                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}/donor`
                 );
                 console.log("Fetched donor data:", response.data); // Log the response data
                 setCurrentDonors(response.data); // Set the fetched data

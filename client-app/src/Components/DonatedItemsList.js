@@ -1,39 +1,118 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaSearch, FaPlus } from 'react-icons/fa';
 import Barcode from 'react-barcode';
 import Modal from 'react-modal';
-import ItemStatus from '../constants/Enums';
+import ItemStatus from '../constants/Enums.ts';
 import '../css/AdminHeader.css';
 import '../css/DonatedItemsList.css';
 import html2canvas from 'html2canvas';
 
-// Define types for the item and status enums
-interface DonatedItem {
-    id: number;
-    name: string;
-    donor: string;
-    date: string;
-    program: string;
-    status: string;
-}
-
-const DonatedItemsList: React.FC = () => {
-    const [searchInput, setSearchInput] = useState<string>('');
-    const [filteredItems, setFilteredItems] = useState<DonatedItem[]>([]);
-    const [selectedItems, setSelectedItems] = useState<number[]>([]);
-    const [selectedItemDetails, setSelectedItemDetails] = useState<DonatedItem | null>(null);
-    const [programOptions, setProgramOptions] = useState<string[]>([
+function DonatedItemsList() {
+    const [searchInput, setSearchInput] = useState('');
+    const [filteredItems, setFilteredItems] = useState([]);
+    const [selectedItems, setSelectedItems] = useState([]);
+    const [selectedItemDetails, setSelectedItemDetails] = useState(null);
+    const [programOptions, setProgramOptions] = useState([
         'Youth Program',
         'Retail Sales',
         'Recycle',
         'Earn-a-bicycle',
         'Earn-a-computer',
     ]);
-    const [selectedProgram, setSelectedProgram] = useState<string>('');
-    const [assignProgramClicked, setAssignProgramClicked] = useState<boolean>(false);
-    const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-    const [donatedItems, setDonatedItems] = useState<DonatedItem[]>([
+    const [selectedProgram, setSelectedProgram] = useState('');
+    const [assignProgramClicked, setAssignProgramClicked] = useState(false);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const navigate = useNavigate();
+
+    const handleSearch = () => {
+        const filtered = donatedItems.filter(
+            item =>
+                item.id.toString().includes(searchInput) ||
+                item.name.toLowerCase().includes(searchInput.toLowerCase()) ||
+                item.donor.toLowerCase().includes(searchInput.toLowerCase()) ||
+                item.date.includes(searchInput) ||
+                item.program
+                    .toLowerCase()
+                    .includes(searchInput.toLowerCase()) ||
+                (Object.values(ItemStatus).includes(item.status) &&
+                    item.status
+                        .toLowerCase()
+                        .includes(searchInput.toLowerCase())),
+        );
+        setFilteredItems(filtered);
+    };
+
+    const handleSort = event => {
+        // Implement your sorting logic here
+        console.log('Sorting by:', event.target.value);
+    };
+
+    const handleCheckboxChange = itemId => {
+        if (selectedItems.includes(itemId)) {
+            setSelectedItems(selectedItems.filter(id => id !== itemId));
+        } else {
+            setSelectedItems([...selectedItems, itemId]);
+        }
+    };
+
+    const handleProgramChange = event => {
+        setSelectedProgram(event.target.value);
+    };
+
+    const handleBarcodeClick = itemId => {
+        const selectedItem = donatedItems.find(item => item.id === itemId);
+        setSelectedItemDetails(selectedItem);
+        setModalIsOpen(true);
+    };
+
+    const updatePrograms = () => {
+        const updatedItems = donatedItems.map(item => {
+            if (selectedItems.includes(item.id)) {
+                return { ...item, program: selectedProgram };
+            }
+            return item;
+        });
+        setDonatedItems(updatedItems);
+        setSelectedItems([]); // Clear selected items after updating
+        setAssignProgramClicked(false); // Hide assign program section
+    };
+
+    // Function to filter items by item name
+    const handleFilterByItemName = event => {
+        const filtered = donatedItems.filter(
+            item => item.name === event.target.value,
+        );
+        setFilteredItems(filtered);
+    };
+
+    // Function to filter items by program
+    const handleFilterByProgram = event => {
+        const filtered = donatedItems.filter(
+            item => item.program === event.target.value,
+        );
+        setFilteredItems(filtered);
+    };
+
+    // Function to filter items by status
+    const handleFilterByStatus = event => {
+        const filtered = donatedItems.filter(
+            item => item.status === event.target.value,
+        );
+        setFilteredItems(filtered);
+    };
+
+    // Function to toggle assign program section
+    const toggleAssignProgram = () => {
+        setAssignProgramClicked(!assignProgramClicked);
+    };
+
+    const handleAddNewDonationClick = () => {
+        navigate('/adddonation');
+    };
+
+    // Sample data for demonstration
+    const [donatedItems, setDonatedItems] = useState([
         {
             id: 811253,
             name: 'Bicycle',
@@ -74,105 +153,28 @@ const DonatedItemsList: React.FC = () => {
             program: 'Not Assigned',
             status: ItemStatus.RECEIVED,
         },
+        // Add more items here...
     ]);
-    const navigate = useNavigate();
-
-    const handleSearch = () => {
-        const filtered = donatedItems.filter(
-            item =>
-                item.id.toString().includes(searchInput) ||
-                item.name.toLowerCase().includes(searchInput.toLowerCase()) ||
-                item.donor.toLowerCase().includes(searchInput.toLowerCase()) ||
-                item.date.includes(searchInput) ||
-                item.program
-                    .toLowerCase()
-                    .includes(searchInput.toLowerCase()) ||
-                (Object.values(ItemStatus).includes(item.status as any) &&
-                    item.status
-                        .toLowerCase()
-                        .includes(searchInput.toLowerCase())),
-        );
-        setFilteredItems(filtered);
-    };
-
-    const handleSort = (event: ChangeEvent<HTMLSelectElement>) => {
-        // Sorting logic can go here
-        console.log('Sorting by:', event.target.value);
-    };
-
-    const handleCheckboxChange = (itemId: number) => {
-        if (selectedItems.includes(itemId)) {
-            setSelectedItems(selectedItems.filter(id => id !== itemId));
-        } else {
-            setSelectedItems([...selectedItems, itemId]);
-        }
-    };
-
-    const handleProgramChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        setSelectedProgram(event.target.value);
-    };
-
-    const handleBarcodeClick = (itemId: number) => {
-        const selectedItem = donatedItems.find(item => item.id === itemId);
-        setSelectedItemDetails(selectedItem || null);
-        setModalIsOpen(true);
-    };
-
-    const updatePrograms = () => {
-        const updatedItems = donatedItems.map(item => {
-            if (selectedItems.includes(item.id)) {
-                return { ...item, program: selectedProgram };
-            }
-            return item;
-        });
-        setDonatedItems(updatedItems);
-        setSelectedItems([]);
-        setAssignProgramClicked(false);
-    };
-
-    const handleFilterByItemName = (event: ChangeEvent<HTMLSelectElement>) => {
-        const filtered = donatedItems.filter(item => item.name === event.target.value);
-        setFilteredItems(filtered);
-    };
-
-    const handleFilterByProgram = (event: ChangeEvent<HTMLSelectElement>) => {
-        const filtered = donatedItems.filter(item => item.program === event.target.value);
-        setFilteredItems(filtered);
-    };
-
-    const handleFilterByStatus = (event: ChangeEvent<HTMLSelectElement>) => {
-        const filtered = donatedItems.filter(item => item.status === event.target.value);
-        setFilteredItems(filtered);
-    };
-
-    const toggleAssignProgram = () => {
-        setAssignProgramClicked(!assignProgramClicked);
-    };
-
-    const handleAddNewDonationClick = () => {
-        navigate('/adddonation');
-    };
-
-    const downloadBarcode = (id: number) => {
+    const downloadBarcode = id => {
         const barcodeElement = document.getElementById(`barcode-${id}`);
-        if (barcodeElement) {
-            html2canvas(barcodeElement)
-                .then(canvas => {
-                    const image = canvas.toDataURL('image/png');
-                    const link = document.createElement('a');
-                    link.href = image;
-                    link.download = `barcode-${id}.png`;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                })
-                .catch(err => console.error('Error downloading the barcode: ', err));
-        }
+        html2canvas(barcodeElement)
+            .then(canvas => {
+                const image = canvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                link.href = image;
+                link.download = `barcode-${id}.png`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            })
+            .catch(err =>
+                console.error('Error downloading the barcode: ', err),
+            );
     };
 
     return (
         <>
-        <div>
+            <div>
                 <div className="header">
                     <div className="logo-container">
                         <img
@@ -209,7 +211,7 @@ const DonatedItemsList: React.FC = () => {
                                 className="sort-options"
                                 onChange={handleSort}
                             >
-                                <option value="" disabled>
+                                <option value="" disabled defaultValue>
                                     Sort
                                 </option>
                                 <option value="dateAsc">Date Ascending</option>
@@ -230,7 +232,7 @@ const DonatedItemsList: React.FC = () => {
                                 <option value="Computer">Computer</option>
                             </select>
 
-                            {/* Filter by Program */} 
+                            {/* Filter by Program */}
                             <select
                                 className="filter-options"
                                 onChange={handleFilterByProgram}
@@ -273,9 +275,9 @@ const DonatedItemsList: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="div-updateprogram">
+                <div class="div-updateprogram">
                     {assignProgramClicked && (
-                        <div className="div-addprogram">
+                        <div class="div-addprogram">
                             <select
                                 value={selectedProgram}
                                 onChange={handleProgramChange}
@@ -403,6 +405,6 @@ const DonatedItemsList: React.FC = () => {
             </div>
         </>
     );
-};
+}
 
 export default DonatedItemsList;
