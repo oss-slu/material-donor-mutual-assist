@@ -64,7 +64,7 @@ const DonatedItemsList: React.FC = () => {
         try {
             setLoading(true);
             const response = await fetch(
-                `${process.env.REACT_APP_BACKEND_API_BASE_URL}/donatedItem`,
+                `${process.env.REACT_APP_BACKEND_API_BASE_URL}donatedItem`,
             );
             if (!response.ok) {
                 throw new Error('Failed to fetch donated items');
@@ -83,7 +83,7 @@ const DonatedItemsList: React.FC = () => {
     const fetchProgramOptions = async (): Promise<void> => {
         try {
             const response = await fetch(
-                `${process.env.REACT_APP_BACKEND_API_BASE_URL}/program`,
+                `${process.env.REACT_APP_BACKEND_API_BASE_URL}program`,
             );
             if (!response.ok) {
                 throw new Error('Failed to fetch program options');
@@ -167,7 +167,7 @@ const DonatedItemsList: React.FC = () => {
     const updatePrograms = async (): Promise<void> => {
         try {
             const response = await fetch(
-                `${process.env.REACT_APP_BACKEND_API_BASE_URL}/program`,
+                `${process.env.REACT_APP_BACKEND_API_BASE_URL}program`,
                 {
                     method: 'PUT',
                     headers: {
@@ -239,7 +239,12 @@ const DonatedItemsList: React.FC = () => {
     };
 
     const toggleAssignProgram = (): void => {
-        setAssignProgramClicked(!assignProgramClicked);
+        try {
+            setAssignProgramClicked(!assignProgramClicked);
+        } catch (error) {
+            console.error('Error toggling assign program:', error);
+            setError('Failed to toggle assign program. Please try again.');
+        }
     };
 
     const handleAddNewDonationClick = (): void => {
