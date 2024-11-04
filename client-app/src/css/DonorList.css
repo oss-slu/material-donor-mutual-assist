@@ -1,0 +1,57 @@
+.donor-list {
+    width: 90%;
+    border-collapse: collapse;
+    margin: 0 auto; /* This will center the table horizontally */
+}
+
+.donor-list th,
+.donor-list td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center; /* Center text horizontally */
+    vertical-align: middle; /* Center text vertically */
+}
+
+.div-topAddDonor {
+    display: flex;
+    justify-content: flex-end;
+    button {
+        margin: 20px 6px;
+        padding: 10px 20px 12px;
+        width: 200px;
+        text-align: center;
+    }
+}
+
+.modal-container {
+    padding: 20px;
+    background-color: #fff;
+    max-width: 500px;
+    margin: 0 auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.modal-content p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.close-button {
+    margin-top: 15px;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}

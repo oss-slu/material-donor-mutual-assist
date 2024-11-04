@@ -189,12 +189,16 @@ const Navbar: React.FC = () => {
                                         style={{
                                             fontWeight:
                                                 location.pathname ===
-                                                '/donorform'
+                                                    '/donorform' ||
+                                                location.pathname === 
+                                                    '/donorlist'
                                                     ? 'bold'
                                                     : 'normal',
                                             color:
                                                 location.pathname ===
-                                                '/donorform'
+                                                    '/donorform' ||
+                                                location.pathname === 
+                                                    '/donorlist'
                                                     ? 'black'
                                                     : 'inherit',
                                             cursor: 'pointer',
@@ -207,8 +211,7 @@ const Navbar: React.FC = () => {
                                         aria-labelledby="navbarDropdown"
                                     >
                                         <li>
-                                            {/*Input at a later time, once we have an all donors page. Please also add the bold to the fontWeight and color above */}
-                                            {/*<Link className="dropdown-item" to="/donations">All Donors</Link> */}
+                                            <Link className="dropdown-item" to="/donorlist">All Donors</Link>
                                         </li>
                                         <li>
                                             <Link
