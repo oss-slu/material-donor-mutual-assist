@@ -2,7 +2,7 @@ import prisma from '../prismaClient'; // Adjust the import path as necessary
 
 export async function validateProgram(programId: number) {
     if (!programId) return null;
-    
+
     const program = await prisma.program.findUnique({
         where: { id: programId },
     });

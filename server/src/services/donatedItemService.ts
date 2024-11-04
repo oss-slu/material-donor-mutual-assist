@@ -1,10 +1,13 @@
 import multer from 'multer';
-import { storage } from "../configs/SMCloudStoreConfig";
+import { storage } from '../configs/SMCloudStoreConfig';
 
-export async function uploadToStorage(file: Express.Multer.File, filename: string): Promise<string> {
+export async function uploadToStorage(
+    file: Express.Multer.File,
+    filename: string,
+): Promise<string> {
     const containerName = 'mdma-dev';
     await storage.putObject(containerName, filename, file.buffer, {
-        'Content-Type': file.mimetype
+        'Content-Type': file.mimetype,
     });
     return `${containerName}/${filename}`;
 }

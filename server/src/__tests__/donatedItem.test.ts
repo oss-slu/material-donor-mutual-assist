@@ -4,7 +4,12 @@ import donatedItemRoutes from '../routes/donatedItemRoutes';
 import mockPrismaClient from '../__mocks__/mockPrismaClient';
 import { newProgram } from '../__mocks__/mockProgram';
 import { newDonor } from '../__mocks__/mockDonor';
-import { updateItem,newItem, newItemFormData, invalidItemFormData } from '../__mocks__/mockDonatedItem';
+import {
+    updateItem,
+    newItem,
+    newItemFormData,
+    invalidItemFormData,
+} from '../__mocks__/mockDonatedItem';
 
 const app = express();
 app.use(express.json());
@@ -29,11 +34,11 @@ describe('DonatedItem API Tests', () => {
     // Test POST /donatedItem
     it('validates Program name and Donor email before creating a donated item', async () => {
         const req = request(app).post('/donatedItem');
-        
+
         // Apply the newItemFormData to add fields and potentially files
         newItemFormData(req);
         const response = await req.expect(201);
-        
+
         expect(response.status).toBe(201);
         expect(mockPrismaClient.donatedItem.create).toHaveBeenCalled();
     });
@@ -42,13 +47,15 @@ describe('DonatedItem API Tests', () => {
         const donorId = 29;
         mockPrismaClient.program.findUnique.mockResolvedValue(null);
         mockPrismaClient.donor.findUnique.mockResolvedValue(null);
-    
+
         const req = request(app).post('/donatedItem');
         invalidItemFormData(req);
 
         const response = await req.expect(400);
         expect(response.status).toBe(400);
-        expect(response.body.error).toContain(`Donor with ID: ${donorId} does not exist.`);
+        expect(response.body.error).toContain(
+            `Donor with ID: ${donorId} does not exist.`,
+        );
     });
 
     // Test PUT /donatedItem/details/{id}
