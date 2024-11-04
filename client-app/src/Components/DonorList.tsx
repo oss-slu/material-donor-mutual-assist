@@ -4,7 +4,6 @@ import { FaSearch, FaPlus } from 'react-icons/fa';
 import Modal from 'react-modal';
 import '../css/AdminHeader.css';
 import '../css/DonatedItemsList.css';
-import html2canvas from 'html2canvas';
 
 // Define types for the item and status enums
 interface Donor {
@@ -16,13 +15,11 @@ interface Donor {
 
 const DonorList: React.FC = () => {
     const [searchInput, setSearchInput] = useState<string>('');
-    const [filteredItems, setFilteredItems] = useState<Donor[]>([]);
-    const [selectedItems, setSelectedItems] = useState<number[]>([]);
+    const [filteredDonors, setFilteredDonors] = useState<Donor[]>([]);
     const [donorDetails, selectedDonorDetails] = useState<Donor | null>(null);
 
-    const [assignProgramClicked, setAssignProgramClicked] = useState<boolean>(false);
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-    const [donatedItems, setDonatedItems] = useState<Donor[]>([
+    const [currentDonors, setCurrentDonors] = useState<Donor[]>([
         {
             donorId: 811253,
             firstName: 'Jason',
@@ -57,27 +54,19 @@ const DonorList: React.FC = () => {
     const navigate = useNavigate();
 
     const handleSearch = () => {
-        const filtered = donatedItems.filter(
+        const filtered = currentDonors.filter(
             item =>
                 item.donorId.toString().includes(searchInput) ||
                 item.firstName.toLowerCase().includes(searchInput.toLowerCase()) ||
                 item.lastName.toLowerCase().includes(searchInput.toLowerCase()) ||
                 item.email.includes(searchInput)
         );
-        setFilteredItems(filtered);
+        setFilteredDonors(filtered);
     };
 
     const handleSort = (event: ChangeEvent<HTMLSelectElement>) => {
         // Sorting logic can go here
         console.log('Sorting by:', event.target.value);
-    };
-
-    const handleCheckboxChange = (itemId: number) => {
-        if (selectedItems.includes(itemId)) {
-            setSelectedItems(selectedItems.filter(id => id !== itemId));
-        } else {
-            setSelectedItems([...selectedItems, itemId]);
-        }
     };
 
     const handleAddNewDonorClick = () => {
@@ -132,38 +121,23 @@ const DonorList: React.FC = () => {
                             <th>Last Name</th>
                             <th>Email</th>
                             <th>More Details</th>
-                            {assignProgramClicked && <th>Select</th>}
                         </tr>
                     </thead>
                     <tbody>
-                        {(filteredItems.length > 0
-                            ? filteredItems
-                            : donatedItems
-                        ).map((item, index) => (
-                            <tr key={item.donorId}>
-                                <td>{item.donorId}</td>
-                                <td>{item.firstName}</td>
-                                <td>{item.lastName}</td>
-                                <td>{item.email}</td>
+                        {(filteredDonors.length > 0
+                            ? filteredDonors
+                            : currentDonors
+                        ).map((donor, index) => (
+                            <tr key={donor.donorId}>
+                                <td>{donor.donorId}</td>
+                                <td>{donor.firstName}</td>
+                                <td>{donor.lastName}</td>
+                                <td>{donor.email}</td>
                                 <td>
                                     <button onClick={() => handleViewDetailsClick()}>
                                         View More Details
                                      </button>
                                 </td>
-
-                                {assignProgramClicked && (
-                                    <td>
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedItems.includes(
-                                                item.donorId,
-                                            )}
-                                            onChange={() =>
-                                                handleCheckboxChange(item.donorId)
-                                            }
-                                        />
-                                    </td>
-                                )}
                             </tr>
                         ))}
                     </tbody>
