@@ -13,6 +13,7 @@ import Programs from './Components/Programs';
 import AddProgramPage from './Components/AddProgramPage'; // Import AddProgramPage correctly
 import NewItemForm from './Components/NewItemForm.tsx';
 import DonorList from './Components/DonorList.tsx';
+import DonatedItemDetails from './Components/DonatedItemDetails';
 import AddDonor from './Components/AddDonor'; // Why is this here?
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
                     path="/addprogram"
                     element={<AddProgramPage onAddProgram={handleAddProgram} />}
                 />
+                <Route path="/donations/:id" element={<DonatedItemDetails />} /> 
             </Routes>
         </div>
     );

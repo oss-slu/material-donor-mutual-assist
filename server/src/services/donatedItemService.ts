@@ -1,5 +1,6 @@
 import multer from 'multer';
 import { storage } from "../configs/SMCloudStoreConfig";
+import prisma from '../prismaClient'; 
 
 export async function uploadToStorage(file: Express.Multer.File, filename: string): Promise<string> {
     const containerName = 'mdma-dev';
@@ -21,4 +22,14 @@ export function getFileExtension(mimeType: string) {
         default:
             return '.jpg';
     }
+}
+
+export function validateDonatedItem(donatedItemId: number) {
+    // Check if donatedItemId is a valid number (integer)
+    if (isNaN(donatedItemId)) {
+        return false;
+    } else {
+        return true;
+    }
+    
 }

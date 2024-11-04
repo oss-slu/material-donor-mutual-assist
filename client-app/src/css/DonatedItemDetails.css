@@ -1,0 +1,100 @@
+.donated-item-details-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    background-color: #f3f6f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Two-column layout for the main details */
+.details-grid {
+    display: grid;
+    grid-template-columns: 7fr 3fr; /* 70% for left column, 30% for right column */
+    gap: 20px;
+}
+
+/* Section styling */
+.section-header {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.section-header h2 {
+    font-size: 20px;
+    margin: 0;
+}
+
+.section-header .icon {
+    font-size: 28px;
+    margin-right: 8px;
+}
+
+/* Left Column Styling (70% width) */
+.left-column .item-details-section,
+.left-column .status-logs-section {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.left-column .item-details-section {
+    background-color: #f7e7b9; 
+}
+
+.left-column .item-details-section .section-header {
+    background-color: #d9b867; 
+}
+
+
+.left-column .donated-item-status-section {
+    background-color: #badaf6; 
+}
+
+.left-column .donated-item-status-section .section-header {
+    background-color: #7ca3c7; 
+}
+
+/* Right Column Styling (30% width) */
+.right-column .donor-details-section,
+.right-column .program-details-section {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.right-column .donor-details-section {
+    background-color: #c8e0c9; 
+}
+
+.right-column .donor-details-section .section-header {
+    background-color: #8aa88b; 
+}
+
+.right-column .program-details-section {
+    background-color: #d5e5f3; 
+}
+
+.right-column .program-details-section .section-header {
+    background-color: #7ca3c7; 
+}
+
+/* Paragraph and text styling */
+p {
+    margin: 8px 0;
+    font-size: 16px;
+}
+
+strong {
+    color: #555;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .details-grid {
+        grid-template-columns: 1fr; /* Stacks sections vertically on small screens */
+    }
+}
