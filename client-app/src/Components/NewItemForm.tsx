@@ -97,18 +97,20 @@ const NewItemForm: React.FC = () => {
             const fileArray = Array.from(files);
             setFormData(prevState => ({
                 ...prevState,
-                imageFiles: [...prevState.imageFiles, ...fileArray]
+                imageFiles: [...prevState.imageFiles, ...fileArray],
             }));
 
             // Creating previews for display
-            const filePreviews = await Promise.all(fileArray.map(file => {
-                return new Promise<string>((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = () => resolve(reader.result as string);
-                    reader.onerror = error => reject(error);
-                });
-            }));
+            const filePreviews = await Promise.all(
+                fileArray.map(file => {
+                    return new Promise<string>((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = () => resolve(reader.result as string);
+                        reader.onerror = error => reject(error);
+                    });
+                }),
+            );
 
             setPreviews(prev => [...prev, ...filePreviews]);
         }
@@ -119,7 +121,7 @@ const NewItemForm: React.FC = () => {
         const updatedPreviews = previews.filter((_, i) => i !== index);
         setFormData(prevState => ({
             ...prevState,
-            imageFiles: updatedFiles
+            imageFiles: updatedFiles,
         }));
         setPreviews(updatedPreviews);
     };
@@ -191,16 +193,24 @@ const NewItemForm: React.FC = () => {
             try {
                 const formDataToSubmit = new FormData();
                 formDataToSubmit.append('itemType', formData.itemType);
-                formDataToSubmit.append('currentStatus', formData.currentStatus);
-                formDataToSubmit.append('donorId', formData.donorId ? formData.donorId.toString() : '');
-                formDataToSubmit.append('programId', formData.programId ? formData.programId.toString() : '');
+                formDataToSubmit.append(
+                    'currentStatus',
+                    formData.currentStatus,
+                );
+                formDataToSubmit.append(
+                    'donorId',
+                    formData.donorId ? formData.donorId.toString() : '',
+                );
+                formDataToSubmit.append(
+                    'programId',
+                    formData.programId ? formData.programId.toString() : '',
+                );
                 formDataToSubmit.append('dateDonated', formData.dateDonated);
 
                 // Append image files directly as part of the FormData
                 formData.imageFiles.forEach(file => {
                     formDataToSubmit.append('imageFiles', file);
                 });
-                
 
                 const response = await axios.post(
                     `${process.env.REACT_APP_BACKEND_API_BASE_URL}donatedItem`,
@@ -220,7 +230,9 @@ const NewItemForm: React.FC = () => {
                     setErrorMessage('Item not added');
                 }
             } catch (error: any) {
-                setErrorMessage(error.response?.data?.message || 'Error adding item');
+                setErrorMessage(
+                    error.response?.data?.message || 'Error adding item',
+                );
             }
         } else {
             setErrorMessage('Form has validation errors');
@@ -356,12 +368,7 @@ const NewItemForm: React.FC = () => {
                     programOptions,
                 )}
                 {renderFormField('Date Donated', 'dateDonated', 'date')}
-                {renderFormField(
-                    'Images (Max 5)',
-                    'imageFiles',
-                    'file',
-                    false,
-                )}
+                {renderFormField('Images (Max 5)', 'imageFiles', 'file', false)}
 
                 <div className="form-field full-width button-container">
                     <button type="submit" className="submit-button">

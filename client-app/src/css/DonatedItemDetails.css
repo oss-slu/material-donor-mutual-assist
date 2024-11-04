@@ -42,20 +42,19 @@
 }
 
 .left-column .item-details-section {
-    background-color: #f7e7b9; 
+    background-color: #f7e7b9;
 }
 
 .left-column .item-details-section .section-header {
-    background-color: #d9b867; 
+    background-color: #d9b867;
 }
 
-
 .left-column .donated-item-status-section {
-    background-color: #badaf6; 
+    background-color: #badaf6;
 }
 
 .left-column .donated-item-status-section .section-header {
-    background-color: #7ca3c7; 
+    background-color: #7ca3c7;
 }
 
 /* Right Column Styling (30% width) */
@@ -67,19 +66,19 @@
 }
 
 .right-column .donor-details-section {
-    background-color: #c8e0c9; 
+    background-color: #c8e0c9;
 }
 
 .right-column .donor-details-section .section-header {
-    background-color: #8aa88b; 
+    background-color: #8aa88b;
 }
 
 .right-column .program-details-section {
-    background-color: #d5e5f3; 
+    background-color: #d5e5f3;
 }
 
 .right-column .program-details-section .section-header {
-    background-color: #7ca3c7; 
+    background-color: #7ca3c7;
 }
 
 /* Paragraph and text styling */

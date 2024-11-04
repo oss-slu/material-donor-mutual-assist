@@ -5,7 +5,7 @@ export const newItem = {
     currentStatus: 'Received',
     programId: 1,
     donorId: 1,
-    dateDonated: new Date().toISOString()
+    dateDonated: new Date().toISOString(),
 };
 
 export const updateItem = {
@@ -13,7 +13,7 @@ export const updateItem = {
     currentStatus: 'Received',
     programId: 1,
     donorId: 1,
-    dateDonated: new Date().toISOString()
+    dateDonated: new Date().toISOString(),
 };
 
 export const newItemFormData = (request: Request): Request => {
@@ -22,7 +22,7 @@ export const newItemFormData = (request: Request): Request => {
         .field('currentStatus', 'Received')
         .field('donorId', 1)
         .field('programId', 1)
-        .field('dateDonated', new Date().toISOString())
+        .field('dateDonated', new Date().toISOString());
 };
 
 export const invalidItemFormData = (request: Request): Request => {
@@ -31,5 +31,5 @@ export const invalidItemFormData = (request: Request): Request => {
         .field('currentStatus', 'Received')
         .field('donorId', 29)
         .field('programId', 234)
-        .field('dateDonated', '2024-10-05')
+        .field('dateDonated', '2024-10-05');
 };
