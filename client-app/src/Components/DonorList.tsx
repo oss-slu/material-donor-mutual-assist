@@ -141,7 +141,7 @@ const DonorList: React.FC = () => {
                         <p>City: {donorDetails.city}</p>
                         <p>State: {donorDetails.state}</p>
                         <p>Zipcode: {donorDetails.zipcode}</p>
-                        <p>Opted in for Emails: {donorDetails.emailOptIn}</p>
+                        <p>Opted in for Emails: {donorDetails.emailOptIn ? "Yes" : "No"}</p>
                     </div>
                 )}
                 <button onClick={() => setModalIsOpen(false)}>Close</button>
