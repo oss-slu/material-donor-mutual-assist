@@ -44,7 +44,7 @@ function App() {
                     path="/addprogram"
                     element={<AddProgramPage onAddProgram={handleAddProgram} />}
                 />
-                <Route path="/donations/:id" element={<DonatedItemDetails />} /> 
+                <Route path="/donations/:id" element={<DonatedItemDetails />} />
             </Routes>
         </div>
     );

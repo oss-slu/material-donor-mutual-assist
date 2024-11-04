@@ -192,7 +192,7 @@ const DonorForm: React.FC = () => {
                 {renderFormField('State', 'state')}
                 {renderFormField('City', 'city')}
                 {renderFormField('Zip Code', 'zipcode')}
-              
+
                 <div className="form-field">
                     <label
                         htmlFor="emailOptIn"
