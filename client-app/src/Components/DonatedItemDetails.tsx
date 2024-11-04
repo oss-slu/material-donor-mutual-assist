@@ -20,17 +20,21 @@ const DonatedItemDetails: React.FC = () => {
     useEffect(() => {
         const fetchDonatedItemDetails = async () => {
             try {
-        
-                const API_BASE_URL = process.env.REACT_APP_BACKEND_API_BASE_URL || '';
+                const API_BASE_URL =
+                    process.env.REACT_APP_BACKEND_API_BASE_URL || '';
                 console.log(API_BASE_URL);
                 console.log(id);
-                const response = await axios.get<DonatedItem>(`${API_BASE_URL}donatedItem/${id}`);
-                
+                const response = await axios.get<DonatedItem>(
+                    `${API_BASE_URL}donatedItem/${id}`,
+                );
+
                 console.log(response);
                 setDonatedItem(response.data);
             } catch (err) {
                 if (axios.isAxiosError(err)) {
-                    setError(`Failed to fetch donated item details: ${err.response?.statusText || 'Server error'}`);
+                    setError(
+                        `Failed to fetch donated item details: ${err.response?.statusText || 'Server error'}`,
+                    );
                 } else {
                     setError('An unexpected error occurred');
                 }
@@ -63,10 +67,20 @@ const DonatedItemDetails: React.FC = () => {
                             <CategoryIcon className="icon" />
                             <h2>Item Details</h2>
                         </div>
-                        <p><strong>Type:</strong> {donatedItem.itemType}</p>
-                        <p><strong>Status:</strong> {donatedItem.currentStatus}</p>
-                        <p><strong>Donated On:</strong> {formatDate(donatedItem.dateDonated)}</p>
-                        <p><strong>Last Updated:</strong> {formatDate(donatedItem.lastUpdated)}</p>
+                        <p>
+                            <strong>Type:</strong> {donatedItem.itemType}
+                        </p>
+                        <p>
+                            <strong>Status:</strong> {donatedItem.currentStatus}
+                        </p>
+                        <p>
+                            <strong>Donated On:</strong>{' '}
+                            {formatDate(donatedItem.dateDonated)}
+                        </p>
+                        <p>
+                            <strong>Last Updated:</strong>{' '}
+                            {formatDate(donatedItem.lastUpdated)}
+                        </p>
                     </section>
 
                     <section className="donated-item-status-section">
@@ -75,7 +89,11 @@ const DonatedItemDetails: React.FC = () => {
                             <h2>Donated Item Status</h2>
                         </div>
                         {donatedItem.statuses.map(status => (
-                            <p key={status.id}><strong>Status:</strong> {status.type} - <strong>Modified on:</strong> {formatDate(status.dateModified)}</p>
+                            <p key={status.id}>
+                                <strong>Status:</strong> {status.type} -{' '}
+                                <strong>Modified on:</strong>{' '}
+                                {formatDate(status.dateModified)}
+                            </p>
                         ))}
                     </section>
                 </div>
@@ -87,11 +105,27 @@ const DonatedItemDetails: React.FC = () => {
                             <PersonIcon className="icon" />
                             <h2>Donor Details</h2>
                         </div>
-                        <p><strong>Name:</strong> {donatedItem.donor.firstName} {donatedItem.donor.lastName}</p>
-                        <p><strong>Email:</strong> {donatedItem.donor.email}</p>
-                        <p><strong>Contact:</strong> {donatedItem.donor.contact}</p>
-                        <p><strong>Address:</strong> {donatedItem.donor.addressLine1}, {donatedItem.donor.addressLine2 ?? ''}</p>
-                        <p><strong>City/State:</strong> {donatedItem.donor.city}, {donatedItem.donor.state} {donatedItem.donor.zipcode}</p>
+                        <p>
+                            <strong>Name:</strong> {donatedItem.donor.firstName}{' '}
+                            {donatedItem.donor.lastName}
+                        </p>
+                        <p>
+                            <strong>Email:</strong> {donatedItem.donor.email}
+                        </p>
+                        <p>
+                            <strong>Contact:</strong>{' '}
+                            {donatedItem.donor.contact}
+                        </p>
+                        <p>
+                            <strong>Address:</strong>{' '}
+                            {donatedItem.donor.addressLine1},{' '}
+                            {donatedItem.donor.addressLine2 ?? ''}
+                        </p>
+                        <p>
+                            <strong>City/State:</strong>{' '}
+                            {donatedItem.donor.city}, {donatedItem.donor.state}{' '}
+                            {donatedItem.donor.zipcode}
+                        </p>
                     </section>
 
                     <section className="program-details-section">
@@ -99,10 +133,21 @@ const DonatedItemDetails: React.FC = () => {
                             <EventNoteIcon className="icon" />
                             <h2>Program Details</h2>
                         </div>
-                        <p><strong>Name:</strong> {donatedItem.program.name}</p>
-                        <p><strong>Description:</strong> {donatedItem.program.description}</p>
-                        <p><strong>Start Date:</strong> {formatDate(donatedItem.program.startDate)}</p>
-                        <p><strong>Aim and Cause:</strong> {donatedItem.program.aimAndCause}</p>
+                        <p>
+                            <strong>Name:</strong> {donatedItem.program.name}
+                        </p>
+                        <p>
+                            <strong>Description:</strong>{' '}
+                            {donatedItem.program.description}
+                        </p>
+                        <p>
+                            <strong>Start Date:</strong>{' '}
+                            {formatDate(donatedItem.program.startDate)}
+                        </p>
+                        <p>
+                            <strong>Aim and Cause:</strong>{' '}
+                            {donatedItem.program.aimAndCause}
+                        </p>
                     </section>
                 </div>
             </div>
