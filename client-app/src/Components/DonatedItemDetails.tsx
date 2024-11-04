@@ -8,7 +8,7 @@ import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import '../css/DonatedItemDetails.css'; // Import the new CSS file
 import { Donor } from '../Modals/DonorModal';
 import { Program } from '../Modals/ProgramModal';
-import { DonatedItemStatus } from '../Modals/DonatedItemStatus';
+import { DonatedItemStatus } from '../Modals/DonatedItemStatusModal';
 import { DonatedItem } from '../Modals/DonatedItemModal';
 
 const DonatedItemDetails: React.FC = () => {
