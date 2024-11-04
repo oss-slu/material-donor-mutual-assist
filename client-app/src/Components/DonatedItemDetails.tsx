@@ -6,45 +6,10 @@ import CategoryIcon from '@mui/icons-material/Category';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import '../css/DonatedItemDetails.css'; // Import the new CSS file
-
-interface Donor {
-    id: number;
-    firstName: string;
-    lastName: string;
-    contact: string;
-    email: string;
-    addressLine1: string;
-    addressLine2?: string;
-    state: string;
-    city: string;
-    zipcode: string;
-    emailOptIn: boolean;
-}
-
-interface Program {
-    id: number;
-    name: string;
-    description: string;
-    startDate: string;
-    aimAndCause: string;
-}
-
-interface StatusLog {
-    id: number;
-    type: string;
-    dateModified: string;
-}
-
-interface DonatedItem {
-    id: number;
-    itemType: string;
-    currentStatus: string;
-    dateDonated: string;
-    lastUpdated: string;
-    donor: Donor;
-    program: Program;
-    statuses: StatusLog[];
-}
+import { Donor } from '../Modals/DonorModal';
+import { Program } from '../Modals/ProgramModal';
+import { DonatedItemStatus } from '../Modals/DonatedItemStatus';
+import { DonatedItem } from '../Modals/DonatedItemModal';
 
 const DonatedItemDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -104,10 +69,10 @@ const DonatedItemDetails: React.FC = () => {
                         <p><strong>Last Updated:</strong> {formatDate(donatedItem.lastUpdated)}</p>
                     </section>
 
-                    <section className="status-logs-section">
+                    <section className="donated-item-status-section">
                         <div className="section-header">
                             <AssignmentTurnedInIcon className="icon" />
-                            <h2>Status Logs</h2>
+                            <h2>Donated Item Status</h2>
                         </div>
                         {donatedItem.statuses.map(status => (
                             <p key={status.id}><strong>Status:</strong> {status.type} - <strong>Modified on:</strong> {formatDate(status.dateModified)}</p>

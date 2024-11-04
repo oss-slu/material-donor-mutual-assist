@@ -5,7 +5,7 @@ import { donatedItemValidator } from '../validators/donatedItemValidator'; // Im
 import { validateDonor } from '../services/donorService';
 import { validateProgram } from '../services/programService';
 import { validateDonatedItem } from '../services/donatedItemService';
-
+import { uploadToStorage, getFileExtension } from '../services/donatedItemService';
 import { date } from 'joi';
 
 const router = Router();
@@ -70,7 +70,7 @@ router.post('/', [upload.array('imageFiles'), donatedItemValidator], async (req:
 // GET /donatedItem - Fetch all donated items
 router.get('/', async (req: Request, res: Response) => {
     try {
-    const donatedItem = await prisma.donatedItem.findMany({
+    const donatedItems = await prisma.donatedItem.findMany({
         include: {
             donor: true, // Include all donor details
             program: true, // Include all program details
@@ -81,7 +81,7 @@ router.get('/', async (req: Request, res: Response) => {
             }
         }
     });
-    res.json(donatedItem);
+    res.json(donatedItems);
 } catch (error) {
     if (error instanceof Error) {
         console.error('Error fetching donated item:', error.message);
@@ -97,11 +97,9 @@ router.get('/', async (req: Request, res: Response) => {
 
 // GET /donatedItem - Fetch donated item by ID
 router.get('/:id', async (req: Request, res: Response) => {
-        const donatedItemId = parseInt(req.params.id);
-        if (isNaN(donatedItemId)) {
-            return res.status(400).json({ error: "Donated item ID must be an integer." });
-        }
         try {
+        const donatedItemId = parseInt(req.params.id);
+        await validateDonatedItem(donatedItemId);
         const donatedItem = await prisma.donatedItem.findUnique({
             where: { id: donatedItemId },
             include: {
