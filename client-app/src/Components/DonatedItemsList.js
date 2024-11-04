@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaSearch, FaPlus } from 'react-icons/fa';
 import Barcode from 'react-barcode';
 import Modal from 'react-modal';
-import ItemStatus from '../constants/Enums.js';
+import ItemStatus from '../constants/Enums.ts';
 import '../css/AdminHeader.css';
 import '../css/DonatedItemsList.css';
 import html2canvas from 'html2canvas';
