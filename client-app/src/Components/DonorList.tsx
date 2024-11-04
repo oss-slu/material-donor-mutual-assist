@@ -127,24 +127,27 @@ const DonorList: React.FC = () => {
             </table>
 
             <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
-                <h2>Details</h2>
-                {donorDetails && (
-                    <div>
-                        <p>Donor ID: {donorDetails.id}</p>
-                        <p>First Name: {donorDetails.firstName}</p>
-                        <p>Last Name: {donorDetails.lastName}</p>
-                        <p>Email: {donorDetails.email}</p>
-                        <p>Contact Number: {donorDetails.contact}</p>
-                        <p>Address Line 1: {donorDetails.addressLine1}</p>
-                        <p>Address Line 2: {donorDetails.addressLine2}</p>
-                        <p>City: {donorDetails.city}</p>
-                        <p>State: {donorDetails.state}</p>
-                        <p>Zipcode: {donorDetails.zipcode}</p>
-                        <p>Opted in for Emails: {donorDetails.emailOptIn ? "Yes" : "No"}</p>
-                    </div>
-                )}
-                <button onClick={() => setModalIsOpen(false)}>Close</button>
+                <div className="modal-container">
+                    <h2 className="modal-header">Details</h2>
+                    {donorDetails && (
+                        <div className="modal-content">
+                            <p>Donor ID: {donorDetails.id}</p>
+                            <p>First Name: {donorDetails.firstName}</p>
+                            <p>Last Name: {donorDetails.lastName}</p>
+                            <p>Email: {donorDetails.email}</p>
+                            <p>Contact Number: {donorDetails.contact}</p>
+                            <p>Address Line 1: {donorDetails.addressLine1}</p>
+                            <p>Address Line 2: {donorDetails.addressLine2}</p>
+                            <p>City: {donorDetails.city}</p>
+                            <p>State: {donorDetails.state}</p>
+                            <p>Zipcode: {donorDetails.zipcode}</p>
+                            <p>Opted in for Emails: {donorDetails.emailOptIn ? "Yes" : "No"}</p>
+                        </div>
+                    )}
+                    <button className="close-button" onClick={() => setModalIsOpen(false)}>Close</button>
+                </div>
             </Modal>
+
 
             <div style={{ position: 'fixed', bottom: '20px', right: '20px' }}>
                 <button onClick={() => handleAddNewDonorClick()}>
