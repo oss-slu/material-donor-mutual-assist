@@ -97,9 +97,11 @@ router.get('/', async (req: Request, res: Response) => {
 
 // GET /donatedItem - Fetch donated item by ID
 router.get('/:id', async (req: Request, res: Response) => {
-        try {
+    try {
         const donatedItemId = parseInt(req.params.id);
-        await validateDonatedItem(donatedItemId);
+        if (!validateDonatedItem(donatedItemId)) {
+            return res.status(400).json({ error: "Donated item ID must be an integer." });
+        }
         const donatedItem = await prisma.donatedItem.findUnique({
             where: { id: donatedItemId },
             include: {
