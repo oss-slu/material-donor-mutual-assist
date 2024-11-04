@@ -185,7 +185,14 @@ interface Donor {
     donorId: number;
     firstName: string;
     lastName: string;
+    contact: string;
     email: string;
+    addressLine1: string;
+    addressLine2: string;
+    city: string;
+    state: string;
+    zipcode: string;
+    emailOptIn: boolean;
 }
 
 const DonorList: React.FC = () => {
@@ -202,11 +209,12 @@ const DonorList: React.FC = () => {
         const fetchDonors = async () => {
             try {
                 const response = await axios.get<Donor[]>(
-                    //`${process.env.REACT_APP_BACKEND_API_BASE_URL}/Donor`
+                    //`${process.env.REACT_APP_BACKEND_API_BASE_URL}/donor`
                     'http://localhost:5000/donor'
                 );
                 setCurrentDonors(response.data); // Set the fetched data
             } catch (err) {
+                //console.error('Error fetching donor data:', err.response ? err.response.data : err.message);
                 console.error('Error fetching donors:', err);
                 setError('Error fetching donor data');
             }
@@ -296,6 +304,13 @@ const DonorList: React.FC = () => {
                         <p>Donor First Name: {donorDetails.firstName}</p>
                         <p>Donor Last Name: {donorDetails.lastName}</p>
                         <p>Donor Email: {donorDetails.email}</p>
+                        <p>Contact Number: {donorDetails.contact}</p>
+                        <p>Address Line 1: {donorDetails.addressLine1}</p>
+                        <p>Address Line 2: {donorDetails.addressLine2}</p>
+                        <p>City: {donorDetails.city}</p>
+                        <p>State: {donorDetails.state}</p>
+                        <p>Zipcode: {donorDetails.zipcode}</p>
+                        <p>Opted in for Emails: {donorDetails.emailOptIn}</p>
                     </div>
                 )}
                 <button onClick={() => setModalIsOpen(false)}>Close</button>
