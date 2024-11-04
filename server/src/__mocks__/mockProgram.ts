@@ -3,5 +3,5 @@ export const newProgram = {
     name: 'Valid Program',
     description: 'Valid',
     startDate: '2024-10-04',
-    aimAndCause: 'recycle'
+    aimAndCause: 'recycle',
 };

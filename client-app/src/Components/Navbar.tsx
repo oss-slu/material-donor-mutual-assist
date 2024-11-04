@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import '../css/NavbarDropdown.css';
 
-
 const Navbar: React.FC = () => {
     const [user, setUser] = useState<string>('');
     const location = useLocation();
@@ -55,85 +54,199 @@ const Navbar: React.FC = () => {
                 >
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                <div
+                    className="collapse navbar-collapse"
+                    id="navbarSupportedContent"
+                >
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         {isLoggedIn ? (
                             <>
-                                <li className="nav-item" style={{ fontSize: '20px', paddingLeft: '10px', paddingTop: '8px' }}>
+                                <li
+                                    className="nav-item"
+                                    style={{
+                                        fontSize: '20px',
+                                        paddingLeft: '10px',
+                                        paddingTop: '8px',
+                                    }}
+                                >
                                     <span>Welcome {user}!</span>
                                 </li>
 
-                                <li className="nav-item dropdown" style={{ fontSize: '20px', paddingLeft: '10px' }}>
+                                <li
+                                    className="nav-item dropdown"
+                                    style={{
+                                        fontSize: '20px',
+                                        paddingLeft: '10px',
+                                    }}
+                                >
                                     <span
                                         className="nav-link dropdown-toggle"
                                         style={{
-                                            fontWeight: location.pathname === '/donations' || location.pathname === '/adddonation' ? 'bold' : 'normal',
-                                            color: location.pathname === '/donations' || location.pathname === '/adddonation' ? 'black' : 'inherit',
+                                            fontWeight:
+                                                location.pathname ===
+                                                    '/donations' ||
+                                                location.pathname ===
+                                                    '/adddonation'
+                                                    ? 'bold'
+                                                    : 'normal',
+                                            color:
+                                                location.pathname ===
+                                                    '/donations' ||
+                                                location.pathname ===
+                                                    '/adddonation'
+                                                    ? 'black'
+                                                    : 'inherit',
                                             cursor: 'pointer',
                                         }}
                                         id="navbarDropdown"
                                     >
                                         Donations
                                     </span>
-                                    <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <ul
+                                        className="dropdown-menu"
+                                        aria-labelledby="navbarDropdown"
+                                    >
                                         <li>
-                                            <Link className="dropdown-item" to="/donations">All Donations</Link>
+                                            <Link
+                                                className="dropdown-item"
+                                                to="/donations"
+                                            >
+                                                All Donations
+                                            </Link>
                                         </li>
                                         <li>
-                                            <Link className="dropdown-item" to="/adddonation">Add New Donation</Link>
+                                            <Link
+                                                className="dropdown-item"
+                                                to="/adddonation"
+                                            >
+                                                Add New Donation
+                                            </Link>
                                         </li>
                                     </ul>
                                 </li>
 
-                                <li className="nav-item dropdown" style={{ fontSize: '20px', paddingLeft: '10px' }}>
+                                <li
+                                    className="nav-item dropdown"
+                                    style={{
+                                        fontSize: '20px',
+                                        paddingLeft: '10px',
+                                    }}
+                                >
                                     <span
                                         className="nav-link dropdown-toggle"
                                         style={{
-                                            fontWeight: location.pathname === '/programs' || location.pathname === '/addprogram' ? 'bold' : 'normal',
-                                            color: location.pathname === '/programs' || location.pathname === '/addprogram' ? 'black' : 'inherit',
+                                            fontWeight:
+                                                location.pathname ===
+                                                    '/programs' ||
+                                                location.pathname ===
+                                                    '/addprogram'
+                                                    ? 'bold'
+                                                    : 'normal',
+                                            color:
+                                                location.pathname ===
+                                                    '/programs' ||
+                                                location.pathname ===
+                                                    '/addprogram'
+                                                    ? 'black'
+                                                    : 'inherit',
                                             cursor: 'pointer',
                                         }}
                                     >
                                         Programs
                                     </span>
-                                    <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <ul
+                                        className="dropdown-menu"
+                                        aria-labelledby="navbarDropdown"
+                                    >
                                         <li>
-                                            <Link className="dropdown-item" to="/programs">All Programs</Link>
+                                            <Link
+                                                className="dropdown-item"
+                                                to="/programs"
+                                            >
+                                                All Programs
+                                            </Link>
                                         </li>
                                         <li>
-                                            <Link className="dropdown-item" to="/addprogram">Add New Program</Link>
+                                            <Link
+                                                className="dropdown-item"
+                                                to="/addprogram"
+                                            >
+                                                Add New Program
+                                            </Link>
                                         </li>
                                     </ul>
                                 </li>
 
-                                <li className="nav-item dropdown" style={{ fontSize: '20px', paddingLeft: '10px' }}>
+                                <li
+                                    className="nav-item dropdown"
+                                    style={{
+                                        fontSize: '20px',
+                                        paddingLeft: '10px',
+                                    }}
+                                >
                                     <span
                                         className="nav-link dropdown-toggle"
                                         style={{
-                                            fontWeight: location.pathname === '/donorform' || location.pathname === '/donorlist' ? 'bold' : 'normal',
-                                            color: location.pathname === '/donorform' || location.pathname === '/donorlist' ? 'black' : 'inherit',
+                                            fontWeight:
+                                                location.pathname ===
+                                                    '/donorform' ||
+                                                location.pathname === 
+                                                    '/donorlist'
+                                                    ? 'bold'
+                                                    : 'normal',
+                                            color:
+                                                location.pathname ===
+                                                    '/donorform' ||
+                                                location.pathname === 
+                                                    '/donorlist'
+                                                    ? 'black'
+                                                    : 'inherit',
                                             cursor: 'pointer',
                                         }}
                                     >
                                         Donors
                                     </span>
-                                    <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <ul
+                                        className="dropdown-menu"
+                                        aria-labelledby="navbarDropdown"
+                                    >
                                         <li>
                                             <Link className="dropdown-item" to="/donorlist">All Donors</Link>
                                         </li>
                                         <li>
-                                            <Link className="dropdown-item" to="/donorform">Add New Donor</Link>
+                                            <Link
+                                                className="dropdown-item"
+                                                to="/donorform"
+                                            >
+                                                Add New Donor
+                                            </Link>
                                         </li>
                                     </ul>
                                 </li>
-                                <li className="nav-item" style={{ fontSize: '20px', paddingLeft: '10px' }}>
+                                <li
+                                    className="nav-item"
+                                    style={{
+                                        fontSize: '20px',
+                                        paddingLeft: '10px',
+                                    }}
+                                >
                                     {/* Will need updating if the '/' path gets updated to not be the about page */}
                                     <Link
                                         className="nav-link"
                                         to="/about"
                                         style={{
-                                            fontWeight: location.pathname === '/about' || location.pathname === '/' ? 'bold' : 'normal',
-                                            color: location.pathname === '/about' || location.pathname === '/' ? 'black' : 'inherit',
+                                            fontWeight:
+                                                location.pathname ===
+                                                    '/about' ||
+                                                location.pathname === '/'
+                                                    ? 'bold'
+                                                    : 'normal',
+                                            color:
+                                                location.pathname ===
+                                                    '/about' ||
+                                                location.pathname === '/'
+                                                    ? 'black'
+                                                    : 'inherit',
                                         }}
                                     >
                                         About
@@ -142,37 +255,75 @@ const Navbar: React.FC = () => {
                             </>
                         ) : (
                             <>
-                                <li className="nav-item" style={{ fontSize: '20px', paddingLeft: '10px' }}>
+                                <li
+                                    className="nav-item"
+                                    style={{
+                                        fontSize: '20px',
+                                        paddingLeft: '10px',
+                                    }}
+                                >
                                     <Link
                                         className="nav-link active"
                                         to="/login"
                                         style={{
-                                            fontWeight: location.pathname === '/login' ? 'bold' : 'normal',
-                                            color: location.pathname === '/login' ? 'black' : 'inherit',
+                                            fontWeight:
+                                                location.pathname === '/login'
+                                                    ? 'bold'
+                                                    : 'normal',
+                                            color:
+                                                location.pathname === '/login'
+                                                    ? 'black'
+                                                    : 'inherit',
                                         }}
                                     >
                                         Login
                                     </Link>
                                 </li>
-                                <li className="nav-item" style={{ fontSize: '20px', paddingLeft: '10px' }}>
+                                <li
+                                    className="nav-item"
+                                    style={{
+                                        fontSize: '20px',
+                                        paddingLeft: '10px',
+                                    }}
+                                >
                                     <Link
                                         className="nav-link active"
                                         to="/register"
                                         style={{
-                                            fontWeight: location.pathname === '/register' ? 'bold' : 'normal',
-                                            color: location.pathname === '/register' ? 'black' : 'inherit',
+                                            fontWeight:
+                                                location.pathname ===
+                                                '/register'
+                                                    ? 'bold'
+                                                    : 'normal',
+                                            color:
+                                                location.pathname ===
+                                                '/register'
+                                                    ? 'black'
+                                                    : 'inherit',
                                         }}
                                     >
                                         Register
                                     </Link>
                                 </li>
-                                <li className="nav-item" style={{ fontSize: '20px', paddingLeft: '10px' }}>
+                                <li
+                                    className="nav-item"
+                                    style={{
+                                        fontSize: '20px',
+                                        paddingLeft: '10px',
+                                    }}
+                                >
                                     <Link
                                         className="nav-link"
                                         to="/about"
                                         style={{
-                                            fontWeight: location.pathname === '/about' ? 'bold' : 'normal',
-                                            color: location.pathname === '/about' ? 'black' : 'inherit',
+                                            fontWeight:
+                                                location.pathname === '/about'
+                                                    ? 'bold'
+                                                    : 'normal',
+                                            color:
+                                                location.pathname === '/about'
+                                                    ? 'black'
+                                                    : 'inherit',
                                         }}
                                     >
                                         About
