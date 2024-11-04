@@ -1,0 +1,24 @@
+.donor-list {
+    width: 90%;
+    border-collapse: collapse;
+    margin: 0 auto; /* This will center the table horizontally */
+}
+
+.donor-list th,
+.donor-list td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center; /* Center text horizontally */
+    vertical-align: middle; /* Center text vertically */
+}
+
+.div-topAddDonor {
+    display: flex;
+    justify-content: flex-end;
+    button {
+        margin: 20px 6px;
+        padding: 10px 20px 12px;
+        width: 200px;
+        text-align: center;
+    }
+}
