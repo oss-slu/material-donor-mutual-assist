@@ -6,36 +6,10 @@ import '../css/AdminHeader.css';
 import '../css/DonatedItemsList.css';
 import html2canvas from 'html2canvas';
 import Barcode from 'react-barcode';
-
-// Define interfaces for our data structures
-interface Donor {
-    id: number;
-    firstName: string;
-    email: string;
-    name?: string;
-}
-
-interface Program {
-    id: number;
-    name: string;
-}
-
-interface Status {
-    status: string;
-    date: string;
-}
-
-interface DonatedItem {
-    id: number;
-    itemType: string;
-    currentStatus: string;
-    dateDonated: string;
-    lastUpdated?: string;
-    donor: Donor | null;
-    program: Program | null;
-    programId?: number;
-    statuses?: Status[];
-}
+import {Donor} from '../Modals/DonorModal';
+import { Program } from '../Modals/ProgramModal';
+import { DonatedItem } from '../Modals/DonatedItemModal';
+import { DonatedItemStatus as Status } from '../Modals/DonatedItemStatusModal';
 
 interface SelectedItemDetails extends DonatedItem {
     statuses: Status[];
@@ -116,7 +90,9 @@ const DonatedItemsList: React.FC = () => {
                 new Date(item.dateDonated)
                     .toLocaleDateString()
                     .includes(searchTerm) ||
-                (item.donor?.name || '').toLowerCase().includes(searchTerm) ||
+                (item.donor?.firstName || '')
+                    .toLowerCase()
+                    .includes(searchTerm) ||
                 (item.program?.name || '').toLowerCase().includes(searchTerm),
         );
         setFilteredItems(filtered);
@@ -392,8 +368,6 @@ const DonatedItemsList: React.FC = () => {
                         <th>Item Name</th>
                         <th>Status</th>
                         <th>Donation Date</th>
-                        {/* <th>Donor Name</th>
-                        <th>Program</th> */}
                         <th>Barcode</th>
                         {assignProgramClicked && <th>Select</th>}
                     </tr>
@@ -420,12 +394,6 @@ const DonatedItemsList: React.FC = () => {
                                     item.dateDonated,
                                 ).toLocaleDateString()}
                             </td>
-                            {/* <td>{item.donor ? item.donor.firstName : 'N/A'}</td> */}
-                            {/* <td>
-                                {item.program
-                                    ? item.program.name
-                                    : 'Not Assigned'}
-                            </td> */}
                             <td>
                                 <div
                                     onClick={() => handleBarcodeClick(item.id)}
@@ -487,7 +455,7 @@ const DonatedItemsList: React.FC = () => {
                         <p>
                             Donor Name:{' '}
                             {selectedItemDetails.donor
-                                ? selectedItemDetails.donor.name
+                                ? selectedItemDetails.donor.firstName
                                 : 'N/A'}
                         </p>
                         <p>
@@ -505,9 +473,9 @@ const DonatedItemsList: React.FC = () => {
                                         {selectedItemDetails.statuses.map(
                                             (status, index) => (
                                                 <li key={index}>
-                                                    {status.status} -{' '}
+                                                    {status.statusType} -{' '}
                                                     {new Date(
-                                                        status.date,
+                                                        status.dateModified,
                                                     ).toLocaleDateString()}
                                                 </li>
                                             ),
