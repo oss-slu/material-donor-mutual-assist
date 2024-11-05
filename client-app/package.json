@@ -49,11 +49,14 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "concurrently \"react-scripts start\" \"cd backend && nodemon server\"",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "jest",
     "test:watch": "jest --watch",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "tsc":"tsc",
+    "tsc:watch":"tsc-w"
+  
   },
   "eslintConfig": {
     "extends": [
@@ -76,9 +79,13 @@
   "devDependencies": {
     "@babel/preset-env": "^7.23.9",
     "@babel/preset-react": "^7.23.3",
+    "@testing-library/jest-dom": "^6.0.0",
+    "@testing-library/react": "^14.0.0",
+    "@types/jest": "^29.0.0",
     "@types/node": "^22.5.4",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
+    "jest-fetch-mock": "^3.0.3",
     "nodemon": "^3.0.3",
     "react-scripts": "^5.0.1",
     "supertest": "^6.3.4",
