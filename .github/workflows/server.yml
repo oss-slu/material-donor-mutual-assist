@@ -23,6 +23,7 @@ jobs:
       with:
         node-version: '20.x'
     - run: cd server && npm install
+    - run: cd server && npm run build
 
     - name: Set Environment Variables
       run: |

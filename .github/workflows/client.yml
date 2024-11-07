@@ -23,6 +23,7 @@ jobs:
       with:
         node-version: '20.x'
     - run: cd client-app && npm install
+    - run: cd client-app && npm run build
     - run: cd client-app && npm test
       env:
         CI: true
