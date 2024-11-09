@@ -90,7 +90,7 @@ const DonatedItemDetails: React.FC = () => {
                         </div>
                         {donatedItem.statuses.map(status => (
                             <p key={status.id}>
-                                <strong>Status:</strong> {status.type} -{' '}
+                                <strong>Status:</strong> {status.statusType} -{' '}
                                 <strong>Modified on:</strong>{' '}
                                 {formatDate(status.dateModified)}
                             </p>
