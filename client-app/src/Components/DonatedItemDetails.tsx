@@ -89,11 +89,17 @@ const DonatedItemDetails: React.FC = () => {
                             <h2>Donated Item Status</h2>
                         </div>
                         {donatedItem.statuses.map(status => (
-                            <p key={status.id}>
-                                <strong>Status:</strong> {status.statusType} -{' '}
-                                <strong>Modified on:</strong>{' '}
-                                {formatDate(status.dateModified)}
-                            </p>
+                            <div>
+                                <p key={status.id}>
+                                    <strong>Status:</strong> {status.statusType} -{' '}
+                                    <strong>Modified on:</strong>{' '}
+                                    {formatDate(status.dateModified)}
+                                </p>
+                                {status.images.map((image: string, index: number) => (
+                                    <img key={index} src={`data:image/jpeg;base64,${image}`} alt={`Status Image ${index}`} style={{ width: '100px', height: '100px', margin: '5px' }} />
+                                    
+                                ))}
+                            </div>
                         ))}
                     </section>
                 </div>

@@ -35,26 +35,26 @@
 
 /* Left Column Styling (70% width) */
 .left-column .item-details-section,
-.left-column .status-logs-section {
+.left-column .donated-item-status-section {
     padding: 15px;
     border-radius: 8px;
     margin-bottom: 20px;
 }
 
 .left-column .item-details-section {
-    background-color: #f7e7b9;
+    background-color: #deeaf4;
 }
 
 .left-column .item-details-section .section-header {
-    background-color: #d9b867;
+    background-color: #7ca3c7;
 }
 
 .left-column .donated-item-status-section {
-    background-color: #badaf6;
+    background-color: #f7e7b9;
 }
 
 .left-column .donated-item-status-section .section-header {
-    background-color: #7ca3c7;
+    background-color: #d6ae47;
 }
 
 /* Right Column Styling (30% width) */
