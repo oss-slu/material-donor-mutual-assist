@@ -8,7 +8,7 @@ import ForgotPassword from './Components/ForgotPassword';
 import ResetPasswordPage from './Components/ResetPasswordPage';
 import DonatedItemsList from './Components/DonatedItemsList';
 import DonorForm from './Components/DonorForm.tsx';
-//import StatusDisplayPage from './Components/StatusDisplayPage';
+import StatusDisplayPage from './Components/StatusDisplayPage'; 
 import StatusUpdate from './Components/StatusUpdate';
 import Programs from './Components/Programs';
 import AddProgramPage from './Components/AddProgramPage'; // Import AddProgramPage correctly
@@ -36,8 +36,8 @@ function App() {
                 <Route path="/about" element={<Home />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/resetpassword" element={<ResetPasswordPage />} />
-                {/*<Route path="/item/:itemId" element={<StatusDisplayPage />} />*/}
-                <Route path="/item/:itemId" element={<StatusUpdate />} />
+                <Route path="/item/:itemId" element={<StatusDisplayPage />} />
+                <Route path="/donatedItem/status/:id" element={<StatusUpdate />} />
                 <Route path="/donorform" element={<DonorForm />} />
                 <Route path="/donorlist" element={<DonorList />} />
                 <Route path="/donations" element={<DonatedItemsList />} />

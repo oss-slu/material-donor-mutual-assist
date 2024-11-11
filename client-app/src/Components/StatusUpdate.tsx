@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import ItemStatus from '../constants/Enums';
 import '../css/DonorForm.css';
@@ -25,6 +26,7 @@ const StatusUpdate: React.FC = () => {
         currentStatus: 'Line 25',  // Initial status
         dateDonated: '',
     });
+    const { id } = useParams<{ id: string }>();
     const [errors, setErrors] = useState<FormErrors>({});
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -62,11 +64,11 @@ const StatusUpdate: React.FC = () => {
         if (validateForm()) {
             try {
                 const formDataToSubmit = new FormData();
-                formDataToSubmit.append('currentStatus', formData.currentStatus);
+                formDataToSubmit.append('statusType', formData.currentStatus);
                 formDataToSubmit.append('dateDonated', formData.dateDonated);
-
-                const response = await axios.post(
-                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}donatedItem`,
+    
+                const response = await axios.put(
+                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}donatedItem/status/${id}`,
                     formDataToSubmit,
                     {
                         headers: {
@@ -74,21 +76,24 @@ const StatusUpdate: React.FC = () => {
                         },
                     }
                 );
-
-                if (response.status === 201) {
-                    setSuccessMessage('Item added successfully!');
+    
+                if (response.status === 200) {
+                    setSuccessMessage('Item updated successfully!');
                     handleRefresh();
                     navigate('/donations');
                 } else {
-                    setErrorMessage('Item not added');
+                    setErrorMessage('Failed to update item');
                 }
             } catch (error: any) {
-                setErrorMessage(error.response?.data?.message || 'Error adding item');
+                setErrorMessage(
+                    error.response?.data?.message || 'Error updating item'
+                );
             }
         } else {
             setErrorMessage('Form has validation errors');
         }
     };
+    
 
     const handleRefresh = () => {
         setFormData({
@@ -122,7 +127,7 @@ const StatusUpdate: React.FC = () => {
                         errors[name] ? 'border-red-500' : 'border-gray-300'
                     }`}
                 >
-                    <option value="">Select a status</option>
+                    {/*<option value="">Select a status</option>*/}
                     {options.map(option => (
                         <option key={option.value} value={option.value}>
                             {option.label}

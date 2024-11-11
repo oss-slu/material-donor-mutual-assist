@@ -23,6 +23,7 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "portfinder": "^1.0.32",
+    "pug": "^3.0.3",
     "smcloudstore": "^0.2.1"
   },
   "devDependencies": {
