@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { donatedItemSchema } from '../schemas/donatedItems';
+import { donatedItemSchema } from '../schemas/donatedItemSchema';
 
 export const donatedItemValidator = (
     req: Request,

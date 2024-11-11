@@ -1,16 +1,15 @@
 import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import '../css/DonorForm.css';
 
 interface FormData {
     itemType: string;
     currentStatus: string;
-    donorEmail: string;
     donorId: number | null;
-    program: string;
     programId: number | null;
-    imageUpload: string[];
     dateDonated: string;
+    imageFiles: File[];
 }
 
 interface FormErrors {
@@ -24,14 +23,13 @@ interface Option {
 }
 
 const NewItemForm: React.FC = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState<FormData>({
         itemType: '',
         currentStatus: 'Received',
-        donorEmail: '',
         donorId: null,
-        program: '',
         programId: null,
-        imageUpload: [],
+        imageFiles: [],
         dateDonated: '',
     });
 
@@ -51,10 +49,10 @@ const NewItemForm: React.FC = () => {
         const fetchDonorEmails = async () => {
             try {
                 const response = await axios.get(
-                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}/donor`,
+                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}donor`,
                 );
                 const emailOptions = response.data.map((donor: any) => ({
-                    value: donor.firstName,
+                    value: donor.id,
                     label: donor.email,
                     id: donor.id,
                 }));
@@ -67,10 +65,10 @@ const NewItemForm: React.FC = () => {
         const fetchPrograms = async () => {
             try {
                 const response = await axios.get(
-                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}/program`,
+                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}program`,
                 );
                 const programOptions = response.data.map((program: any) => ({
-                    value: program.name,
+                    value: program.id,
                     label: program.name,
                     id: program.id,
                 }));
@@ -97,25 +95,33 @@ const NewItemForm: React.FC = () => {
         const files = e.target.files;
         if (files) {
             const fileArray = Array.from(files);
-            const base64Images = await Promise.all(
-                fileArray.map(file => convertToBase64(file)),
-            );
             setFormData(prevState => ({
                 ...prevState,
-                imageUpload: [...prevState.imageUpload, ...base64Images],
+                imageFiles: [...prevState.imageFiles, ...fileArray],
             }));
-            setPreviews([...previews, ...base64Images]);
+
+            // Creating previews for display
+            const filePreviews = await Promise.all(
+                fileArray.map(file => {
+                    return new Promise<string>((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = () => resolve(reader.result as string);
+                        reader.onerror = error => reject(error);
+                    });
+                }),
+            );
+
+            setPreviews(prev => [...prev, ...filePreviews]);
         }
     };
 
     const removeImage = (index: number) => {
-        const updatedImages = formData.imageUpload.filter(
-            (_, i) => i !== index,
-        );
+        const updatedFiles = formData.imageFiles.filter((_, i) => i !== index);
         const updatedPreviews = previews.filter((_, i) => i !== index);
         setFormData(prevState => ({
             ...prevState,
-            imageUpload: updatedImages,
+            imageFiles: updatedFiles,
         }));
         setPreviews(updatedPreviews);
     };
@@ -136,7 +142,6 @@ const NewItemForm: React.FC = () => {
             );
             setFormData(prevState => ({
                 ...prevState,
-                donorEmail: value,
                 donorId: selectedDonor?.id || null,
             }));
         } else if (name === 'program') {
@@ -145,7 +150,6 @@ const NewItemForm: React.FC = () => {
             );
             setFormData(prevState => ({
                 ...prevState,
-                program: value,
                 programId: selectedProgram?.id || null,
             }));
         } else {
@@ -164,7 +168,6 @@ const NewItemForm: React.FC = () => {
             'itemType',
             'currentStatus',
             'donorEmail',
-            'program',
             'dateDonated',
         ];
 
@@ -196,20 +199,25 @@ const NewItemForm: React.FC = () => {
                 );
                 formDataToSubmit.append(
                     'donorId',
-                    formData.donorId !== null ? String(Number(formData.donorId)) : '',
+                    formData.donorId ? formData.donorId.toString() : '',
                 );
                 formDataToSubmit.append(
                     'programId',
-                    formData.programId !== null ?String(Number(formData.programId)):'',
+                    formData.programId ? formData.programId.toString() : '',
                 );
                 formDataToSubmit.append('dateDonated', formData.dateDonated);
 
+                // Append image files directly as part of the FormData
+                formData.imageFiles.forEach(file => {
+                    formDataToSubmit.append('imageFiles', file);
+                });
+
                 const response = await axios.post(
-                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}/donatedItem`,
+                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}donatedItem`,
                     formDataToSubmit,
                     {
                         headers: {
-                            'Content-Type': 'application/json',
+                            'Content-Type': 'multipart/form-data',
                         },
                     },
                 );
@@ -217,14 +225,14 @@ const NewItemForm: React.FC = () => {
                 if (response.status === 201) {
                     setSuccessMessage('Item added successfully!');
                     handleRefresh();
+                    navigate('/donations');
                 } else {
                     setErrorMessage('Item not added');
                 }
-            } catch (error: unknown) {
-                const message =
-                    (error as any).response?.data?.message ||
-                    'Error adding item';
-                setErrorMessage(message);
+            } catch (error: any) {
+                setErrorMessage(
+                    error.response?.data?.message || 'Error adding item',
+                );
             }
         } else {
             setErrorMessage('Form has validation errors');
@@ -235,11 +243,9 @@ const NewItemForm: React.FC = () => {
         setFormData({
             itemType: '',
             currentStatus: 'Received',
-            donorEmail: '',
             donorId: null,
-            program: '',
             programId: null,
-            imageUpload: [],
+            imageFiles: [],
             dateDonated: '',
         });
         setPreviews([]);
@@ -260,7 +266,7 @@ const NewItemForm: React.FC = () => {
                 {label}
                 {required && <span className="text-red-500">&nbsp;*</span>}
             </label>
-            {name === 'imageUpload' ? (
+            {name === 'imageFiles' ? (
                 <div>
                     <input
                         type="file"
@@ -349,29 +355,24 @@ const NewItemForm: React.FC = () => {
                 {renderFormField('Current Status', 'currentStatus')}
                 {renderFormField(
                     'Donor Email',
-                    'donorEmail',
+                    'donorId',
                     'text',
                     true,
                     donorEmailOptions,
                 )}
                 {renderFormField(
                     'Program',
-                    'program',
+                    'programId',
                     'text',
-                    true,
+                    false,
                     programOptions,
                 )}
                 {renderFormField('Date Donated', 'dateDonated', 'date')}
-                {renderFormField(
-                    'Images (Max 5)',
-                    'imageUpload',
-                    'file',
-                    false,
-                )}
+                {renderFormField('Images (Max 5)', 'imageFiles', 'file', false)}
 
                 <div className="form-field full-width button-container">
                     <button type="submit" className="submit-button">
-                        Add Item
+                        Submit
                     </button>
                     <button
                         type="button"

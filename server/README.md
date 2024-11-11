@@ -45,6 +45,8 @@ Create a `.env` file and define the necessary environment variables:
 ```plaintext
 DATABASE_URL="postgresql://username:password@localhost:5432/dbname"
 PORT=5000
+AZURE_STORAGE_ACCOUNT_NAME="mdmaproject"
+AZURE_STORAGE_ACCESS_KEY="<enter-azure-storage-access-key>"
 ```
 
 Replace `username`, `password`, and `dbname` with your PostgreSQL username, password, and the name of the database you created.
