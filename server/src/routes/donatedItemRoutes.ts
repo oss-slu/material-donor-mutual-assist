@@ -145,42 +145,73 @@ router.get('/:id', async (req: Request, res: Response) => {
     }
 });
 
-// PUT /donatedItem/details/:id - Update non-status details of a DonatedItem
+// PUT /donatedItem/status/:id - Update the status of a DonatedItem and handle image uploads
 router.put(
-    '/details/:id',
-    donatedItemValidator,
+    '/status/:id',
+    upload.array('imageFiles'), // Handle image files as multipart
     async (req: Request, res: Response) => {
         try {
-            const donorId = parseInt(req.body.donorId);
-            const programId = parseInt(req.body.programId);
-            try {
-                await validateDonor(donorId);
-                await validateProgram(programId);
-            } catch (error) {
-                if (error instanceof Error) {
-                    return res.status(400).json({ error: error.message });
-                }
+            const donatedItemId = parseInt(req.params.id);
+
+            // Validate donated item ID
+            await validateDonatedItem(donatedItemId);
+
+            // Extract status details and image files
+            const { statusType, dateModified } = req.body;
+            const imageFiles = req.files as Express.Multer.File[];
+
+            // Ensure statusType and dateModified are provided
+            if (!statusType || !dateModified) {
+                return res
+                    .status(400)
+                    .json({ error: 'statusType and dateModified are required' });
             }
 
-            const updatedItem = await prisma.donatedItem.update({
-                where: { id: Number(req.params.id) },
+            // Convert dateModified to a Date object
+            const dateModifiedDateTime = new Date(dateModified);
+            dateModifiedDateTime.setUTCHours(0, 0, 0, 0); // Normalize time to UTC
+
+            // Upload images to cloud storage and retrieve URLs
+            const imageUrls = await Promise.all(
+                imageFiles.map(async file => {
+                    const fileExtension = getFileExtension(file.mimetype);
+                    const formattedDate = new Date().toISOString();
+                    return uploadToStorage(
+                        file,
+                        `status-${formattedDate}-${donatedItemId}${fileExtension}`,
+                    );
+                }),
+            );
+
+            // Update the status record in the database
+            const updatedStatus = await prisma.donatedItemStatus.update({
+                where: { id: donatedItemId }, // Assuming 1-to-1 relationship for simplicity
                 data: {
-                    ...req.body,
-                    donorId,
-                    programId,
-                    lastUpdated: new Date(),
+                    statusType,
+                    dateModified: dateModifiedDateTime,
+                    imageUrls,
                 },
             });
-            console.log('Donated item updated:', updatedItem);
-            res.json(updatedItem);
-        } catch (error) {
-            console.error('Error updating donated item details:', error);
-            res.status(500).json({
-                message: 'Error updating donated item details',
+
+            // Return updated status details
+            res.status(200).json({
+                message: 'Donated item status updated successfully',
+                status: updatedStatus,
             });
+        } catch (error) {
+            console.error('Error updating donated item status:', error);
+
+            if (error instanceof Error) {
+                res.status(400).json({ error: error.message });
+            } else {
+                res.status(500).json({
+                    message: 'Error updating donated item status',
+                });
+            }
         }
     },
 );
+
 
 //Added cascade deletion of statuses
 // DELETE /donatedItem/:id - Delete a DonatedItem with cascading deletion of its statuses
