@@ -13,7 +13,7 @@ const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 // PUT /donatedItem/status/:id - Update the status of a DonatedItem
-router.put(
+router.post(
     '/:id',
     [upload.array('imageFiles'), donatedItemStatusValidator],
     donatedItemStatusValidator,
@@ -30,19 +30,14 @@ router.put(
             const imageUrls = await Promise.all(
                 imageFiles.map(async file => {
                     const fileExtension = getFileExtension(file.mimetype);
-                    const uniqueFilename = `status-${donatedItemId}-${Date.now()}${fileExtension}`;
-                    return await uploadToStorage(file, uniqueFilename);
+                    const formattedDate = new Date().toISOString();
+
+                    return uploadToStorage(
+                        file,
+                        `item-${formattedDate}-${donatedItemId}${fileExtension}`,
+                    );
                 }),
             );
-
-            const updatedItem = await prisma.donatedItem.update({
-                where: { id: donatedItemId },
-                data: {
-                    currentStatus: statusType,
-                    lastUpdated: new Date(),
-                },
-            });
-
             // Update the donated item's current status and lastUpdated fields
             const updatedStatus = await prisma.donatedItem.update({
                 where: { id: Number(req.params.id) },
@@ -70,7 +65,7 @@ router.put(
             );
             res.status(200).json({
                 message: 'Donated item status updated successfully',
-                updatedItem,
+                updatedStatus,
                 newStatus,
             });
         } catch (error) {
