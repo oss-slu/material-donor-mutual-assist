@@ -1,8 +1,8 @@
 export interface DonatedItemStatus {
     id: number;
     statusType: string;
-    dateModified: string;
+    dateModified: Date;
     donatedItemId: number;
-    imageUrls: string[];
-    images: string[];
+    imageUrls?: string[];
+    images?: string[];
 }

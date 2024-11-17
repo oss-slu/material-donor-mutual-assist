@@ -4,12 +4,13 @@ import prisma from '../prismaClient'; // Import Prisma client
 import { donatedItemValidator } from '../validators/donatedItemValidator'; // Import the validator
 import { validateDonor } from '../services/donorService';
 import { validateProgram } from '../services/programService';
-import { validateDonatedItem } from '../services/donatedItemService';
+import { fetchImagesFromCloud, validateDonatedItem } from '../services/donatedItemService';
 import {
     uploadToStorage,
     getFileExtension,
 } from '../services/donatedItemService';
 import { date } from 'joi';
+import {DonatedItemStatus} from '../modals/DonatedItemStatusModal';
 
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -129,6 +130,14 @@ router.get('/:id', async (req: Request, res: Response) => {
                 error: `Donated item with ID ${donatedItemId} not found`,
             });
         }
+        
+        // Process each status to fetch and encode its images
+        await Promise.all(donatedItem.statuses.map(async (status: DonatedItemStatus) => {
+            const filenames = status.imageUrls || [];
+            const encodedImages = await fetchImagesFromCloud(filenames);
+            status.images = encodedImages;
+        }));
+        
         res.json(donatedItem);
     } catch (error) {
         if (error instanceof Error) {
