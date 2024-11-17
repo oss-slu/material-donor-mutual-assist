@@ -27,7 +27,6 @@ const fetchImageFromCloud = async (url: string): Promise<string | null> => {
         const fileName = url_chunks[1];
         const stream = await storage.getObject(containerName, fileName);
         const base64Image = await streamToBase64(stream);
-        console.log(base64Image);
         return base64Image;
     } catch (error) {
         console.error('Failed to fetch or encode image:', error);
