@@ -125,11 +125,9 @@ router.get('/:id', async (req: Request, res: Response) => {
         });
 
         if (!donatedItem) {
-            return res
-                .status(404)
-                .json({
-                    error: `Donated item with ID ${donatedItemId} not found`,
-                });
+            return res.status(404).json({
+                error: `Donated item with ID ${donatedItemId} not found`,
+            });
         }
         res.json(donatedItem);
     } catch (error) {
