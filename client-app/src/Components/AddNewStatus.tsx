@@ -80,7 +80,7 @@ const StatusUpdate: React.FC = () => {
                 if (response.status === 200) {
                     setSuccessMessage('Item updated successfully!');
                     handleRefresh();
-                    navigate(`${process.env.REACT_APP_BACKEND_API_BASE_URL}donatedItem/${id}`);
+                    navigate(`${process.env.REACT_APP_BACKEND_API_BASE_URL}donations/${id}`);
                 } else {
                     setErrorMessage('Failed to update item');
                 }
