@@ -1,4 +1,5 @@
 import Joi from 'joi';
+
 //DonatedItem schema
 export const donatedItemSchema = Joi.object({
     itemType: Joi.string().required(),
@@ -24,7 +25,7 @@ export const donatedItemSchema = Joi.object({
 // DonatedItemStatus schema
 export const donatedItemStatusSchema = Joi.object({
     statusType: Joi.string()
-        .valid('Received', 'Pending', 'Processed', 'Delivered')
+        .valid('Received', 'Donated', 'In storage facility', 'Refurbished', 'Item sold')
         .required(),
     donatedItemId: Joi.number().integer().required(), // Ensures it's a valid integer
     dateModified: Joi.date(), // Validates as a proper date

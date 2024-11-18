@@ -6,7 +6,7 @@ import ItemStatus from '../constants/Enums';
 import '../css/DonorForm.css';
 
 interface FormData {
-    statusType: string; // Backend currently only accepts received and a few other non-enumed values? 
+    statusType: string; 
     dateModified: string;
     donatedItemId: string;
 }
@@ -25,7 +25,7 @@ const StatusUpdate: React.FC = () => {
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const [formData, setFormData] = useState<FormData>({ // To complete - Set to current status
-        statusType: '',  // Initial status
+        statusType: ItemStatus.DONATED,  // Initial status
         dateModified: '',
         donatedItemId: id || '',
     });
