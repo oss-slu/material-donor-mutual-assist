@@ -226,6 +226,7 @@ const DonatedItemsList: React.FC = () => {
     const handleAddNewDonationClick = (): void => {
         navigate('/adddonation');
     };
+    
     const downloadBarcode = (id: number) => {
         const barcodeElement = document.getElementById(`barcode-${id}`);
         if (barcodeElement) {
