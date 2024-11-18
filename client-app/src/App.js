@@ -9,7 +9,7 @@ import ResetPasswordPage from './Components/ResetPasswordPage';
 import DonatedItemsList from './Components/DonatedItemsList';
 import DonorForm from './Components/DonorForm.tsx';
 import StatusDisplayPage from './Components/StatusDisplayPage'; 
-import StatusUpdate from './Components/StatusUpdate';
+import StatusUpdate from './Components/AddNewStatus';
 import Programs from './Components/Programs';
 import AddProgramPage from './Components/AddProgramPage'; // Import AddProgramPage correctly
 import NewItemForm from './Components/NewItemForm.tsx';

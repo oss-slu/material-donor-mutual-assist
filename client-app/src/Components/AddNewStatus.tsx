@@ -80,7 +80,7 @@ const StatusUpdate: React.FC = () => {
                 if (response.status === 200) {
                     setSuccessMessage('Item updated successfully!');
                     handleRefresh();
-                    navigate('/donations');
+                    navigate(`${process.env.REACT_APP_BACKEND_API_BASE_URL}donatedItem/${id}`);
                 } else {
                     setErrorMessage('Failed to update item');
                 }
@@ -152,7 +152,7 @@ const StatusUpdate: React.FC = () => {
 
     return (
         <div className="donor-form outer-container mx-auto p-10">
-            <h1 className="text-2xl font-bold heading-centered">Update Donated Item</h1>
+            <h1 className="text-2xl font-bold heading-centered">Add New Status</h1>
             {errorMessage && <p className="error-message">{errorMessage}</p>}
             {successMessage && <p className="success-message">{successMessage}</p>}
             <form onSubmit={handleSubmit} className="form-grid">

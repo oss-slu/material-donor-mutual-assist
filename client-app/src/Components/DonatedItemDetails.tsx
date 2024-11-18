@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import PersonIcon from '@mui/icons-material/Person';
@@ -16,6 +17,11 @@ const DonatedItemDetails: React.FC = () => {
     const [donatedItem, setDonatedItem] = useState<DonatedItem | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
+    const navigate = useNavigate();
+
+    const handleAddNewDonationClick = (): void => {
+        navigate(`/donatedItem/status/${id}`);
+    };
 
     useEffect(() => {
         const fetchDonatedItemDetails = async () => {
@@ -87,6 +93,9 @@ const DonatedItemDetails: React.FC = () => {
                         <div className="section-header">
                             <AssignmentTurnedInIcon className="icon" />
                             <h2>Donated Item Status</h2>
+                            <button onClick={handleAddNewDonationClick}>
+                                Add New Status
+                            </button>
                         </div>
                         {donatedItem.statuses.map(status => (
                             <div>
