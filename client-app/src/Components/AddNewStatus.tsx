@@ -6,7 +6,7 @@ import ItemStatus from '../constants/Enums';
 import '../css/DonorForm.css';
 
 interface FormData {
-    statusType: string; 
+    statusType: string;
     dateModified: string;
     donatedItemId: string;
 }
@@ -25,7 +25,7 @@ const AddNewStatus: React.FC = () => {
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const [formData, setFormData] = useState<FormData>({
-        statusType: ItemStatus.DONATED,  // Initial status
+        statusType: ItemStatus.DONATED, // Initial status
         dateModified: '',
         donatedItemId: id || '',
     });
@@ -33,11 +33,12 @@ const AddNewStatus: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-    useEffect(() => { // DOES NOT WORK. If time permits, this is trying to fetch the currentStatus of the item, then sets it to be the first thing displayed in the status box.
+    useEffect(() => {
+        // DOES NOT WORK. If time permits, this is trying to fetch the currentStatus of the item, then sets it to be the first thing displayed in the status box.
         const fetchItemData = async () => {
             try {
                 const response = await axios.get(
-                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}donatedItem/${id}`
+                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}donatedItem/${id}`,
                 );
                 const data: FormData = response.data;
 
@@ -48,7 +49,7 @@ const AddNewStatus: React.FC = () => {
                 });
             } catch (error: any) {
                 setErrorMessage(
-                    error.response?.data?.message || 'Error fetching item data'
+                    error.response?.data?.message || 'Error fetching item data',
                 );
             }
         };
@@ -58,7 +59,9 @@ const AddNewStatus: React.FC = () => {
         }
     }, [id]); // End of disfunctional code. Good luck if you are trying to get this working!
 
-    const handleChange = async (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleChange = async (
+        e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    ) => {
         const { name, value } = e.target;
         setFormData(prevState => ({
             ...prevState,
@@ -93,8 +96,11 @@ const AddNewStatus: React.FC = () => {
                 const formDataToSubmit = new FormData();
                 formDataToSubmit.append('statusType', formData.statusType);
                 formDataToSubmit.append('dateModified', formData.dateModified);
-                formDataToSubmit.append('donatedItemId', formData.donatedItemId);
-    
+                formDataToSubmit.append(
+                    'donatedItemId',
+                    formData.donatedItemId,
+                );
+
                 const response = await axios.post(
                     `${process.env.REACT_APP_BACKEND_API_BASE_URL}donatedItem/status/${id}`,
                     formDataToSubmit,
@@ -102,9 +108,9 @@ const AddNewStatus: React.FC = () => {
                         headers: {
                             'Content-Type': 'multipart/form-data',
                         },
-                    }
+                    },
                 );
-    
+
                 if (response.status === 200) {
                     setSuccessMessage('Item updated successfully!');
                     handleRefresh();
@@ -114,14 +120,13 @@ const AddNewStatus: React.FC = () => {
                 }
             } catch (error: any) {
                 setErrorMessage(
-                    error.response?.data?.message || 'Error updating item'
+                    error.response?.data?.message || 'Error updating item',
                 );
             }
         } else {
             setErrorMessage('Form has validation errors');
         }
     };
-    
 
     const handleRefresh = () => {
         setFormData({
@@ -139,7 +144,7 @@ const AddNewStatus: React.FC = () => {
         name: keyof FormData,
         type = 'text',
         required = true,
-        options?: Option[]
+        options?: Option[],
     ) => (
         <div className="form-field">
             <label htmlFor={name} className="block text-sm font-semibold mb-1">
@@ -174,19 +179,28 @@ const AddNewStatus: React.FC = () => {
                     }`}
                 />
             )}
-            {errors[name] && <p className="text-red-500 text-sm mt-1">{errors[name]}</p>}
+            {errors[name] && (
+                <p className="text-red-500 text-sm mt-1">{errors[name]}</p>
+            )}
         </div>
     );
 
     return (
         <div className="donor-form outer-container mx-auto p-10">
-            <h1 className="text-2xl font-bold heading-centered">Add New Status</h1>
+            <h1 className="text-2xl font-bold heading-centered">
+                Add New Status
+            </h1>
             {errorMessage && <p className="error-message">{errorMessage}</p>}
-            {successMessage && <p className="success-message">{successMessage}</p>}
+            {successMessage && (
+                <p className="success-message">{successMessage}</p>
+            )}
             <form onSubmit={handleSubmit} className="form-grid">
                 {renderFormField('Current Status', 'statusType', 'text', true, [
                     { value: ItemStatus.DONATED, label: 'Donated' },
-                    { value: ItemStatus.IN_STORAGE, label: 'In storage facility' },
+                    {
+                        value: ItemStatus.IN_STORAGE,
+                        label: 'In storage facility',
+                    },
                     { value: ItemStatus.REFURBISHED, label: 'Refurbished' },
                     { value: ItemStatus.SOLD, label: 'Item sold' },
                     { value: ItemStatus.RECEIVED, label: 'Received' },
@@ -194,8 +208,16 @@ const AddNewStatus: React.FC = () => {
                 {renderFormField('Date Updated', 'dateModified', 'date')}
 
                 <div className="form-field full-width button-container">
-                    <button type="submit" className="submit-button">Update</button>
-                    <button type="button" onClick={handleRefresh} className="refresh-button">Refresh</button>
+                    <button type="submit" className="submit-button">
+                        Update
+                    </button>
+                    <button
+                        type="button"
+                        onClick={handleRefresh}
+                        className="refresh-button"
+                    >
+                        Refresh
+                    </button>
                 </div>
             </form>
         </div>

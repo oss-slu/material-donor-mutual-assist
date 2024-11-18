@@ -34,27 +34,31 @@ describe('DonorList Component', () => {
                 state: 'OK',
                 city: 'Oaky',
                 zipcode: '9546',
-                emailOptIn: false
+                emailOptIn: false,
             },
         ];
-        
+
         axios.get.mockResolvedValueOnce({ data: donorsData });
 
         render(<DonorList />);
 
         // Wait for the donor list to be rendered
-        await waitFor(() => expect(screen.getByText('Donor ID')).toBeInTheDocument());
+        await waitFor(() =>
+            expect(screen.getByText('Donor ID')).toBeInTheDocument(),
+        );
 
         // Check if donor details are displayed
         expect(screen.getByText('Jason')).toBeInTheDocument();
         expect(screen.getByText('red@icloud.com')).toBeInTheDocument();
-        
+
         // Simulate clicking the view details button
         fireEvent.click(screen.getByText('View More Details'));
 
         // Verify modal content
         expect(screen.getByText('Donor ID: 811253')).toBeInTheDocument();
-        expect(screen.getByText('Opted in for Emails: true')).toBeInTheDocument();
+        expect(
+            screen.getByText('Opted in for Emails: true'),
+        ).toBeInTheDocument();
     });
 
     test('displays error message when fetching donors fails', async () => {
@@ -63,6 +67,10 @@ describe('DonorList Component', () => {
         render(<DonorList />);
 
         // Wait for the error message to be displayed
-        await waitFor(() => expect(screen.getByText('Error fetching donor data')).toBeInTheDocument());
+        await waitFor(() =>
+            expect(
+                screen.getByText('Error fetching donor data'),
+            ).toBeInTheDocument(),
+        );
     });
 });

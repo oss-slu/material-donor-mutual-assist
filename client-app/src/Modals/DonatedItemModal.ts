@@ -8,8 +8,8 @@ export interface DonatedItem {
     currentStatus: string;
     dateDonated: string;
     lastUpdated: string;
-    donorId:number  ;              // Foreign key for Donor
-    programId:number;               // Optional Foreign key for Program
+    donorId: number; // Foreign key for Donor
+    programId: number; // Optional Foreign key for Program
     donor: Donor;
     program: Program;
     statuses: DonatedItemStatus[];

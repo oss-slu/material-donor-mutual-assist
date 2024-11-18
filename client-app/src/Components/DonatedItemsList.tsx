@@ -6,7 +6,7 @@ import '../css/AdminHeader.css';
 import '../css/DonatedItemsList.css';
 import html2canvas from 'html2canvas';
 import Barcode from 'react-barcode';
-import {Donor} from '../Modals/DonorModal';
+import { Donor } from '../Modals/DonorModal';
 import { Program } from '../Modals/ProgramModal';
 import { DonatedItem } from '../Modals/DonatedItemModal';
 import { DonatedItemStatus as Status } from '../Modals/DonatedItemStatusModal';
@@ -226,7 +226,7 @@ const DonatedItemsList: React.FC = () => {
     const handleAddNewDonationClick = (): void => {
         navigate('/adddonation');
     };
-    
+
     const downloadBarcode = (id: number) => {
         const barcodeElement = document.getElementById(`barcode-${id}`);
         if (barcodeElement) {
