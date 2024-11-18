@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -24,14 +24,39 @@ interface Option {
 const StatusUpdate: React.FC = () => {
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
-    const [formData, setFormData] = useState<FormData>({ // To complete - Set to current status
-        statusType: ItemStatus.DONATED,  // Initial status
+    const [formData, setFormData] = useState<FormData>({
+        statusType: '',  // Initial status
         dateModified: '',
         donatedItemId: id || '',
     });
     const [errors, setErrors] = useState<FormErrors>({});
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+    useEffect(() => { // DOES NOT WORK. If time permits, this is trying to fetch the currentStatus of the item, then sets it to be the first thing displayed in the status box.
+        const fetchItemData = async () => {
+            try {
+                const response = await axios.get(
+                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}donatedItem/${id}`
+                );
+                const data: FormData = response.data;
+
+                setFormData({
+                    statusType: data.statusType, // Supposed to set the initial display to be the currentStatus
+                    dateModified: '',
+                    donatedItemId: id || '',
+                });
+            } catch (error: any) {
+                setErrorMessage(
+                    error.response?.data?.message || 'Error fetching item data'
+                );
+            }
+        };
+
+        if (id) {
+            fetchItemData();
+        }
+    }, [id]); // End of disfunctional code. Good luck if you are trying to get this working!
 
     const handleChange = async (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;

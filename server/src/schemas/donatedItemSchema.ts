@@ -4,7 +4,7 @@ import Joi from 'joi';
 export const donatedItemSchema = Joi.object({
     itemType: Joi.string().required(),
     currentStatus: Joi.string()
-        .valid('Received', 'Pending', 'Processed', 'Delivered')
+        .valid('Received', 'Donated', 'In storage facility', 'Refurbished', 'Item sold')
         .required(),
     donorId: Joi.alternatives(Joi.number(), Joi.string().pattern(/^\d+$/))
         .required()
