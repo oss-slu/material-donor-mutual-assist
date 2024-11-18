@@ -15,7 +15,9 @@ export async function uploadToStorage(
 }
 
 export const fetchImagesFromCloud = async (imageUrls: string[]) => {
-    const encodedImages = await Promise.all(imageUrls.map(imageUrl => fetchImageFromCloud(imageUrl)));
+    const encodedImages = await Promise.all(
+        imageUrls.map(imageUrl => fetchImageFromCloud(imageUrl)),
+    );
     return encodedImages.filter((e): e is string => e !== null);
 };
 
@@ -45,7 +47,7 @@ const streamToBase64 = (stream: Readable): Promise<string | null> => {
             const base64 = buffer.toString('base64');
             resolve(base64);
         });
-        stream.on('error', (error) => {
+        stream.on('error', error => {
             console.error('Stream error:', error);
             resolve(null); // Resolve with null in case of an error
         });

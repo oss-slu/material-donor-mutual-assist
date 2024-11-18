@@ -34,9 +34,9 @@ const DonorList: React.FC = () => {
         const fetchDonors = async () => {
             try {
                 const response = await axios.get<Donor[]>(
-                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}donor`
+                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}donor`,
                 );
-                console.log("Fetched donor data:", response.data); // Log the response data
+                console.log('Fetched donor data:', response.data); // Log the response data
                 setCurrentDonors(response.data); // Set the fetched data
             } catch (err) {
                 console.error('Error fetching donors:', err);
@@ -50,9 +50,13 @@ const DonorList: React.FC = () => {
         const filtered = currentDonors.filter(
             item =>
                 item.id.toString().includes(searchInput) ||
-                item.firstName.toLowerCase().includes(searchInput.toLowerCase()) ||
-                item.lastName.toLowerCase().includes(searchInput.toLowerCase()) ||
-                item.email.includes(searchInput)
+                item.firstName
+                    .toLowerCase()
+                    .includes(searchInput.toLowerCase()) ||
+                item.lastName
+                    .toLowerCase()
+                    .includes(searchInput.toLowerCase()) ||
+                item.email.includes(searchInput),
         );
         setFilteredDonors(filtered);
     };
@@ -84,7 +88,10 @@ const DonorList: React.FC = () => {
                             value={searchInput}
                             onChange={e => setSearchInput(e.target.value)}
                         />
-                        <button className="search-button" onClick={handleSearch}>
+                        <button
+                            className="search-button"
+                            onClick={handleSearch}
+                        >
                             <FaSearch />
                         </button>
                     </div>
@@ -94,11 +101,9 @@ const DonorList: React.FC = () => {
             {error && <p className="error-message">{error}</p>}
 
             <div className="div-topAddDonor">
-                <button onClick={handleAddNewDonorClick}>
-                    Add New Donor
-                </button>
+                <button onClick={handleAddNewDonorClick}>Add New Donor</button>
             </div>
-            
+
             <table className="donor-list">
                 <thead>
                     <tr>
@@ -110,14 +115,21 @@ const DonorList: React.FC = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {(filteredDonors.length > 0 ? filteredDonors : currentDonors).map((donor, index) => (
+                    {(filteredDonors.length > 0
+                        ? filteredDonors
+                        : currentDonors
+                    ).map((donor, index) => (
                         <tr key={donor.id}>
                             <td>{donor.id}</td>
                             <td>{donor.firstName}</td>
                             <td>{donor.lastName}</td>
                             <td>{donor.email}</td>
                             <td>
-                                <button onClick={() => handleViewDetailsClick(donor)}>
+                                <button
+                                    onClick={() =>
+                                        handleViewDetailsClick(donor)
+                                    }
+                                >
                                     View More Details
                                 </button>
                             </td>
@@ -126,7 +138,10 @@ const DonorList: React.FC = () => {
                 </tbody>
             </table>
 
-            <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
+            <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={() => setModalIsOpen(false)}
+            >
                 <div className="modal-container">
                     <h2 className="modal-header">Details</h2>
                     {donorDetails && (
@@ -141,13 +156,20 @@ const DonorList: React.FC = () => {
                             <p>City: {donorDetails.city}</p>
                             <p>State: {donorDetails.state}</p>
                             <p>Zipcode: {donorDetails.zipcode}</p>
-                            <p>Opted in for Emails: {donorDetails.emailOptIn ? "Yes" : "No"}</p>
+                            <p>
+                                Opted in for Emails:{' '}
+                                {donorDetails.emailOptIn ? 'Yes' : 'No'}
+                            </p>
                         </div>
                     )}
-                    <button className="close-button" onClick={() => setModalIsOpen(false)}>Close</button>
+                    <button
+                        className="close-button"
+                        onClick={() => setModalIsOpen(false)}
+                    >
+                        Close
+                    </button>
                 </div>
             </Modal>
-
 
             <div style={{ position: 'fixed', bottom: '20px', right: '20px' }}>
                 <button onClick={() => handleAddNewDonorClick()}>

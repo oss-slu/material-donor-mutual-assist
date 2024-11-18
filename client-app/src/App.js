@@ -35,7 +35,10 @@ function App() {
                 <Route path="/about" element={<Home />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/resetpassword" element={<ResetPasswordPage />} />
-                <Route path="/donatedItem/status/:id" element={<StatusUpdate />} />
+                <Route
+                    path="/donatedItem/status/:id"
+                    element={<StatusUpdate />}
+                />
                 <Route path="/donorform" element={<DonorForm />} />
                 <Route path="/donorlist" element={<DonorList />} />
                 <Route path="/donations" element={<DonatedItemsList />} />
