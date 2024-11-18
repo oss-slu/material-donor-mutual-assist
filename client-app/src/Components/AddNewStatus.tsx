@@ -21,11 +21,11 @@ interface Option {
     id?: number;
 }
 
-const StatusUpdate: React.FC = () => {
+const AddNewStatus: React.FC = () => {
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const [formData, setFormData] = useState<FormData>({
-        statusType: '',  // Initial status
+        statusType: ItemStatus.DONATED,  // Initial status
         dateModified: '',
         donatedItemId: id || '',
     });
@@ -42,7 +42,7 @@ const StatusUpdate: React.FC = () => {
                 const data: FormData = response.data;
 
                 setFormData({
-                    statusType: data.statusType, // Supposed to set the initial display to be the currentStatus
+                    statusType: data.statusType || ItemStatus.DONATED, // Supposed to set the initial display to be the currentStatus
                     dateModified: '',
                     donatedItemId: id || '',
                 });
@@ -202,4 +202,4 @@ const StatusUpdate: React.FC = () => {
     );
 };
 
-export default StatusUpdate;
+export default AddNewStatus;
