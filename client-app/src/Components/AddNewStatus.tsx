@@ -6,8 +6,9 @@ import ItemStatus from '../constants/Enums';
 import '../css/DonorForm.css';
 
 interface FormData {
-    currentStatus: string;
-    dateDonated: string;
+    statusType: string; // Backend currently only accepts received and a few other non-enumed values? 
+    dateModified: string;
+    donatedItemId: string;
 }
 
 interface FormErrors {
@@ -22,11 +23,12 @@ interface Option {
 
 const StatusUpdate: React.FC = () => {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState<FormData>({
-        currentStatus: 'Line 25',  // Initial status
-        dateDonated: '',
-    });
     const { id } = useParams<{ id: string }>();
+    const [formData, setFormData] = useState<FormData>({ // To complete - Set to current status
+        statusType: '',  // Initial status
+        dateModified: '',
+        donatedItemId: id || '',
+    });
     const [errors, setErrors] = useState<FormErrors>({});
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -64,10 +66,11 @@ const StatusUpdate: React.FC = () => {
         if (validateForm()) {
             try {
                 const formDataToSubmit = new FormData();
-                formDataToSubmit.append('currentStatus', formData.currentStatus);
-                formDataToSubmit.append('dateDonated', formData.dateDonated);
+                formDataToSubmit.append('statusType', formData.statusType);
+                formDataToSubmit.append('dateModified', formData.dateModified);
+                formDataToSubmit.append('donatedItemId', formData.donatedItemId);
     
-                const response = await axios.put(
+                const response = await axios.post(
                     `${process.env.REACT_APP_BACKEND_API_BASE_URL}donatedItem/status/${id}`,
                     formDataToSubmit,
                     {
@@ -80,7 +83,7 @@ const StatusUpdate: React.FC = () => {
                 if (response.status === 200) {
                     setSuccessMessage('Item updated successfully!');
                     handleRefresh();
-                    navigate(`${process.env.REACT_APP_BACKEND_API_BASE_URL}donations/${id}`);
+                    navigate(`/donations/${id}`);
                 } else {
                     setErrorMessage('Failed to update item');
                 }
@@ -97,8 +100,9 @@ const StatusUpdate: React.FC = () => {
 
     const handleRefresh = () => {
         setFormData({
-            currentStatus: 'Received',
-            dateDonated: '',
+            statusType: 'Received',
+            dateModified: '',
+            donatedItemId: '',
         });
         setErrors({});
         setErrorMessage(null);
@@ -127,7 +131,6 @@ const StatusUpdate: React.FC = () => {
                         errors[name] ? 'border-red-500' : 'border-gray-300'
                     }`}
                 >
-                    {/*<option value="">Select a status</option>*/}
                     {options.map(option => (
                         <option key={option.value} value={option.value}>
                             {option.label}
@@ -156,14 +159,14 @@ const StatusUpdate: React.FC = () => {
             {errorMessage && <p className="error-message">{errorMessage}</p>}
             {successMessage && <p className="success-message">{successMessage}</p>}
             <form onSubmit={handleSubmit} className="form-grid">
-                {renderFormField('Current Status', 'currentStatus', 'text', true, [
+                {renderFormField('Current Status', 'statusType', 'text', true, [
                     { value: ItemStatus.DONATED, label: 'Donated' },
                     { value: ItemStatus.IN_STORAGE, label: 'In storage facility' },
                     { value: ItemStatus.REFURBISHED, label: 'Refurbished' },
                     { value: ItemStatus.SOLD, label: 'Item sold' },
                     { value: ItemStatus.RECEIVED, label: 'Received' },
                 ])}
-                {renderFormField('Date Updated', 'dateDonated', 'date')}
+                {renderFormField('Date Updated', 'dateModified', 'date')}
 
                 <div className="form-field full-width button-container">
                     <button type="submit" className="submit-button">Update</button>
