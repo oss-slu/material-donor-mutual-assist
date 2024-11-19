@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import ItemStatus from '../constants/Enums';
-import '../css/DonorForm.css';
+import '../css/AddStatus.css';
 
 interface FormData {
     statusType: string;
