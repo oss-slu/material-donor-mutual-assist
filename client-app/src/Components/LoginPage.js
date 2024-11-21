@@ -37,8 +37,7 @@ const LoginPage = props => {
         alert('Login Success');
 
         console.log('in login page ', localStorage.getItem('isLogged'));
-    }
-
+    };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-200">
