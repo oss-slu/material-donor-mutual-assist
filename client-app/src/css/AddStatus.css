@@ -112,40 +112,50 @@
 }
 
 /* Image preview container (Images may be added at a later date) */
-.image-preview-container {
+.imagepcontainer {
+    margin-top: 20px;
     display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
+    /* flex-direction: column; */
+    gap: 10px;
+    width: 100%;
+}
+.imagepreview {
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
     margin-top: 10px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+    width: 90%; /* Keep the desired width */
+    height: 50%; /* Keep the desired height */
+    margin-left: auto; /* Center the container horizontally */
+    margin-right: auto; /* Center the container horizontally */
+    box-sizing: border-box; /* Ensure padding doesn't affect the dimensions */
 }
 
-/* Single image preview */
-.preview-item {
-    position: relative;
-}
-
-.preview-image {
-    width: 100px;
-    height: 100px;
+.imagepreview img {
+    align-self: center;
+    width: 100%; /* Adjust the size as needed */
+    height: 100px; /* Adjust the size as needed */
     object-fit: cover;
-    border-radius: 8px;
-    transition: transform 0.3s ease;
+    border-radius: 5px;
 }
-
-.preview-image:hover {
-    transform: scale(1.05);
+.imagepreview img:hover {
+    transform: scale(1.5);
 }
 
 /* Remove button for images */
-.remove-image-button {
-    position: absolute;
-    top: 5px;
-    right: 5px;
+.removeimage {
+    /* position: absolute; */
+    margin-top: 10%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
     background-color: rgba(255, 0, 0, 0.7);
     color: #fff;
     border: none;
-    border-radius: 50%;
-    padding: 4px;
+    border-radius: 10%;
+    padding: 10px;
     cursor: pointer;
     font-size: 10px;
 }

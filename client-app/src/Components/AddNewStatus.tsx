@@ -15,51 +15,27 @@ interface FormErrors {
     [key: string]: string;
 }
 
-interface Option {
-    value: string;
-    label: string;
-    id?: number;
-}
-
 const AddNewStatus: React.FC = () => {
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const [formData, setFormData] = useState<FormData>({
-        statusType: ItemStatus.DONATED, // Initial status
+        statusType: ItemStatus.DONATED,
         dateModified: '',
         donatedItemId: id || '',
     });
     const [errors, setErrors] = useState<FormErrors>({});
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [images, setImages] = useState<File[]>([]); // Store selected images
+    const [previewUrls, setPreviewUrls] = useState<string[]>([]); // Store image preview URLs
 
     useEffect(() => {
-        // DOES NOT WORK. If time permits, this is trying to fetch the currentStatus of the item, then sets it to be the first thing displayed in the status box.
-        const fetchItemData = async () => {
-            try {
-                const response = await axios.get(
-                    `${process.env.REACT_APP_BACKEND_API_BASE_URL}donatedItem/${id}`,
-                );
-                const data: FormData = response.data;
-
-                setFormData({
-                    statusType: data.statusType || ItemStatus.DONATED, // Supposed to set the initial display to be the currentStatus
-                    dateModified: '',
-                    donatedItemId: id || '',
-                });
-            } catch (error: any) {
-                setErrorMessage(
-                    error.response?.data?.message || 'Error fetching item data',
-                );
-            }
-        };
-
         if (id) {
-            fetchItemData();
+            setFormData(prev => ({ ...prev, donatedItemId: id }));
         }
-    }, [id]); // End of disfunctional code. Good luck if you are trying to get this working!
+    }, [id]);
 
-    const handleChange = async (
+    const handleChange = (
         e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     ) => {
         const { name, value } = e.target;
@@ -70,6 +46,26 @@ const AddNewStatus: React.FC = () => {
         setErrors(prevState => ({ ...prevState, [name]: '' }));
         setErrorMessage(null);
         setSuccessMessage(null);
+    };
+
+    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            const selectedFiles = Array.from(e.target.files);
+            if (images.length + selectedFiles.length > 5) {
+                setErrorMessage('You can upload up to 5 images only.');
+                return;
+            }
+            setImages(prev => [...prev, ...selectedFiles]);
+            const newPreviewUrls = selectedFiles.map(file =>
+                URL.createObjectURL(file),
+            );
+            setPreviewUrls(prev => [...prev, ...newPreviewUrls]);
+        }
+    };
+
+    const handleImageRemove = (index: number) => {
+        setImages(prev => prev.filter((_, i) => i !== index));
+        setPreviewUrls(prev => prev.filter((_, i) => i !== index));
     };
 
     const validateField = (name: string, value: any) => {
@@ -100,6 +96,9 @@ const AddNewStatus: React.FC = () => {
                     'donatedItemId',
                     formData.donatedItemId,
                 );
+                images.forEach((image, index) => {
+                    formDataToSubmit.append(`imageFiles`, image);
+                });
 
                 const response = await axios.post(
                     `${process.env.REACT_APP_BACKEND_API_BASE_URL}donatedItem/status/${id}`,
@@ -134,56 +133,12 @@ const AddNewStatus: React.FC = () => {
             dateModified: '',
             donatedItemId: '',
         });
+        setImages([]);
+        setPreviewUrls([]);
         setErrors({});
         setErrorMessage(null);
         setSuccessMessage(null);
     };
-
-    const renderFormField = (
-        label: string,
-        name: keyof FormData,
-        type = 'text',
-        required = true,
-        options?: Option[],
-    ) => (
-        <div className="form-field">
-            <label htmlFor={name} className="block text-sm font-semibold mb-1">
-                {label}
-                {required && <span className="text-red-500">&nbsp;*</span>}
-            </label>
-            {options ? (
-                <select
-                    id={name}
-                    name={name}
-                    value={formData[name] as string}
-                    onChange={handleChange}
-                    className={`w-full px-3 py-2 rounded border ${
-                        errors[name] ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                >
-                    {options.map(option => (
-                        <option key={option.value} value={option.value}>
-                            {option.label}
-                        </option>
-                    ))}
-                </select>
-            ) : (
-                <input
-                    type={type}
-                    id={name}
-                    name={name}
-                    value={formData[name] as string}
-                    onChange={handleChange}
-                    className={`w-full px-3 py-2 rounded border ${
-                        errors[name] ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                />
-            )}
-            {errors[name] && (
-                <p className="text-red-500 text-sm mt-1">{errors[name]}</p>
-            )}
-        </div>
-    );
 
     return (
         <div className="donor-form outer-container mx-auto p-10">
@@ -195,17 +150,107 @@ const AddNewStatus: React.FC = () => {
                 <p className="success-message">{successMessage}</p>
             )}
             <form onSubmit={handleSubmit} className="form-grid">
-                {renderFormField('Current Status', 'statusType', 'text', true, [
-                    { value: ItemStatus.DONATED, label: 'Donated' },
-                    {
-                        value: ItemStatus.IN_STORAGE,
-                        label: 'In storage facility',
-                    },
-                    { value: ItemStatus.REFURBISHED, label: 'Refurbished' },
-                    { value: ItemStatus.SOLD, label: 'Item sold' },
-                    { value: ItemStatus.RECEIVED, label: 'Received' },
-                ])}
-                {renderFormField('Date Updated', 'dateModified', 'date')}
+                {/* Current Status Field */}
+                <div className="form-field">
+                    <label
+                        htmlFor="statusType"
+                        className="block text-sm font-semibold mb-1"
+                    >
+                        Current Status<span className="text-red-500"> *</span>
+                    </label>
+                    <select
+                        id="statusType"
+                        name="statusType"
+                        value={formData.statusType}
+                        onChange={handleChange}
+                        className={`w-full px-3 py-2 rounded border ${
+                            errors.statusType
+                                ? 'border-red-500'
+                                : 'border-gray-300'
+                        }`}
+                    >
+                        <option value={ItemStatus.DONATED}>Donated</option>
+                        <option value={ItemStatus.IN_STORAGE}>
+                            In storage facility
+                        </option>
+                        <option value={ItemStatus.REFURBISHED}>
+                            Refurbished
+                        </option>
+                        <option value={ItemStatus.SOLD}>Item sold</option>
+                        <option value={ItemStatus.RECEIVED}>Received</option>
+                    </select>
+                    {errors.statusType && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.statusType}
+                        </p>
+                    )}
+                </div>
+
+                {/* Date Updated Field */}
+                <div className="form-field">
+                    <label
+                        htmlFor="dateModified"
+                        className="block text-sm font-semibold mb-1"
+                    >
+                        Date Updated<span className="text-red-500"> *</span>
+                    </label>
+                    <input
+                        type="date"
+                        id="dateModified"
+                        name="dateModified"
+                        value={formData.dateModified}
+                        onChange={handleChange}
+                        className={`w-full px-3 py-2 rounded border ${
+                            errors.dateModified
+                                ? 'border-red-500'
+                                : 'border-gray-300'
+                        }`}
+                    />
+                    {errors.dateModified && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.dateModified}
+                        </p>
+                    )}
+                </div>
+
+                {/* Image Upload Field */}
+                <div className="form-field full-width">
+                    <label
+                        htmlFor="imageFiles"
+                        className="block text-sm font-semibold mb-1"
+                    >
+                        Upload Images (Max: 5)
+                    </label>
+                    <input
+                        type="file"
+                        id="imageFiles"
+                        name="imageFiles"
+                        accept="image/*"
+                        multiple
+                        onChange={handleImageChange}
+                        className="w-full px-3 py-2 rounded border border-gray-300"
+                    />
+                    {previewUrls.length > 0 && (
+                        <div className="imagepcontainer">
+                            {previewUrls.map((url, index) => (
+                                <div key={index} className="imagepreview">
+                                    <img
+                                        src={url}
+                                        alt={`Preview ${index + 1}`}
+                                        className="thumbnail"
+                                    />
+                                    <button
+                                        type="button"
+                                        className="removeimage"
+                                        onClick={() => handleImageRemove(index)}
+                                    >
+                                        Remove
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
 
                 <div className="form-field full-width button-container">
                     <button type="submit" className="submit-button">
