@@ -33,7 +33,6 @@ function App() {
                 {/* Use Routes component */}
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<LoginPage />} />
-                <Route path="/login1" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/about" element={<Home />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
