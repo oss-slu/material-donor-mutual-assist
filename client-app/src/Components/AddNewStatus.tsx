@@ -28,6 +28,10 @@ const AddNewStatus: React.FC = () => {
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [images, setImages] = useState<File[]>([]); // Store selected images
     const [previewUrls, setPreviewUrls] = useState<string[]>([]); // Store image preview URLs
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [currentPreviewImage, setCurrentPreviewImage] = useState<
+        string | null
+    >(null);
 
     useEffect(() => {
         if (id) {
@@ -73,6 +77,15 @@ const AddNewStatus: React.FC = () => {
             return `${name.replace(/([A-Z])/g, ' $1')} is required`;
         }
         return '';
+    };
+    const handlePreview = (url: string) => {
+        setCurrentPreviewImage(url);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setCurrentPreviewImage(null);
     };
 
     const validateForm = (): boolean => {
@@ -239,18 +252,45 @@ const AddNewStatus: React.FC = () => {
                                         alt={`Preview ${index + 1}`}
                                         className="thumbnail"
                                     />
-                                    <button
-                                        type="button"
-                                        className="removeimage"
-                                        onClick={() => handleImageRemove(index)}
-                                    >
-                                        Remove
-                                    </button>
+                                    <div className="image-actions">
+                                        <button
+                                            type="button"
+                                            className="preview-button"
+                                            onClick={() => handlePreview(url)}
+                                        >
+                                            Preview
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="removeimage"
+                                            onClick={() =>
+                                                handleImageRemove(index)
+                                            }
+                                        >
+                                            Remove
+                                        </button>
+                                    </div>
                                 </div>
                             ))}
                         </div>
                     )}
                 </div>
+                {/* Modal for Image Preview */}
+                {isModalOpen && currentPreviewImage && (
+                    <div className="modal-overlay">
+                        <div className="modal-content">
+                            <span className="pclosebutton" onClick={closeModal}>
+                                Close
+                                {/* &times; */}
+                            </span>
+                            <img
+                                src={currentPreviewImage}
+                                alt="Full Preview"
+                                className="modal-image"
+                            />
+                        </div>
+                    </div>
+                )}
 
                 <div className="form-field full-width button-container">
                     <button type="submit" className="submit-button">
