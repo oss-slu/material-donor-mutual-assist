@@ -381,7 +381,7 @@ const DonatedItemsList: React.FC = () => {
                             <td>{index + 1}</td>
                             <td>
                                 <Link
-                                    to={`/item/${item.id}`}
+                                    to={`/donations/${item.id}`}
                                     state={{ itemInfo: item }}
                                 >
                                     {item.id}
