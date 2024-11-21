@@ -1,43 +1,68 @@
-.register-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.rlogin-container {
+    display: flex;
+    flex-direction: column;
+    /* Arrange items vertically */
+    align-items: center;
+    min-height: 100vh;
+    background-color: #6096ba;
+    padding: 8%;
+}
+.rlogin-box {
+    padding: 4%;
+    width: 50%;
+    margin: auto;
+    background-color: #a9d6e5;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-.register-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
+.rhead {
+   font-size: 2rem;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold; 
 }
-
-.form-group {
-    margin-bottom: 15px;
+.rlabelu {
+    font-size: 1 rem;
+    color: #003554;
 }
-
-input[type='text'],
-input[type='email'],
-input[type='tel'],
-input[type='date'],
-input[type='password'] {
+.ristyle {
+    margin-top: 0%;
+    padding: 8px 16px;
+    border: 2px solid #6096ba !important;
+    color: #003554;
+    border-radius: 4px;
     width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    box-sizing: border-box;
+    max-width: 100%;
+}
+#emailhelp {
+    font-size: 1rem;
+    margin-top: 0% !important;
 }
 
-button {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: #fff;
+.btn-style:hover {
+    background-color: #2980b9;
+}
+
+.rbtSuccess {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    align-self: center;
+    background-color: #29b982;
+    width: 50%;
     border: none;
-    border-radius: 5px;
+    color: white;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    /* display: inline; */
+    font-size: 16px;
+    border-radius: 4px;
     cursor: pointer;
 }
 
-button:hover {
-    background-color: #0056b3;
+.rbtn-success:hover {
+    background-color: #29b982;
 }

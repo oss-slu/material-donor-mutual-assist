@@ -65,7 +65,9 @@ router.post(
             );
             res.status(200).json({
                 message: 'Donated item status updated successfully',
+                "the updated item is : ":
                 updatedStatus,
+                "the new status is: ":
                 newStatus,
             });
         } catch (error) {

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom'; // Import Routes and Route properly
 import Navbar from './Components/Navbar';
+
+import LoginPage from './Components/LoginPage';
 import Login from './Components/Login';
 import Register from './Components/Register';
 import Home from './Components/Home';
@@ -30,7 +32,8 @@ function App() {
                 {' '}
                 {/* Use Routes component */}
                 <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/login1" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/about" element={<Home />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -51,5 +54,4 @@ function App() {
         </div>
     );
 }
-
 export default App;

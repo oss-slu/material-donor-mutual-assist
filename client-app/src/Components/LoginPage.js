@@ -2,98 +2,117 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom'; // Import Link for navigation
 import '../css/LoginPage.css'; // Import CSS file for styling
 
-const LoginPage = () => {
-    const [user, setUser] = useState({ username: '', password: '' });
+const LoginPage = props => {
+    const [credentials, setCredentials] = useState({ email: '', password: '' });
     const [showPassword, setShowPassword] = useState(false);
+    const [captcha, setCaptcha] = useState('');
+    const [captchaValue, setCaptchaValue] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    localStorage.setItem('isLogged', false);
 
-    const handleUsernameChange = e => {
-        setUser({ ...user, username: e.target.value });
+    const generateCaptcha = () => {
+        const randomCaptcha = Math.random().toString(36).substring(7);
+        setCaptcha(randomCaptcha);
     };
 
-    const handlePasswordChange = e => {
-        setUser({ ...user, password: e.target.value });
+    const onChange = e => {
+        setCredentials({ ...credentials, [e.target.name]: e.target.value });
+    };
+
+    const handleCaptchaChange = e => {
+        setCaptchaValue(e.target.value);
     };
 
     const handleSubmit = e => {
         e.preventDefault();
 
         // Retrieve user data from local storage
-        const storedUser = localStorage.getItem('user');
-
-        if (storedUser) {
-            const parsedUser = JSON.parse(storedUser);
-
-            // Verify username and password
-            if (
-                user.username === parsedUser.username &&
-                user.password === parsedUser.password
-            ) {
-                alert('Login successful');
-            } else {
-                alert('Invalid username or password');
-            }
-        } else {
-            alert('User not found');
+        // const storedUser = localStorage.getItem('user');
+        if (captchaValue.toLowerCase() !== captcha.toLowerCase()) {
+            setErrorMessage('Incorrect CAPTCHA. Please try again.');
+            return;
         }
-    };
+        localStorage.setItem('isLogged', true);
+        window.location.href = '/Donations';
+        alert('Login Success');
 
-    const handleLogin = () => {
-        // Store user data in local storage
-        const userDetails = { username: 'user', password: 'dts@123' };
-        localStorage.setItem('user', JSON.stringify(userDetails));
-    };
+        console.log('in login page ', localStorage.getItem('isLogged'));
+    }
+
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-200">
+            {/* <form onSubmit={handleSubmit}> */}
+
             <div className="login-container">
-                <div className="login-header">
-                    <h1>Donor Tracking System</h1>
-                </div>
+                <h2 className="login-label">Login</h2>
                 <div className="login-box">
-                    <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                        <h2 className="login-label">Login</h2>
-
+                    <div className="bg-#a9d6e5 shadow-md rounded px-8 pt-6 pb-8 mb-4">
                         <form onSubmit={handleSubmit}>
-                            <div className="mb-4">
+                            <div>
                                 <input
-                                    className="input-style"
-                                    id="username"
-                                    type="text"
-                                    placeholder="Username"
-                                    value={user.username}
-                                    onChange={handleUsernameChange}
+                                    type="email"
+                                    className="istyleu"
+                                    id="email"
+                                    name="email"
+                                    placeholder="Email"
+                                    value={credentials.email}
+                                    onChange={onChange}
                                 />
-                            </div>
-
-                            <div className="mb-6">
-                                <div className="password-input-group">
-                                    <input
-                                        type={
-                                            showPassword ? 'text' : 'password'
-                                        }
-                                        className="input-style"
-                                        value={user.password}
-                                        placeholder="Password*"
-                                        onChange={handlePasswordChange}
-                                        required
-                                    />
+                                <div id="emailHelp" className="form-text">
+                                    We'll never share your email with anyone
+                                    else.
                                 </div>
                             </div>
 
-                            <div className="flex items-center justify-between btn-container">
+                            <div>
+                                <input
+                                    type="password"
+                                    className="istyle"
+                                    value={credentials.password}
+                                    placeholder="Password*"
+                                    id="password"
+                                    onChange={onChange}
+                                    name="password"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="captcha" className="captha">
+                                    CAPTCHA: {captcha}
+                                </label>
+                                <input
+                                    type="text"
+                                    className="istyle"
+                                    value={captchaValue}
+                                    onChange={handleCaptchaChange}
+                                    id="captcha"
+                                    name="captcha"
+                                />
+                            </div>
+
+                            <div className="buttongroups">
                                 <button
-                                    className="btn-success"
+                                    className="btlSuccess"
                                     type="submit"
-                                    onClick={handleLogin}
+                                    // onClick={handleLogin}
                                     name="login"
+                                    disabled={!captchaValue}
                                 >
                                     Login
                                 </button>
-                                <button
-                                    className="btn-style button-gap"
-                                    type="button"
+                                <Link
+                                    to="/forgot-password"
+                                    className="btn btn-link"
                                 >
-                                    Forgot Password
+                                    Forgot Password?
+                                </Link>{' '}
+                                <button
+                                    type="button"
+                                    className="btn btn-secondary"
+                                    onClick={generateCaptcha}
+                                >
+                                    Refresh CAPTCHA
                                 </button>
                             </div>
                         </form>
@@ -105,6 +124,7 @@ const LoginPage = () => {
                     </div>
                 </div>
             </div>
+            {/* </form> */}
         </div>
     );
 };
