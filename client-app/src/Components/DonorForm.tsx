@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import '../css/DonorForm.css';
 
 interface FormData {
@@ -20,6 +21,7 @@ interface FormErrors {
 }
 
 const DonorForm: React.FC = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState<FormData>({
         firstName: '',
         lastName: '',
@@ -109,6 +111,7 @@ const DonorForm: React.FC = () => {
                         zipcode: '',
                         emailOptIn: false,
                     });
+                    navigate('/donorlist');
                 } else {
                     setErrorMessage('Donor not added');
                 }
@@ -141,6 +144,11 @@ const DonorForm: React.FC = () => {
         setErrorMessage(null);
         setSuccessMessage(null);
     };
+
+    const handleBack = () => {
+        navigate("/donorlist")
+    }
+
 
     // Reusable function to render form fields (text and checkbox)
     const renderFormField = (
@@ -224,6 +232,13 @@ const DonorForm: React.FC = () => {
                         className="refresh-button"
                     >
                         Refresh
+                    </button>
+                    <button 
+                        type="button"
+                        onClick={handleBack}
+                        className="back-button"
+                    >
+                        Back
                     </button>
                 </div>
             </form>

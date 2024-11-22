@@ -254,6 +254,10 @@ const NewItemForm: React.FC = () => {
         setSuccessMessage(null);
     };
 
+    const handleBack = () => {
+        navigate("/donations")
+    }
+
     const renderFormField = (
         label: string,
         name: keyof FormData,
@@ -380,6 +384,13 @@ const NewItemForm: React.FC = () => {
                         className="refresh-button"
                     >
                         Refresh
+                    </button>
+                    <button 
+                        type="button"
+                        onClick={handleBack}
+                        className="back-button"
+                    >
+                        Back
                     </button>
                 </div>
             </form>
