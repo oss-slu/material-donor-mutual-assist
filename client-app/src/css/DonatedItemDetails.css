@@ -10,22 +10,27 @@
 /* Two-column layout for the main details */
 .details-grid {
     display: grid;
-    grid-template-columns: 7fr 3fr; /* 70% for left column, 30% for right column */
+    grid-template-columns: 3fr 2fr; /* 70% for left column, 30% for right column */
     gap: 20px;
 }
 
+.left-column{
+    max-width: 50vw;
+    white-space: wrap;
+}
 /* Section styling */
 .section-header {
     display: flex;
     align-items: center;
     padding: 8px;
     border-radius: 5px;
-    color: #fff;
+    background-color: #f3f6f9;
+    color: black;
 }
 
 .section-header h2 {
     font-size: 20px;
-    margin: 0;
+    margin: 0 0 10px 0;
 }
 
 .section-header button {
@@ -44,24 +49,27 @@
 }
 
 /* Left Column Styling (70% width) */
-.left-column .item-details-section,
+
 .left-column .donated-item-status-section {
     padding: 15px;
     border-radius: 8px;
     margin-bottom: 20px;
+    background-color: #deeaf4; /* Consistent background for sections */
+}
+.right-column .donor-details-section,
+.right-column .program-details-section,
+.right-column .item-details-section {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    background-color: #c8e0c9; /* Consistent background for sections */
 }
 
-.donated-item-status-section .status-image {
-    width: 200px;
-    height: 200px;
-    margin: 5px;
-}
-
-.left-column .item-details-section {
+.right-column .item-details-section {
     background-color: #deeaf4;
 }
 
-.left-column .item-details-section .section-header {
+.right-column .item-details-section .section-header {
     background-color: #7ca3c7;
 }
 
@@ -71,14 +79,6 @@
 
 .left-column .donated-item-status-section .section-header {
     background-color: #d6ae47;
-}
-
-/* Right Column Styling (30% width) */
-.right-column .donor-details-section,
-.right-column .program-details-section {
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
 }
 
 .right-column .donor-details-section {
@@ -95,17 +95,36 @@
 
 .right-column .program-details-section .section-header {
     background-color: #7ca3c7;
-}
+} 
 
-/* Paragraph and text styling */
+
 p {
     margin: 8px 0;
     font-size: 16px;
 }
 
-strong {
-    color: #555;
+.image-carousel img {
+    width: 30%; 
+    margin: auto; /* Center the image horizontally */
+    max-height: 300px; /* Limit image height for better display */
 }
+.status-section {
+    margin-bottom: 20px;
+}
+
+.image-scroll-container {
+    display: flex; /* Aligns children (images) in a row */
+    overflow-x: auto; 
+    white-space: wrap; 
+    padding: 10px 0;
+}
+
+.status-image {
+    height: 150px; /* Adjust height accordingly */
+    width: auto; /* Maintain aspect ratio */
+    margin-right: 10px; /* Space between images */
+}
+ 
 
 /* Responsive design for smaller screens */
 @media (max-width: 768px) {

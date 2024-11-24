@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Stepper, Step, StepLabel, StepContent, Button } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import PersonIcon from '@mui/icons-material/Person';
 import CategoryIcon from '@mui/icons-material/Category';
@@ -68,7 +69,38 @@ const DonatedItemDetails: React.FC = () => {
             <div className="details-grid">
                 {/* Left Column */}
                 <div className="left-column">
-                    <section className="item-details-section">
+                    
+                    {/* Vertical stepper implementation for donated item status */}
+                    <section className="donated-item-status-section">
+                        <div className="section-header">
+                            <AssignmentTurnedInIcon className="icon" />
+                            <h2>Donated Item Status</h2>
+                            <button onClick={() => navigate(`/donatedItem/status/${id}`)}>
+                                Add New Status
+                            </button>
+                        </div>
+                <Stepper orientation="vertical">
+                            {donatedItem.statuses.map((status) => (
+                                <Step key={status.id} active={true} completed={false}>
+                                    <StepLabel>{`${status.statusType} (${formatDate(status.dateModified)})`}</StepLabel>
+                                   
+                                    <StepContent>
+                                    <div className="image-scroll-container">
+                                    {status.images.map((image, idx) => (
+                                        <img key={idx} src={`data:image/jpeg;base64,${image}`} alt={`Status Image ${idx}`} className="status-image" />
+                                    ))}
+                                </div>
+                                    </StepContent>
+                                </Step>
+                            ))}
+                        </Stepper>
+                    </section>
+                </div>
+
+                {/* Right Column */}
+                <div className="right-column">
+
+                <section className="item-details-section">
                         <div className="section-header">
                             <CategoryIcon className="icon" />
                             <h2>Item Details</h2>
@@ -89,37 +121,6 @@ const DonatedItemDetails: React.FC = () => {
                         </p>
                     </section>
 
-                    <section className="donated-item-status-section">
-                        <div className="section-header">
-                            <AssignmentTurnedInIcon className="icon" />
-                            <h2>Donated Item Status</h2>
-                            <button onClick={handleAddNewDonationClick}>
-                                Add New Status
-                            </button>
-                        </div>
-                        {donatedItem.statuses.map(status => (
-                            <div>
-                                <p key={status.id}>
-                                    <strong>Status:</strong> {status.statusType}{' '}
-                                    - <strong>Modified on:</strong>{' '}
-                                    {formatDate(status.dateModified)}
-                                </p>
-                                {status.images.map(
-                                    (image: string, index: number) => (
-                                        <img
-                                            key={index}
-                                            src={`data:image/jpeg;base64,${image}`}
-                                            className="status-image"
-                                        />
-                                    ),
-                                )}
-                            </div>
-                        ))}
-                    </section>
-                </div>
-
-                {/* Right Column */}
-                <div className="right-column">
                     <section className="donor-details-section">
                         <div className="section-header">
                             <PersonIcon className="icon" />
