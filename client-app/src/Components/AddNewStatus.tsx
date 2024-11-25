@@ -128,6 +128,10 @@ const AddNewStatus: React.FC = () => {
         }
     };
 
+    const handleBack = () => {
+        navigate(`/donations/${id}`);
+    }
+
     const handleRefresh = () => {
         setFormData({
             statusType: 'Received',
@@ -218,6 +222,13 @@ const AddNewStatus: React.FC = () => {
                     >
                         Refresh
                     </button>
+                    <button 
+                        type="button"
+                        onClick={handleBack}
+                        className="back-button"
+                    >
+                        Back
+                    </button>   
                 </div>
             </form>
         </div>

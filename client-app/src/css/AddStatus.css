@@ -153,3 +153,17 @@
 .remove-image-button:hover {
     background-color: rgba(255, 0, 0, 0.9);
 }
+
+.donor-form .back-button {
+    padding: 10px 25px;
+    background-color: #eb2e1d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition:
+        background-color 0.3s ease,
+        transform 0.2s ease;
+    margin-right: 20px;
+}
