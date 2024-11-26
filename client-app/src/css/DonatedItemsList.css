@@ -38,3 +38,19 @@
         text-align: center;
     }
 }
+/* Clickable Row */
+.clickable-row {
+    cursor: pointer; /* Indicate interactivity */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover effect */
+}
+
+.clickable-row:hover {
+    background-color: #f1f1f1; /* Light gray background */
+    color: #007bff; /* Change text color to blue */
+}
+
+/* Prevent buttons and inputs from taking the hover effect */
+.clickable-row button,
+.clickable-row input {
+    cursor: default; /* Default cursor for these elements */
+}
