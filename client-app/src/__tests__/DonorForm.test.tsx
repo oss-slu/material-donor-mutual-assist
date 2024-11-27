@@ -5,6 +5,7 @@ import axios from 'axios';
 import { act } from '@testing-library/react';
 import DonorForm from '../Components/DonorForm';
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -15,8 +16,13 @@ describe('DonorForm', () => {
         mockedAxios.post.mockReset();
     });
 
+    const renderWithRouter = (ui: any, { route = '/' } = {}) => {
+        window.history.pushState({}, 'Test page', route);
+        return render(<BrowserRouter>{ui}</BrowserRouter>);
+    };
+
     it('renders correctly', () => {
-        render(<DonorForm />);
+        renderWithRouter(<DonorForm />);
         expect(screen.getByText(/Add Donor Details/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/First Name/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/Last Name/i)).toBeInTheDocument();
@@ -33,7 +39,7 @@ describe('DonorForm', () => {
     });
 
     it('allows input to be entered', () => {
-        render(<DonorForm />);
+        renderWithRouter(<DonorForm />);
         const firstNameInput = screen.getByLabelText(/First Name/i);
         act(() => {
             userEvent.type(firstNameInput, 'John');
@@ -43,7 +49,7 @@ describe('DonorForm', () => {
     });
 
     it('validates and submits the form data', async () => {
-        render(<DonorForm />);
+        renderWithRouter(<DonorForm />);
         const submitButton = screen.getByRole('button', { name: /Add Donor/i });
         act(() => {
             // Fill out the form
@@ -98,7 +104,7 @@ describe('DonorForm', () => {
     });
 
     it('displays an error message on submission failure', async () => {
-        render(<DonorForm />);
+        renderWithRouter(<DonorForm />);
         act(() => {
             userEvent.type(screen.getByLabelText(/First Name/i), 'John');
             userEvent.type(screen.getByLabelText(/Last Name/i), 'Doe');
@@ -136,7 +142,7 @@ describe('DonorForm', () => {
     });
 
     it('shows validation errors when fields are incomplete', async () => {
-        render(<DonorForm />);
+        renderWithRouter(<DonorForm />);
         act(() => {
             userEvent.click(screen.getByRole('button', { name: /Add Donor/i }));
         });
