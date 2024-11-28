@@ -69,27 +69,39 @@ const DonatedItemDetails: React.FC = () => {
             <div className="details-grid">
                 {/* Left Column */}
                 <div className="left-column">
-                    
                     {/* Vertical stepper implementation for donated item status */}
                     <section className="donated-item-status-section">
                         <div className="section-header">
                             <AssignmentTurnedInIcon className="icon" />
                             <h2>Donated Item Status</h2>
-                            <button onClick={() => navigate(`/donatedItem/status/${id}`)}>
+                            <button
+                                onClick={() =>
+                                    navigate(`/donatedItem/status/${id}`)
+                                }
+                            >
                                 Add New Status
                             </button>
                         </div>
-                <Stepper orientation="vertical">
-                            {donatedItem.statuses.map((status) => (
-                                <Step key={status.id} active={true} completed={false}>
+                        <Stepper orientation="vertical">
+                            {donatedItem.statuses.map(status => (
+                                <Step
+                                    key={status.id}
+                                    active={true}
+                                    completed={false}
+                                >
                                     <StepLabel>{`${status.statusType} (${formatDate(status.dateModified)})`}</StepLabel>
-                                   
+
                                     <StepContent>
-                                    <div className="image-scroll-container">
-                                    {status.images.map((image, idx) => (
-                                        <img key={idx} src={`data:image/jpeg;base64,${image}`} alt={`Status Image ${idx}`} className="status-image" />
-                                    ))}
-                                </div>
+                                        <div className="image-scroll-container">
+                                            {status.images.map((image, idx) => (
+                                                <img
+                                                    key={idx}
+                                                    src={`data:image/jpeg;base64,${image}`}
+                                                    alt={`Status Image ${idx}`}
+                                                    className="status-image"
+                                                />
+                                            ))}
+                                        </div>
                                     </StepContent>
                                 </Step>
                             ))}
@@ -99,8 +111,7 @@ const DonatedItemDetails: React.FC = () => {
 
                 {/* Right Column */}
                 <div className="right-column">
-
-                <section className="item-details-section">
+                    <section className="item-details-section">
                         <div className="section-header">
                             <CategoryIcon className="icon" />
                             <h2>Item Details</h2>

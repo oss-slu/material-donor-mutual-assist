@@ -14,7 +14,7 @@
     gap: 20px;
 }
 
-.left-column{
+.left-column {
     max-width: 50vw;
     white-space: wrap;
 }
@@ -95,8 +95,7 @@
 
 .right-column .program-details-section .section-header {
     background-color: #7ca3c7;
-} 
-
+}
 
 p {
     margin: 8px 0;
@@ -104,7 +103,7 @@ p {
 }
 
 .image-carousel img {
-    width: 30%; 
+    width: 30%;
     margin: auto; /* Center the image horizontally */
     max-height: 300px; /* Limit image height for better display */
 }
@@ -114,8 +113,8 @@ p {
 
 .image-scroll-container {
     display: flex; /* Aligns children (images) in a row */
-    overflow-x: auto; 
-    white-space: wrap; 
+    overflow-x: auto;
+    white-space: wrap;
     padding: 10px 0;
 }
 
@@ -124,7 +123,6 @@ p {
     width: auto; /* Maintain aspect ratio */
     margin-right: 10px; /* Space between images */
 }
- 
 
 /* Responsive design for smaller screens */
 @media (max-width: 768px) {
