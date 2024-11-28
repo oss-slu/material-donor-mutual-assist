@@ -1,4 +1,3 @@
-
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
@@ -7,11 +6,19 @@ import React from 'react';
 
 beforeAll(() => {
     // Mock fetch requests to avoid real API calls
-    global.fetch = jest.fn((url) => {
+    global.fetch = jest.fn(url => {
         if (url.includes('donatedItem')) {
             return Promise.resolve({
                 ok: true,
-                json: () => Promise.resolve([{ id: 1, itemType: 'Book', currentStatus: 'Received', dateDonated: '2024-11-01' }]),
+                json: () =>
+                    Promise.resolve([
+                        {
+                            id: 1,
+                            itemType: 'Book',
+                            currentStatus: 'Received',
+                            dateDonated: '2024-11-01',
+                        },
+                    ]),
             });
         }
         if (url.includes('program')) {
@@ -33,7 +40,7 @@ describe('DonatedItemsList Component - Hover functionality', () => {
         render(
             <BrowserRouter>
                 <DonatedItemsList />
-            </BrowserRouter>
+            </BrowserRouter>,
         );
 
         // Ensure the component has loaded data and find the item row
@@ -45,7 +52,5 @@ describe('DonatedItemsList Component - Hover functionality', () => {
 
         // Trigger a hover event
         fireEvent.mouseOver(itemRow!);
-
-       
     });
 });

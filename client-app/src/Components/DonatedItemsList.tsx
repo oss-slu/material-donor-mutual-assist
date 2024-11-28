@@ -362,63 +362,69 @@ const DonatedItemsList: React.FC = () => {
             </div>
 
             <table className="item-list">
-    <thead>
-        <tr>
-            <th>S.No</th>
-            <th>Item ID</th>
-            <th>Item Name</th>
-            <th>Status</th>
-            <th>Donation Date</th>
-            <th>Barcode</th>
-            {assignProgramClicked && <th>Select</th>}
-        </tr>
-    </thead>
-    <tbody>
-        {(filteredItems.length > 0 ? filteredItems : donatedItems).map(
-            (item, index) => (
-                <tr
-                    key={item.id}
-                    className="clickable-row"
-                    onClick={() => navigate(`/donations/${item.id}`)}
-                >
-                    <td>{index + 1}</td>
-                    <td>{item.id}</td>
-                    <td>{item.itemType}</td>
-                    <td>{item.currentStatus}</td>
-                    <td>{new Date(item.dateDonated).toLocaleDateString()}</td>
-                    <td>
-                        <div>
-                            <div id={`barcode-${item.id}`}>
-                                <Barcode value={item.id.toString()} />
-                            </div>
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation(); // Prevent row click when downloading
-                                    downloadBarcode(item.id);
-                                }}
-                            >
-                                Download Barcode
-                            </button>
-                        </div>
-                    </td>
-                    {assignProgramClicked && (
-                        <td>
-                            <input
-                                type="checkbox"
-                                checked={selectedItems.includes(item.id)}
-                                onChange={(e) => {
-                                    e.stopPropagation(); // Prevent row click when interacting with the checkbox
-                                    handleCheckboxChange(item.id);
-                                }}
-                            />
-                        </td>
-                    )}
-                </tr>
-            )
-        )}
-    </tbody>
-</table>
-
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Item ID</th>
+                        <th>Item Name</th>
+                        <th>Status</th>
+                        <th>Donation Date</th>
+                        <th>Barcode</th>
+                        {assignProgramClicked && <th>Select</th>}
+                    </tr>
+                </thead>
+                <tbody>
+                    {(filteredItems.length > 0
+                        ? filteredItems
+                        : donatedItems
+                    ).map((item, index) => (
+                        <tr
+                            key={item.id}
+                            className="clickable-row"
+                            onClick={() => navigate(`/donations/${item.id}`)}
+                        >
+                            <td>{index + 1}</td>
+                            <td>{item.id}</td>
+                            <td>{item.itemType}</td>
+                            <td>{item.currentStatus}</td>
+                            <td>
+                                {new Date(
+                                    item.dateDonated,
+                                ).toLocaleDateString()}
+                            </td>
+                            <td>
+                                <div>
+                                    <div id={`barcode-${item.id}`}>
+                                        <Barcode value={item.id.toString()} />
+                                    </div>
+                                    <button
+                                        onClick={e => {
+                                            e.stopPropagation(); // Prevent row click when downloading
+                                            downloadBarcode(item.id);
+                                        }}
+                                    >
+                                        Download Barcode
+                                    </button>
+                                </div>
+                            </td>
+                            {assignProgramClicked && (
+                                <td>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedItems.includes(
+                                            item.id,
+                                        )}
+                                        onChange={e => {
+                                            e.stopPropagation(); // Prevent row click when interacting with the checkbox
+                                            handleCheckboxChange(item.id);
+                                        }}
+                                    />
+                                </td>
+                            )}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
 
             <Modal
                 isOpen={modalIsOpen}

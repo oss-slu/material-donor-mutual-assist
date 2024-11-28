@@ -41,7 +41,9 @@
 /* Clickable Row */
 .clickable-row {
     cursor: pointer; /* Indicate interactivity */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover effect */
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease; /* Smooth hover effect */
 }
 
 .clickable-row:hover {
