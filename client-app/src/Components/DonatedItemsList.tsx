@@ -378,16 +378,13 @@ const DonatedItemsList: React.FC = () => {
                         ? filteredItems
                         : donatedItems
                     ).map((item, index) => (
-                        <tr key={item.id}>
+                        <tr
+                            key={item.id}
+                            className="clickable-row"
+                            onClick={() => navigate(`/donations/${item.id}`)}
+                        >
                             <td>{index + 1}</td>
-                            <td>
-                                <Link
-                                    to={`/donations/${item.id}`}
-                                    state={{ itemInfo: item }}
-                                >
-                                    {item.id}
-                                </Link>
-                            </td>
+                            <td>{item.id}</td>
                             <td>{item.itemType}</td>
                             <td>{item.currentStatus}</td>
                             <td>
@@ -396,14 +393,15 @@ const DonatedItemsList: React.FC = () => {
                                 ).toLocaleDateString()}
                             </td>
                             <td>
-                                <div
-                                    onClick={() => handleBarcodeClick(item.id)}
-                                >
+                                <div>
                                     <div id={`barcode-${item.id}`}>
                                         <Barcode value={item.id.toString()} />
                                     </div>
                                     <button
-                                        onClick={() => downloadBarcode(item.id)}
+                                        onClick={e => {
+                                            e.stopPropagation(); // Prevent row click when downloading
+                                            downloadBarcode(item.id);
+                                        }}
                                     >
                                         Download Barcode
                                     </button>
@@ -416,9 +414,10 @@ const DonatedItemsList: React.FC = () => {
                                         checked={selectedItems.includes(
                                             item.id,
                                         )}
-                                        onChange={() =>
-                                            handleCheckboxChange(item.id)
-                                        }
+                                        onChange={e => {
+                                            e.stopPropagation(); // Prevent row click when interacting with the checkbox
+                                            handleCheckboxChange(item.id);
+                                        }}
                                     />
                                 </td>
                             )}
