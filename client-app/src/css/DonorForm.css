@@ -94,6 +94,12 @@
     margin-right: 20px;
 }
 
+/* This should be fixed to a point where it is not hardcoded some point in the future*/
+.donor-form .back-button:hover {
+    background-color: #eb2e1d;
+    transform: translateY(-42px);
+}
+
 .donor-form .refresh-button {
     padding: 10px 25px;
     background-color: #28a745;

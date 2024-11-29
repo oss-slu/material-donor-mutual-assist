@@ -142,7 +142,7 @@ const AddNewStatus: React.FC = () => {
 
     const handleBack = () => {
         navigate(`/donations/${id}`);
-    }
+    };
 
     const handleRefresh = () => {
         setFormData({
@@ -307,13 +307,13 @@ const AddNewStatus: React.FC = () => {
                     >
                         Refresh
                     </button>
-                    <button 
+                    <button
                         type="button"
                         onClick={handleBack}
                         className="back-button"
                     >
                         Back
-                    </button>   
+                    </button>
                 </div>
             </form>
         </div>

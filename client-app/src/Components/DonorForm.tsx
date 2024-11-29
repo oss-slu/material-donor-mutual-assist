@@ -146,9 +146,8 @@ const DonorForm: React.FC = () => {
     };
 
     const handleBack = () => {
-        navigate("/donorlist")
-    }
-
+        navigate('/donorlist');
+    };
 
     // Reusable function to render form fields (text and checkbox)
     const renderFormField = (
@@ -233,7 +232,7 @@ const DonorForm: React.FC = () => {
                     >
                         Refresh
                     </button>
-                    <button 
+                    <button
                         type="button"
                         onClick={handleBack}
                         className="back-button"

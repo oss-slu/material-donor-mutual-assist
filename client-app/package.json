@@ -19,7 +19,7 @@
     "buffer": "^6.0.3",
     "concurrently": "^8.2.2",
     "cors": "^2.8.5",
-    "create-react-app": "^5.0.1",
+    "create-react-app": "^1.2.1",
     "crypto": "^1.0.1",
     "crypto-browserify": "^3.12.0",
     "emailjs-com": "^3.2.0",
@@ -30,17 +30,19 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-localstorage-mock": "^2.4.26",
     "jsonwebtoken": "^9.0.2",
-    "mdbreact": "^5.2.0",
+    "mdbreact": "^4.6.1",
     "mongoose": "^8.1.2",
     "my-tailwind-app": "^0.1.12",
     "nodemailer": "^6.9.10",
-    "npx": "^10.2.2",
+    "npx": "^3.0.0",
     "path-browserify": "^1.0.1",
     "postcss": "^8.4.35",
+    "prettier": "^3.4.1",
     "react": "^18.2.0",
     "react-barcode": "^1.5.1",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
+    "react-modal": "^3.16.1",
     "react-router-dom": "^6.22.1",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
@@ -54,9 +56,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "eject": "react-scripts eject",
-    "tsc":"tsc",
-    "tsc:watch":"tsc-w"
-  
+    "tsc": "tsc",
+    "tsc:watch": "tsc-w"
   },
   "eslintConfig": {
     "extends": [
