@@ -39,7 +39,6 @@ const Login = props => {
         // } else {
         //     setErrorMessage("Invalid credentials");
         // }
-
         alert('Login Success');
 
         console.log('in login page ', localStorage.getItem('isLogged'));
