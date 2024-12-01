@@ -6,7 +6,6 @@ import '../css/AdminHeader.css';
 import '../css/DonatedItemsList.css';
 import html2canvas from 'html2canvas';
 import Barcode from 'react-barcode';
-import { Donor } from '../Modals/DonorModal';
 import { Program } from '../Modals/ProgramModal';
 import { DonatedItem } from '../Modals/DonatedItemModal';
 import { DonatedItemStatus as Status } from '../Modals/DonatedItemStatusModal';
@@ -18,7 +17,6 @@ interface SelectedItemDetails extends DonatedItem {
 const DonatedItemsList: React.FC = () => {
     const [searchInput, setSearchInput] = useState<string>('');
     const [filteredItems, setFilteredItems] = useState<DonatedItem[]>([]);
-    const [selectedItems, setSelectedItems] = useState<number[]>([]);
     const [selectedItemDetails, setSelectedItemDetails] =
         useState<SelectedItemDetails | null>(null);
 
@@ -26,9 +24,6 @@ const DonatedItemsList: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [programOptions, setProgramOptions] = useState<Program[]>([]);
-    const [selectedProgram, setSelectedProgram] = useState<string>('');
-    const [assignProgramClicked, setAssignProgramClicked] =
-        useState<boolean>(false);
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
     const [itemTypes, setItemTypes] = useState<Set<string>>(new Set());
 
@@ -114,21 +109,7 @@ const DonatedItemsList: React.FC = () => {
         setFilteredItems(sorted);
     };
 
-    const handleCheckboxChange = (itemId: number): void => {
-        setSelectedItems(prevSelected => {
-            if (prevSelected.includes(itemId)) {
-                return prevSelected.filter(id => id !== itemId);
-            } else {
-                return [...prevSelected, itemId];
-            }
-        });
-    };
 
-    const handleProgramChange = (
-        event: React.ChangeEvent<HTMLSelectElement>,
-    ): void => {
-        setSelectedProgram(event.target.value);
-    };
     const handleBarcodeClick = (itemId: number): void => {
         const selectedItem = donatedItems.find(item => item.id === itemId);
         if (selectedItem) {
@@ -138,36 +119,6 @@ const DonatedItemsList: React.FC = () => {
             });
         }
         setModalIsOpen(true);
-    };
-
-    const updatePrograms = async (): Promise<void> => {
-        try {
-            const response = await fetch(
-                `${process.env.REACT_APP_BACKEND_API_BASE_URL}program`,
-                {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        itemIds: selectedItems,
-                        programId: parseInt(selectedProgram),
-                    }),
-                },
-            );
-
-            if (!response.ok) {
-                throw new Error('Failed to update programs');
-            }
-
-            await fetchDonatedItems();
-            setSelectedItems([]);
-            setAssignProgramClicked(false);
-        } catch (err) {
-            const error = err as Error;
-            console.error('Error updating programs:', error);
-            setError('Failed to update programs. Please try again.');
-        }
     };
 
     const handleFilterByItemName = (
@@ -214,14 +165,6 @@ const DonatedItemsList: React.FC = () => {
         setFilteredItems(filtered);
     };
 
-    const toggleAssignProgram = (): void => {
-        try {
-            setAssignProgramClicked(!assignProgramClicked);
-        } catch (error) {
-            console.error('Error toggling assign program:', error);
-            setError('Failed to toggle assign program. Please try again.');
-        }
-    };
 
     const handleAddNewDonationClick = (): void => {
         navigate('/adddonation');
@@ -280,7 +223,7 @@ const DonatedItemsList: React.FC = () => {
                         >
                             <FaSearch />
                         </button>
-                    </div>
+                    </div>  
 
                     <div className="dropdowns">
                         <select className="sort-options" onChange={handleSort}>
@@ -333,29 +276,6 @@ const DonatedItemsList: React.FC = () => {
             </div>
 
             <div className="div-updateprogram">
-                {assignProgramClicked && (
-                    <div className="div-addprogram">
-                        <select
-                            value={selectedProgram}
-                            onChange={handleProgramChange}
-                        >
-                            <option value="">Select Program</option>
-                            {programOptions.map(program => (
-                                <option key={program.id} value={program.id}>
-                                    {program.name}
-                                </option>
-                            ))}
-                        </select>
-                        <button onClick={updatePrograms}>
-                            Update Programs
-                        </button>
-                    </div>
-                )}
-                <button onClick={toggleAssignProgram}>
-                    {assignProgramClicked
-                        ? 'Hide Assign Program'
-                        : 'Assign Program'}
-                </button>
                 <button onClick={handleAddNewDonationClick}>
                     Add New Donation
                 </button>
@@ -369,8 +289,7 @@ const DonatedItemsList: React.FC = () => {
                         <th>Item Name</th>
                         <th>Status</th>
                         <th>Donation Date</th>
-                        <th>Barcode</th>
-                        {assignProgramClicked && <th>Select</th>}
+                        <th>Barcode</th>  
                     </tr>
                 </thead>
                 <tbody>
@@ -407,20 +326,6 @@ const DonatedItemsList: React.FC = () => {
                                     </button>
                                 </div>
                             </td>
-                            {assignProgramClicked && (
-                                <td>
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedItems.includes(
-                                            item.id,
-                                        )}
-                                        onChange={e => {
-                                            e.stopPropagation(); // Prevent row click when interacting with the checkbox
-                                            handleCheckboxChange(item.id);
-                                        }}
-                                    />
-                                </td>
-                            )}
                         </tr>
                     ))}
                 </tbody>
