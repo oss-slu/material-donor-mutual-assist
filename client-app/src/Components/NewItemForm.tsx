@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import '../css/DonorForm.css';
+import '../css/DonorForm.css'; // We should probably make a new CSS for this form in the future
 
 interface FormData {
     itemType: string;
@@ -254,6 +254,10 @@ const NewItemForm: React.FC = () => {
         setSuccessMessage(null);
     };
 
+    const handleBack = () => {
+        navigate('/donations');
+    };
+
     const renderFormField = (
         label: string,
         name: keyof FormData,
@@ -380,6 +384,13 @@ const NewItemForm: React.FC = () => {
                         className="refresh-button"
                     >
                         Refresh
+                    </button>
+                    <button
+                        type="button"
+                        onClick={handleBack}
+                        className="back-button"
+                    >
+                        Back
                     </button>
                 </div>
             </form>

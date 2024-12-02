@@ -54,9 +54,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "eject": "react-scripts eject",
-    "tsc":"tsc",
-    "tsc:watch":"tsc-w"
-  
+    "tsc": "tsc",
+    "tsc:watch": "tsc-w"
   },
   "eslintConfig": {
     "extends": [

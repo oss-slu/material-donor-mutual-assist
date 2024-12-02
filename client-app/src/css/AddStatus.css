@@ -164,6 +164,27 @@
     background-color: rgba(255, 0, 0, 0.9);
 }
 
+.donor-form .back-button {
+    padding: 10px 25px;
+    background-color: #eb2e1d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition:
+        background-color 0.3s ease,
+        transform 0.2s ease;
+    margin-right: 20px;
+    transform: translateY(-40px);
+}
+
+/* This should be fixed to a point where it is not hardcoded some point in the future*/
+.donor-form .back-button:hover {
+    background-color: #eb2e1d;
+    transform: translateY(-42px);
+}
+
 .image-actions {
     display: flex;
     justify-content: space-between;
