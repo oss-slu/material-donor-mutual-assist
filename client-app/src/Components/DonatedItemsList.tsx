@@ -80,36 +80,11 @@ const DonatedItemsList: React.FC = () => {
         const filtered = donatedItems.filter(
             item =>
                 item.id.toString().includes(searchTerm) ||
-                item.itemType.toLowerCase().includes(searchTerm) ||
-                item.currentStatus.toLowerCase().includes(searchTerm) ||
-                new Date(item.dateDonated)
-                    .toLocaleDateString()
-                    .includes(searchTerm) ||
-                (item.donor?.firstName || '')
-                    .toLowerCase()
-                    .includes(searchTerm) ||
-                (item.program?.name || '').toLowerCase().includes(searchTerm),
+            item.itemType.toLowerCase().includes(searchTerm) ||
+            item.donor?.firstName.toLowerCase().includes(searchTerm)
         );
         setFilteredItems(filtered);
     };
-
-    const handleSort = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-        const value = event.target.value;
-        const sorted = [...donatedItems].sort((a, b) => {
-            const dateA = new Date(a.dateDonated);
-            const dateB = new Date(b.dateDonated);
-
-            if (value === 'dateAsc') {
-                return dateA.getTime() - dateB.getTime();
-            } else if (value === 'dateDesc') {
-                return dateB.getTime() - dateA.getTime();
-            }
-            return 0;
-        });
-        setFilteredItems(sorted);
-    };
-
-
     const handleBarcodeClick = (itemId: number): void => {
         const selectedItem = donatedItems.find(item => item.id === itemId);
         if (selectedItem) {
@@ -120,51 +95,6 @@ const DonatedItemsList: React.FC = () => {
         }
         setModalIsOpen(true);
     };
-
-    const handleFilterByItemName = (
-        event: React.ChangeEvent<HTMLSelectElement>,
-    ): void => {
-        if (!event.target.value) {
-            setFilteredItems([]);
-            return;
-        }
-        const filtered = donatedItems.filter(
-            item =>
-                item.itemType.toLowerCase() ===
-                event.target.value.toLowerCase(),
-        );
-        setFilteredItems(filtered);
-    };
-
-    const handleFilterByProgram = (
-        event: React.ChangeEvent<HTMLSelectElement>,
-    ): void => {
-        if (!event.target.value) {
-            setFilteredItems([]);
-            return;
-        }
-        const programId = parseInt(event.target.value);
-        const filtered = donatedItems.filter(
-            item => item.programId === programId,
-        );
-        setFilteredItems(filtered);
-    };
-
-    const handleFilterByStatus = (
-        event: React.ChangeEvent<HTMLSelectElement>,
-    ): void => {
-        if (!event.target.value) {
-            setFilteredItems([]);
-            return;
-        }
-        const filtered = donatedItems.filter(
-            item =>
-                item.currentStatus.toLowerCase() ===
-                event.target.value.toLowerCase(),
-        );
-        setFilteredItems(filtered);
-    };
-
 
     const handleAddNewDonationClick = (): void => {
         navigate('/adddonation');
@@ -213,7 +143,7 @@ const DonatedItemsList: React.FC = () => {
                     <div className="search-bar">
                         <input
                             type="text"
-                            placeholder="Search using Item Id, Name, Donor, Date, Program, or Status"
+                            placeholder="Search using Item Id, Name, or Donor"
                             value={searchInput}
                             onChange={e => setSearchInput(e.target.value)}
                         />
@@ -224,56 +154,8 @@ const DonatedItemsList: React.FC = () => {
                             <FaSearch />
                         </button>
                     </div>  
-
-                    <div className="dropdowns">
-                        <select className="sort-options" onChange={handleSort}>
-                            <option value="" disabled defaultValue="">
-                                Sort
-                            </option>
-                            <option value="dateAsc">Date Ascending</option>
-                            <option value="dateDesc">Date Descending</option>
-                        </select>
-
-                        <select
-                            className="filter-options"
-                            onChange={handleFilterByItemName}
-                        >
-                            <option value="" disabled>
-                                Filter by Item Type
-                            </option>
-                            {Array.from(itemTypes).map(type => (
-                                <option key={type} value={type}>
-                                    {type}
-                                </option>
-                            ))}
-                        </select>
-
-                        <select
-                            className="filter-options"
-                            onChange={handleFilterByProgram}
-                        >
-                            <option value="" disabled>
-                                Filter by Program
-                            </option>
-                            {programOptions.map(program => (
-                                <option key={program.id} value={program.id}>
-                                    {program.name}
-                                </option>
-                            ))}
-                        </select>
-
-                        <select
-                            className="filter-options"
-                            onChange={handleFilterByStatus}
-                        >
-                            <option value="" disabled>
-                                Filter by Status
-                            </option>
-                            <option value="RECEIVED">Received</option>
-                        </select>
-                    </div>
                 </div>
-            </div>
+            </div> 
 
             <div className="div-updateprogram">
                 <button onClick={handleAddNewDonationClick}>
