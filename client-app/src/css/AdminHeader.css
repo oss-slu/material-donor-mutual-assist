@@ -21,7 +21,6 @@
 .search-bar {
     display: flex;
     align-items: center;
-    position: relative;
     width: 100%; 
     margin-right: 20px;
     padding: 5px;
@@ -36,7 +35,7 @@
     color: #333;
     font-size: 16px;
     box-sizing: border-box;
-    padding-right: 120px;
+    
 }
 
 .search-button {
