@@ -5,5 +5,8 @@
   "scripts": {
     "prettier:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,css,scss,html}\"",
     "prettier:write": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,html}\""
+  },
+  "dependencies": {
+    "psql": "^0.0.1"
   }
 }
