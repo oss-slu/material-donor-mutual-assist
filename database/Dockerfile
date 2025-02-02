@@ -1,14 +1,5 @@
 FROM postgres:16.2
 
-# Set environment variable for database name
-ENV DATABASE_NAME=mdma
-ENV POSTGRES_USER=admin
-ENV POSTGRES_PASSWORD=admin
-
-# Command to run the postgres server
-CMD ["postgres", "-p", "5432"]
-
-# Copy *.sql files (if any)
 COPY *.sql /docker-entrypoint-initdb.d/
 
 # # Add createtable.sql script (if any)
@@ -20,3 +11,5 @@ RUN chmod a+r /docker-entrypoint-initdb.d/*
 
 # Optional: Add the script to create the table from the CSV data
 EXPOSE 5432
+
+CMD ["postgres", "-p", "5432"]

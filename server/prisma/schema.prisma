@@ -10,7 +10,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  //url      = env("DATABASE_URL")
+  url        = "postgresql://admin:admin@database:5432/mdma"
 }
 
 model Donor {
