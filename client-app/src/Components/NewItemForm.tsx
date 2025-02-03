@@ -95,6 +95,18 @@ const NewItemForm: React.FC = () => {
         const files = e.target.files;
         if (files) {
             const fileArray = Array.from(files);
+            const maxSize = 5 * 1024 * 1024; // This is 5MB
+            const validFiles = fileArray.filter(file => {
+                if (file.size > maxSize) {
+                    setErrorMessage(`File size too large: ${file.name} (Max: 5MB)`);
+                    const index = fileArray.indexOf(file, 0);
+                    if (index > -1) {
+                    fileArray.splice(index, 1);
+                    }
+                    return false;
+                }
+                return true;
+            });
             setFormData(prevState => ({
                 ...prevState,
                 imageFiles: [...prevState.imageFiles, ...fileArray],
