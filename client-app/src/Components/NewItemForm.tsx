@@ -99,10 +99,10 @@ const NewItemForm: React.FC = () => {
             const validFiles = fileArray.filter(file => {
                 if (file.size > maxSize) {
                     setErrorMessage(`File size too large: ${file.name} (Max: 5MB)`);
-                    const index = fileArray.indexOf(file, 0);
+                    /*const index = fileArray.indexOf(file, 0);
                     if (index > -1) {
-                    fileArray.splice(index, 1);
-                    }
+                        fileArray.splice(index, 1);
+                    }*/
                     return false;
                 }
                 return true;
@@ -136,6 +136,12 @@ const NewItemForm: React.FC = () => {
             imageFiles: updatedFiles,
         }));
         setPreviews(updatedPreviews);
+        const oversizedFile = updatedFiles.find(file => file.size > 5 * 1024 * 1024);
+        if (oversizedFile) {
+            setErrorMessage(`File size too large: ${oversizedFile.name} (Max: 5MB)`);
+        } else {
+            setErrorMessage(null);
+        }
     };
 
     const handleChange = async (
