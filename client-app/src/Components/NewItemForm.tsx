@@ -23,6 +23,9 @@ interface Option {
 }
 
 const NewItemForm: React.FC = () => {
+
+    const maxImageSize = 5 * 1024 * 1024; // 5MB
+
     const navigate = useNavigate();
     const [formData, setFormData] = useState<FormData>({
         itemType: '',
@@ -95,18 +98,16 @@ const NewItemForm: React.FC = () => {
         const files = e.target.files;
         if (files) {
             const fileArray = Array.from(files);
-            const maxSize = 5 * 1024 * 1024; // This is 5MB
-            const validFiles = fileArray.filter(file => {
-                if (file.size > maxSize) {
+            fileArray.filter(file => {
+                if (file.size > maxImageSize) {
                     setErrorMessage(`File size too large: ${file.name} (Max: 5MB)`);
-                    /*const index = fileArray.indexOf(file, 0);
-                    if (index > -1) {
-                        fileArray.splice(index, 1);
-                    }*/
-                    return false;
                 }
-                return true;
             });
+            if ([...formData.imageFiles, ...fileArray].length > 6) {
+                setErrorMessage(`Too many images uploaded. Please remove ${[...formData.imageFiles, ...fileArray].length - 5} images`);
+            } else if ([...formData.imageFiles, ...fileArray].length > 5) {
+                setErrorMessage(`Too many images uploaded. Please remove ${[...formData.imageFiles, ...fileArray].length - 5} image`);
+            }
             setFormData(prevState => ({
                 ...prevState,
                 imageFiles: [...prevState.imageFiles, ...fileArray],
@@ -136,9 +137,13 @@ const NewItemForm: React.FC = () => {
             imageFiles: updatedFiles,
         }));
         setPreviews(updatedPreviews);
-        const oversizedFile = updatedFiles.find(file => file.size > 5 * 1024 * 1024);
+        const oversizedFile = updatedFiles.find(file => file.size > maxImageSize);
         if (oversizedFile) {
             setErrorMessage(`File size too large: ${oversizedFile.name} (Max: 5MB)`);
+        } else if (updatedFiles.length > 6) {
+            setErrorMessage(`Too many images uploaded. Please remove ${updatedFiles.length - 5} images`);
+        } else if (updatedFiles.length > 5) {
+            setErrorMessage(`Too many images uploaded. Please remove ${updatedFiles.length - 5} image`);
         } else {
             setErrorMessage(null);
         }
