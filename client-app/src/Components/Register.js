@@ -12,13 +12,13 @@ const Register = () => {
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleChange = e => {
-        const password = e.target.value;
-        setCredentials({ ...credentials, password });
+        const { name, value } = e.target;
+        setCredentials({ ...credentials, [name]: value });
 
         // Determine password strength
-        if (password.length < 5) {
+        if (value.length < 5) {
             setPasswordStrength('weak');
-        } else if (password.length >= 5 && password.length <= 8) {
+        } else if (value.length >= 5 && value.length <= 8) {
             setPasswordStrength('medium');
         } else {
             setPasswordStrength('strong');
@@ -28,13 +28,53 @@ const Register = () => {
     const handleSubmit = async e => {
         e.preventDefault();
 
+        // Check if passwords match
+        if (credentials.password !== credentials.confirm_password) {
+            setErrorMessage('Passwords do not match');
+            return;
+        }
+
         // Validate password length
         if (credentials.password.length < 5) {
             setErrorMessage('Password must be at least 5 characters');
             return;
         }
-        window.location.href = '/About';
-        alert('Registration Success');
+
+        try {
+            const response = await fetch('http://localhost:5000/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: credentials.name,
+                    email: credentials.email,
+                    password: credentials.password, // Send only password (confirm_password removed)
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setSuccessMessage(data.message);
+                setErrorMessage('');
+                setCredentials({
+                    name: '',
+                    email: '',
+                    password: '',
+                    confirm_password: '',
+                });
+
+                setTimeout(() => {
+                    window.location.href = '/About'; // Redirect after success
+                }, 2000);
+            } else {
+                setErrorMessage(data.message || 'Registration failed');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            setErrorMessage('An error occurred. Please try again.');
+        }
     };
 
     return (
