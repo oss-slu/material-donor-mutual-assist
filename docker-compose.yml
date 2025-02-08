@@ -13,16 +13,20 @@ services:
       - postgres_data:/var/lib/postgresql/data1
     ports:
       - "5432:5432"
-  frontend: 
+  mdma-frontend: 
     build: ./client-app
+    image: mdma-frontend-image:latest
+    container_name: mdma-frontend-container
     environment:
       REACT_APP_BACKEND_API_BASE_URL: "http://localhost:5050/"
     ports: 
       - 3000:3000
     depends_on:
-      - backend
-  backend:
+      - mdma-backend
+  mdma-backend:
     build: ./server
+    image: mdma-backend-image:latest
+    container_name: mdma-backend-container
     environment:
       DATABASE_URL: "postgresql://admin:admin@mdma-database-container:5432/mdma" # localhost change to container name
       PORT: 5000
@@ -31,7 +35,7 @@ services:
     ports:
       - 5050:5000
     depends_on:
-      - database
+      - mdma-database
 
 volumes:
   postgres_data:
