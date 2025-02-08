@@ -10,7 +10,7 @@ export default function Home() {
                         MATERIAL DONOR MUTUTAL ASSIST.
                     </h1>
                     <p className="mt-4 fs-5">
-                        This applicationsss is for maintaining the donor details,
+                        This applications is for maintaining the donor details,
                         to track the donations and to send the donors timely
                         emails. This encoragues the engagement with donors.
                     </p>
