@@ -19,6 +19,14 @@ services:
     container_name: mdma-frontend-container
     environment:
       REACT_APP_BACKEND_API_BASE_URL: "http://localhost:5050/"
+      CHOKIDAR_USEPOLLING: "true"
+    # volumes:
+    #   - type: bind
+    #     source: ./client-app
+    #     target: /app
+    volumes:
+      - /app/node_modules
+      - ./client-app:/app
     ports: 
       - 3000:3000
     depends_on:
@@ -40,3 +48,4 @@ services:
 volumes:
   postgres_data:
   postgres_conf:  # New volume for configuration
+  frontend:

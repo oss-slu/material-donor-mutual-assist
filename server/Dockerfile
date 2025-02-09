@@ -21,9 +21,3 @@ EXPOSE 5050
  
 # Define the command to run your app
 CMD ["npm", "run", "dev"]
-
-# COPY ./docker-entrypoint.sh /docker-entrypoint.sh
-# RUN chmod +x docker-entrypoint.sh
-
-
-# ENTRYPOINT ["/docker-entrypoint.sh"]
