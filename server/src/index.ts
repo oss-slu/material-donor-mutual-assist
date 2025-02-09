@@ -15,6 +15,8 @@ import donatedItemStatusRouter from './routes/donatedItemStatusRoutes'; // Impor
 const app = express();
 
 app.use(cors({ origin: 'http://localhost:3000' }));
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -31,11 +33,10 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     next(createError(404));
 });
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-    res.status(err.status || 500).json({
-        success: false,
-        message: err.message,
-        error: req.app.get('env') === 'development' ? err.stack : {},
-    });
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+    res.status(err.status || 500);
+    res.render('error');
 });
 const startServer = async () => {
     const timestamp = new Date().toISOString(); // Get the current timestamp

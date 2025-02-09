@@ -46,12 +46,10 @@ router.post(
                 data: { name, email, password: hashedPassword },
             });
 
-            return res
-                .status(201)
-                .json({
-                    message: 'User registered successfully',
-                    userId: user.id,
-                });
+            return res.status(201).json({
+                message: 'User registered successfully',
+                userId: user.id,
+            });
         } catch (error) {
             console.error('Error registering user:', error);
             return res.status(500).json({ message: 'Internal server error' });
