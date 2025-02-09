@@ -15,7 +15,6 @@ import donatedItemStatusRouter from './routes/donatedItemStatusRoutes'; // Impor
 const app = express();
 
 app.use(cors({ origin: 'http://localhost:3000' }));
-
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
@@ -26,7 +25,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/donor', donorRouter);
 app.use('/program', programRouter);
-
+app.use('/api', programRouter);
 app.use('/donatedItem', donatedItemRouter); // Use DonatedItem routes
 app.use('/donatedItem/status', donatedItemStatusRouter); // Use DonatedItemStatus routes
 
