@@ -5,22 +5,27 @@ const RegisterPage = () => {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
-        username: '',
-        password: '',
-        dateOfBirth: '',
+        contact: '',
         email: '',
-        contactNumber: '',
-        address: '',
+        password: '',
+        addressLine1: '',
+        addressLine2: '',
+        state: '',
+        city: '',
+        zipcode: '',
+        emailOptIn: false,
     });
 
-    const handleChange = e => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setFormData({
+            ...formData,
+            [name]: type === 'checkbox' ? checked : value,
+        });
     };
 
-    const handleSubmit = e => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle registration logic here
         console.log(formData);
     };
 
@@ -52,29 +57,9 @@ const RegisterPage = () => {
                 <div className="form-group">
                     <input
                         type="text"
-                        name="username"
-                        placeholder="UserName"
-                        value={formData.username}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <input
-                        type="date"
-                        name="dateOfBirth"
-                        placeholder="Date of Birth"
-                        value={formData.dateOfBirth}
+                        name="contact"
+                        placeholder="Contact Number (10 digits)"
+                        value={formData.contact}
                         onChange={handleChange}
                         required
                     />
@@ -91,10 +76,23 @@ const RegisterPage = () => {
                 </div>
                 <div className="form-group">
                     <input
-                        type="tel"
-                        name="contactNumber"
-                        placeholder="Contact Number"
-                        value={formData.contactNumber}
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                    />
+                    <small>
+                        Password must be at least 12 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.
+                    </small>
+                </div>
+                <div className="form-group">
+                    <input
+                        type="text"
+                        name="addressLine1"
+                        placeholder="Address Line 1"
+                        value={formData.addressLine1}
                         onChange={handleChange}
                         required
                     />
@@ -102,12 +100,52 @@ const RegisterPage = () => {
                 <div className="form-group">
                     <input
                         type="text"
-                        name="address"
-                        placeholder="Address"
-                        value={formData.address}
+                        name="addressLine2"
+                        placeholder="Address Line 2"
+                        value={formData.addressLine2}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="form-group">
+                    <input
+                        type="text"
+                        name="state"
+                        placeholder="State"
+                        value={formData.state}
                         onChange={handleChange}
                         required
                     />
+                </div>
+                <div className="form-group">
+                    <input
+                        type="text"
+                        name="city"
+                        placeholder="City"
+                        value={formData.city}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <input
+                        type="text"
+                        name="zipcode"
+                        placeholder="ZIP Code (5 digits)"
+                        value={formData.zipcode}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label>
+                        <input
+                            type="checkbox"
+                            name="emailOptIn"
+                            checked={formData.emailOptIn}
+                            onChange={handleChange}
+                        />
+                        I agree to receive emails
+                    </label>
                 </div>
                 <button type="submit">Register</button>
             </form>
