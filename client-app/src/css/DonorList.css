@@ -28,6 +28,10 @@
     background-color: #fff;
     max-width: 500px;
     margin: 0 auto;
+    text-align: justify;
+    overflow: auto;
+    position: relative;
+    top: 5%;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -39,8 +43,8 @@
     text-align: center;
 }
 
-.modal-content p {
-    margin: 5px 0;
+.modal-content {
+    position: static;
     font-size: 16px;
     color: #333;
 }
