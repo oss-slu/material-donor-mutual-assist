@@ -101,12 +101,15 @@ const NewItemForm: React.FC = () => {
             fileArray.filter(file => {
                 if (file.size > maxImageSize) {
                     setErrorMessage(`File size too large: ${file.name} (Max: 5MB)`);
+                    scrollToError();
                 }
             });
             if ([...formData.imageFiles, ...fileArray].length > 6) {
                 setErrorMessage(`Too many images uploaded. Please remove ${[...formData.imageFiles, ...fileArray].length - 5} images`);
+                scrollToError();
             } else if ([...formData.imageFiles, ...fileArray].length > 5) {
                 setErrorMessage(`Too many images uploaded. Please remove ${[...formData.imageFiles, ...fileArray].length - 5} image`);
+                scrollToError();
             }
             setFormData(prevState => ({
                 ...prevState,
@@ -140,6 +143,7 @@ const NewItemForm: React.FC = () => {
         const oversizedFile = updatedFiles.find(file => file.size > maxImageSize);
         if (oversizedFile) {
             setErrorMessage(`File size too large: ${oversizedFile.name} (Max: 5MB)`);
+            scrollToError();
         } else if (updatedFiles.length > 6) {
             setErrorMessage(`Too many images uploaded. Please remove ${updatedFiles.length - 5} images`);
         } else if (updatedFiles.length > 5) {
@@ -184,6 +188,15 @@ const NewItemForm: React.FC = () => {
         setErrors(prevState => ({ ...prevState, [name]: '' }));
         setErrorMessage(null);
         setSuccessMessage(null);
+    };
+
+    const scrollToError = () => {
+        setTimeout(() => {
+            const errorElement = document.getElementById('error-message');
+            if (errorElement) {
+                errorElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 100);
     };
 
     const validateField = (name: string, value: any) => {
@@ -367,7 +380,7 @@ const NewItemForm: React.FC = () => {
             <h1 className="text-2xl font-bold heading-centered">
                 New Donated Item
             </h1>
-            {errorMessage && <p className="error-message">{errorMessage}</p>}
+            {errorMessage && <p id="error-message" className="error-message">{errorMessage}</p>}
             {successMessage && (
                 <p className="success-message">{successMessage}</p>
             )}
