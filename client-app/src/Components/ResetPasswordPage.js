@@ -16,33 +16,39 @@ const ResetPasswordPage = () => {
     const handleSubmit = async e => {
         e.preventDefault();
         try {
-            if (credentials.password !== credentials.confirm_password) {
+            if (password !== confirmPassword) {
                 setError('Passwords do not match');
                 return;
             }
 
             // Validate password length
-            if (credentials.password.length < 12) {
+            if (password.length < 12) {
                 setError('Password must be at least 12 characters');
                 return;
             }
 
-            //Check Password Rules
+            // Check for email
+            if (password.match(email)) {
+                setError('Password must not contain email');
+                return;
+            }
+
+            // Check Password Rules
             const missing = [];
 
-            if (!credentials.password.match(/[A-Z]/)) {
+            if (!password.match(/[A-Z]/)) {
                 missing.push('an uppercase');
             }
 
-            if (!credentials.password.match(/[a-z]/)) {
+            if (!password.match(/[a-z]/)) {
                 missing.push('a lowercase');
             }
 
-            if (!credentials.password.match(/[0-9]/)) {
+            if (!password.match(/[0-9]/)) {
                 missing.push('a number');
             }
 
-            if (!credentials.password.match(/[^\\w\\s]/)) {
+            if (!password.match(/[^\\w\\s]/)) {
                 missing.push('a special character');
             }
 

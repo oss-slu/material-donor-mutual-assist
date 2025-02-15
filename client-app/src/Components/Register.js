@@ -40,7 +40,18 @@ const Register = () => {
             return;
         }
 
-        //Check Password Rules
+        // Check for username or email
+        if (credentials.password.match(credentials.name)) {
+            setErrorMessage('Password must not contain name');
+            return;
+        }
+
+        if (credentials.password.match(credentials.email)) {
+            setErrorMessage('Password must not contain email');
+            return;
+        }
+
+        // Check Password Rules
         const missing = [];
 
         if (!credentials.password.match(/[A-Z]/)) {
