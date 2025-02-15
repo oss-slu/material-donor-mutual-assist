@@ -16,8 +16,49 @@ const ResetPasswordPage = () => {
     const handleSubmit = async e => {
         e.preventDefault();
         try {
-            if (password !== confirmPassword) {
+            if (credentials.password !== credentials.confirm_password) {
                 setError('Passwords do not match');
+                return;
+            }
+
+            // Validate password length
+            if (credentials.password.length < 12) {
+                setError('Password must be at least 12 characters');
+                return;
+            }
+
+            //Check Password Rules
+            const missing = [];
+
+            if (!credentials.password.match(/[A-Z]/)) {
+                missing.push('an uppercase');
+            }
+
+            if (!credentials.password.match(/[a-z]/)) {
+                missing.push('a lowercase');
+            }
+
+            if (!credentials.password.match(/[0-9]/)) {
+                missing.push('a number');
+            }
+
+            if (!credentials.password.match(/[^\\w\\s]/)) {
+                missing.push('a special character');
+            }
+
+            if (missing.length !== 0) {
+                if (missing.length === 1) {
+                    setError('Password must contain ' + missing[0] + '!');
+                    return;
+                }
+                const tmp = missing.pop();
+                setError(
+                    'Password must contain ' +
+                        missing.join(', ') +
+                        ' and ' +
+                        tmp +
+                        '!',
+                );
                 return;
             }
 
