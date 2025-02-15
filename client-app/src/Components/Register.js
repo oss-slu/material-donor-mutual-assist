@@ -16,9 +16,9 @@ const Register = () => {
         setCredentials({ ...credentials, [name]: value });
 
         // Determine password strength
-        if (value.length < 5) {
+        if (value.length < 12) {
             setPasswordStrength('weak');
-        } else if (value.length >= 5 && value.length <= 8) {
+        } else if (value.length >= 12 && value.length <= 15) {
             setPasswordStrength('medium');
         } else {
             setPasswordStrength('strong');
@@ -35,8 +35,43 @@ const Register = () => {
         }
 
         // Validate password length
-        if (credentials.password.length < 5) {
-            setErrorMessage('Password must be at least 5 characters');
+        if (credentials.password.length < 12) {
+            setErrorMessage('Password must be at least 12 characters');
+            return;
+        }
+
+        //Check Password Rules
+        const missing = [];
+
+        if (!credentials.password.match(/[A-Z]/)) {
+            missing.push('an uppercase');
+        }
+
+        if (!credentials.password.match(/[a-z]/)) {
+            missing.push('a lowercase');
+        }
+
+        if (!credentials.password.match(/[0-9]/)) {
+            missing.push('a number');
+        }
+
+        if (!credentials.password.match(/[^\\w\\s]/)) {
+            missing.push('a special character');
+        }
+
+        if (missing.length !== 0) {
+            if (missing.length === 1) {
+                setErrorMessage('Password must contain ' + missing[0] + '!');
+                return;
+            }
+            const tmp = missing.pop();
+            setErrorMessage(
+                'Password must contain ' +
+                    missing.join(', ') +
+                    ' and ' +
+                    tmp +
+                    '!',
+            );
             return;
         }
 
