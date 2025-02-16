@@ -7,6 +7,50 @@ The Material Donor Mutual Assist project by BWorks is designed to streamline the
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## Develop With docker compose
+
+### Prerequisites
+Ensure you have the following installed on your machine:
+
+- [Docker](https://www.docker.com/products/docker-desktop/)
+
+### Clone the Repository
+   Clone the repository to your local machine.
+    ```
+    git clone https://github.com/oss-slu/material-donor-mutual-assist.git
+    ```
+
+### Navigate to the Project Directory  
+   Move into the project folder.
+   ```
+   cd material-donor-mutual-assist
+   ```
+
+### Start the Development Environment
+
+Run the following command to build and start the services:
+```
+docker-compose up -d
+```
+This will start all necessary containers in the background.
+
+### Accessing the Application
+- After the applications starts, navigate to ttp://localhost:3000 in your web browser
+
+
+### Stop the Devlopment Environment 
+
+```
+docker compose down
+```
+
+### Making Changes
+- Modify source code as needed
+- If changes requre rebuilding, restart with: 
+```
+docker compose up --build -d
+```
+
 ## Development Setup
 
 Follow these steps to set up your development environment.
