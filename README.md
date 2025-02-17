@@ -44,13 +44,6 @@ This will start all necessary containers in the background.
 docker compose down
 ```
 
-### Making Changes
-- Modify source code as needed
-- If changes requre rebuilding, restart with: 
-```
-docker compose up --build -d
-```
-
 ## Development Setup
 
 Follow these steps to set up your development environment.
