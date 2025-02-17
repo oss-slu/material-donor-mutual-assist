@@ -26,6 +26,24 @@ Ensure you have the following installed on your machine:
    cd material-donor-mutual-assist
    ```
 
+## Create Environment Variables
+Create a .env file and define the necessary environment variables:
+```
+# database service
+POSTGRES_USER="admin"
+POSTGRES_PASSWORD="admin"
+
+# frontend service
+FRONTEND_PORT="3000"
+REACT_APP_BACKEND_API_BASE_URL="http://localhost:5050/"
+
+# backend service
+AZURE_STORAGE_ACCOUNT_NAME="mdmaproject"
+AZURE_STORAGE_ACCESS_KEY="<enter-azure-storage-access-key>"
+BACKEND_PORT=5000
+DATABASE_URL="postgresql://admin:admin@mdma-database-container:5432/mdma"
+```
+
 ### Start the Development Environment
 
 Run the following command to build and start the services:

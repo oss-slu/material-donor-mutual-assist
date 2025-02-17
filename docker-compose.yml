@@ -5,9 +5,10 @@ services:
     build: ./docker-files/database
     image: mdma-database-image:latest 
     container_name: mdma-database-container
+    env_file: ".env" 
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin 
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data1
     ports:
@@ -23,11 +24,10 @@ services:
     build: ./client-app
     image: mdma-frontend-image:latest
     container_name: mdma-frontend-container
+    env_file: ".env"
     environment:
-      REACT_APP_BACKEND_API_BASE_URL: "http://localhost:5050/"
-    volumes:
-      - /app/node_modules
-      - ./client-app:/app
+      PORT: ${FRONTEND_PORT}
+      REACT_APP_BACKEND_API_BASE_URL: ${REACT_APP_BACKEND_API_BASE_URL}
     ports: 
       - 3000:3000
     depends_on:
@@ -37,11 +37,12 @@ services:
     build: ./server
     image: mdma-backend-image:latest
     container_name: mdma-backend-container
-    environment:
-      DATABASE_URL: "postgresql://admin:admin@mdma-database-container:5432/mdma" # localhost change to container name
-      PORT: 5000
-      AZURE_STORAGE_ACCOUNT_NAME: "mdmaproject"
-      AZURE_STORAGE_ACCESS_KEY: "z7XgEdiuZk3t0T4rQ9A1U4+gML1Nih2xazcE5J9XoBcQ64AYnmcVr8NOzTlhVRVv4w=="
+    env_file: ".env"
+    environment: 
+      AZURE_STORAGE_ACCOUNT_NAME: ${AZURE_STORAGE_ACCOUNT_NAME}
+      AZURE_STORAGE_ACCESS_KEY: ${AZURE_STORAGE_ACCESS_KEY}
+      DATABASE_URL: ${DATABASE_URL}
+      PORT: ${BACKEND_PORT}
     ports:
       - 5050:5000
     depends_on:
