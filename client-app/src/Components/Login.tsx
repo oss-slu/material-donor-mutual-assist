@@ -35,8 +35,9 @@ const Login: React.FC = () => {
         // Simulated login success
         localStorage.setItem('isLogged', 'true');
         window.location.href = '/Donations';
-        alert('Login Success');
         setShowPopup(true);
+        //alert('Login Success');
+        //setShowPopup(true);
 
         // Hide the pop-up after 3 seconds
         setTimeout(() => {
