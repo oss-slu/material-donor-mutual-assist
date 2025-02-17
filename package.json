@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "prettier": "^3.4.2"
+    "prettier": "^3.5.0"
   },
   "scripts": {
     "prettier:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,css,scss,html}\"",
