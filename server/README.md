@@ -47,7 +47,7 @@ DATABASE_URL="postgresql://username:password@localhost:5432/dbname"
 PORT=5000
 AZURE_STORAGE_ACCOUNT_NAME="mdmaproject"
 AZURE_STORAGE_ACCESS_KEY="<enter-azure-storage-access-key>"
-
+JWT_SECRET="mymdmaSuperKey"
 SMTP_HOST="smtp.gmail.com"
 SMTP_PORT="587"
 SMTP_SECURE="false"
