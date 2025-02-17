@@ -8,28 +8,37 @@ const Navbar: React.FC = () => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        const name = localStorage.getItem('name');
+        const checkLoginStatus = () => {
+            const token = localStorage.getItem('token');
+            const name = localStorage.getItem('name');
 
-        if (token && name) {
-            setIsLoggedIn(true);
-            setUser(name);
-        }
+            if (token) {
+                setIsLoggedIn(true);
+                setUser(name || 'User'); // Default to 'User' if name is missing
+            } else {
+                setIsLoggedIn(false);
+                setUser('');
+            }
+        };
 
-        if (localStorage.getItem('isLogged') === 'true') {
-            setIsLoggedIn(true);
-        } else {
-            setIsLoggedIn(false);
-        }
+        checkLoginStatus();
+
+        // Listen for changes in localStorage (for logout updates)
+        window.addEventListener('storage', checkLoginStatus);
+
+        return () => {
+            window.removeEventListener('storage', checkLoginStatus);
+        };
     }, []);
 
     const handleLogout = (): void => {
         localStorage.removeItem('token');
         localStorage.removeItem('name');
-        setUser('');
-        localStorage.setItem('isLogged', 'false');
         setIsLoggedIn(false);
+        setUser('');
 
+        // Ensure UI updates by reloading the page or using event dispatch
+        window.dispatchEvent(new Event('storage'));
         window.location.href = '/';
     };
 
