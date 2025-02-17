@@ -2,28 +2,30 @@ version: "3.8"
 
 services:
   mdma-database:
-    build: ./docker-files/database  # Build the image from the current directory (./)
+    build: ./database  # Build the image from the current directory (./)
     image: mdma-database-image:latest  # Tag the built image as "mdma-database:latest"
     container_name: mdma-database-container
     environment:
+      #POSTGRES_DB: mdma
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin  # Consider replacing with a secure password
-      DATABASE_NAME: mdma
     volumes:
       - postgres_data:/var/lib/postgresql/data1
     ports:
       - "5432:5432"
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d mdma -U admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  
   mdma-frontend: 
     build: ./client-app
     image: mdma-frontend-image:latest
     container_name: mdma-frontend-container
     environment:
       REACT_APP_BACKEND_API_BASE_URL: "http://localhost:5050/"
-      CHOKIDAR_USEPOLLING: "true"
-    # volumes:
-    #   - type: bind
-    #     source: ./client-app
-    #     target: /app
     volumes:
       - /app/node_modules
       - ./client-app:/app
@@ -43,9 +45,8 @@ services:
     ports:
       - 5050:5000
     depends_on:
-      - mdma-database
+      mdma-database:
+        condition: service_healthy
 
 volumes:
   postgres_data:
-  postgres_conf:  # New volume for configuration
-  frontend:

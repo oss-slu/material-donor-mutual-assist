@@ -6,6 +6,9 @@ WORKDIR /app
  
 # Copy package.json and package-lock.json
 COPY package*.json ./
+
+# suggestion
+COPY prisma ./prisma/
  
 # Install dependencies
 RUN npm install
@@ -13,7 +16,7 @@ RUN npm install
 # Copy the rest of your application files
 COPY . .
 
-RUN npx prisma generate
+#RUN npx prisma generate
 # 
  
 # Expose the port your app runs on
