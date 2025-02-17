@@ -57,14 +57,29 @@ export const sendWelcomeEmail = async (recipientEmail: string, donorName: string
 };
 
 // Function to send a donation confirmation email
-export const sendDonationEmail = async (recipientEmail: string, donorName: string, itemType: string) => {
+
+export const sendDonationEmail = async (recipientEmail: string, donorName: string, itemType: string, dateDonated:Date,
+    imageUrls: string[]) => {
+    const formattedDate = dateDonated.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
+    const imageSection = imageUrls.length > 0
+        ? `<p>Here are the images of your donation:</p>
+           <div>${imageUrls.map(url => `<img src="https://mdmaproject.blob.core.windows.net/mdma-dev/item-2025-02-17T17%3A58%3A03.446Z-75.jpeg?sp=r&st=2025-02-17T18:27:17Z&se=2025-02-21T02:27:17Z&spr=https&sv=2022-11-02&sr=b&sig=XZA9D1FcO8WO%2F9bnIopel3Nqx4whTVaR%2BP%2Fhxm%2F2Cjo%3D" 
+            alt="Donation Image" width="200" style="margin:5px; border-radius:8px;">`).join('')}</div>`
+        : `<p>No images were provided for this donation.</p>`;
+
     const mailOptions = {
         from: `Donation Team <${process.env.SMTP_USER}>`,
         to: recipientEmail,
         subject: 'Donation Confirmation',
         html: `
             <h2>Dear ${donorName},</h2>
-            <p>Thank you for your generous donation! We received your ${itemType}:</p>
+            <p>Thank you for your generous donation!</p>
+            <p>We received your <strong>${itemType}</strong> on <strong>${formattedDate}</strong>.</p>
+            ${imageSection}
             
             <p>We truly appreciate your support.</p>
             <p>Best regards,</p>
@@ -79,3 +94,4 @@ export const sendDonationEmail = async (recipientEmail: string, donorName: strin
         console.log('❌ Error sending donation email:', error);
     }
 };
+

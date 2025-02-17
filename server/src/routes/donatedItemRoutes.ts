@@ -80,7 +80,9 @@ router.post(
              if (newItem.donor?.email) {
                 await sendDonationEmail(newItem.donor.email, 
                     `${newItem.donor.firstName} ${newItem.donor.lastName}`,
-                    newItem.itemType
+                    newItem.itemType,
+                    newItem.dateDonated,
+                    newStatus.imageUrls
                 );
             }
 
