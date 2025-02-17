@@ -14,6 +14,8 @@ import {
 } from '../services/donatedItemService';
 import { date } from 'joi';
 import { DonatedItemStatus } from '../modals/DonatedItemStatusModal';
+import { sendDonationEmail } from '../services/emailService';
+import { DonatedItem } from '@prisma/client';
 
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -48,6 +50,9 @@ router.post(
                     programId,
                     dateDonated: dateDonatedDateTime,
                 },
+                include: {
+                    donor: true, // Ensure donor details are fetched
+                },
             });
 
             // Upload images to cloud storage and get their filenames
@@ -70,6 +75,14 @@ router.post(
                     imageUrls: imageUrls,
                 },
             });
+
+             // Send email notification to the donor
+             if (newItem.donor?.email) {
+                await sendDonationEmail(newItem.donor.email, 
+                    `${newItem.donor.firstName} ${newItem.donor.lastName}`,
+                    newItem.itemType
+                );
+            }
 
             res.status(201).json({
                 donatedItem: newItem,

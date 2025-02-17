@@ -47,9 +47,45 @@ DATABASE_URL="postgresql://username:password@localhost:5432/dbname"
 PORT=5000
 AZURE_STORAGE_ACCOUNT_NAME="mdmaproject"
 AZURE_STORAGE_ACCESS_KEY="<enter-azure-storage-access-key>"
+
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT="587"
+SMTP_SECURE="false"
+SMTP_USER="enter your gmail"
+SMTP_PASS="enter you App password"
 ```
 
 Replace `username`, `password`, and `dbname` with your PostgreSQL username, password, and the name of the database you created.
+
+Replace `SMTP_USER` with you regular gmail 
+
+Replace `SMTP_PASS` with your App password which is not you regular gmail password
+
+Steps to Generate an App Password for Gmail
+
+1. Go to Google Account Security
+
+    https://myaccount.google.com/security
+
+2. Enable 2-Step Verification (If Not Already Enabled)
+
+    Scroll down to "Signing in to Google".
+
+    Click "2-Step Verification" and complete the setup.
+
+3. Generate an App Password
+
+    Scroll down to "App Passwords" and click on it.
+
+    Select App: Mail.
+
+    Select Device: Other (Custom Name) 
+
+    Click Generate.
+
+    Copy the generated password (it will be a 16-character string, like abcd efgh ijkl mnop).
+
+
 
 ### 4. Install Dependencies
 
