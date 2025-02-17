@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom'; // Import Routes and Route pro
 import Navbar from './Components/Navbar';
 
 import LoginPage from './Components/LoginPage';
-import Login from './Components/Login';
+import Login from './Components/Login.tsx';
 import Register from './Components/Register';
 import Home from './Components/Home';
 import ForgotPassword from './Components/ForgotPassword';
