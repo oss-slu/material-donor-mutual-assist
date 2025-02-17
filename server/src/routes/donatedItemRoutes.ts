@@ -12,16 +12,40 @@ import {
     uploadToStorage,
     getFileExtension,
 } from '../services/donatedItemService';
-import { date } from 'joi';
 import { DonatedItemStatus } from '../modals/DonatedItemStatusModal';
 
 const router = Router();
-const upload = multer({ storage: multer.memoryStorage() });
+
+// Configure multer storage
+const storage = multer.memoryStorage();
+
+// Define file validation rules
+const fileFilter = (req, file, cb) => {
+    const allowedFileTypes = /jpeg|jpg|png|gif/; // Allowed image file extensions
+    const extname = allowedFileTypes.test(file.mimetype);
+    const mimetype = allowedFileTypes.test(file.originalname.toLowerCase());
+
+    if (extname && mimetype) {
+        return cb(null, true);
+    } else {
+        return cb(new Error('Invalid file type. Only JPG, JPEG, PNG, and GIF are allowed.'));
+    }
+};
+
+// Configure multer with file size limit and max number of files
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 5 * 1024 * 1024, // 5MB
+        files: 5, // Limit to 5 files
+    },
+    fileFilter: fileFilter,
+});
 
 // POST /donatedItem - Create a new DonatedItem
 router.post(
     '/',
-    [upload.array('imageFiles'), donatedItemValidator],
+    [upload.array('imageFiles'), donatedItemValidator], // Add multer as middleware
     async (req: Request, res: Response) => {
         try {
             const imageFiles = req.files as Express.Multer.File[];
@@ -29,6 +53,7 @@ router.post(
             const programId = parseInt(req.body.programId);
             const { dateDonated, ...rest } = req.body;
 
+            // Validate donor and program
             try {
                 await validateDonor(donorId);
                 await validateProgram(programId);
@@ -38,9 +63,12 @@ router.post(
                     return res.status(400).json({ error: error.message });
                 }
             }
+
+            // Validate date
             const dateDonatedDateTime = new Date(dateDonated);
             dateDonatedDateTime.setUTCHours(0, 0, 0, 0); // Set time to 00:00:00 UTC
 
+            // Create a new donated item
             const newItem = await prisma.donatedItem.create({
                 data: {
                     ...rest, //spread the rest of the fields
@@ -50,18 +78,24 @@ router.post(
                 },
             });
 
+            // If there are no image files, send a validation error
+            if (!imageFiles || imageFiles.length === 0) {
+                return res.status(400).json({ error: 'At least one image is required.' });
+            }
+
             // Upload images to cloud storage and get their filenames
             const imageUrls = await Promise.all(
-                imageFiles.map(async file => {
+                imageFiles.map(async (file) => {
                     const fileExtension = getFileExtension(file.mimetype);
                     const formattedDate = new Date().toISOString();
                     return uploadToStorage(
                         file,
                         `item-${formattedDate}-${newItem.id}${fileExtension}`,
                     );
-                }),
+                })
             );
 
+            // Create new status for the donated item
             const newStatus = await prisma.donatedItemStatus.create({
                 data: {
                     statusType: 'Received',
@@ -79,134 +113,7 @@ router.post(
             console.error('Error creating donated item:', error);
             res.status(500).json({ message: 'Error creating donated item' });
         }
-    },
+    }
 );
-
-// GET /donatedItem - Fetch all donated items
-router.get('/', async (req: Request, res: Response) => {
-    try {
-        const donatedItems = await prisma.donatedItem.findMany({
-            include: {
-                donor: true, // Include all donor details
-                program: true, // Include all program details
-                statuses: {
-                    orderBy: {
-                        dateModified: 'asc', // Ensure they are ordered chronologically
-                    },
-                },
-            },
-        });
-        res.json(donatedItems);
-    } catch (error) {
-        if (error instanceof Error) {
-            console.error('Error fetching donated item:', error.message);
-            res.status(
-                error.message.includes('must be an integer') ? 400 : 404,
-            ).json({ error: error.message });
-        } else {
-            console.error('Error fetching donated item:', 'Unknown error');
-            res.status(500).json({ error: 'Unknown error' });
-        }
-    }
-});
-
-// GET /donatedItem - Fetch donated item by ID
-router.get('/:id', async (req: Request, res: Response) => {
-    try {
-        const donatedItemId = parseInt(req.params.id);
-        await validateDonatedItem(donatedItemId);
-        const donatedItem = await prisma.donatedItem.findUnique({
-            where: { id: donatedItemId },
-            include: {
-                donor: true, // Include all donor details
-                program: true, // Include all program details
-                statuses: {
-                    orderBy: {
-                        dateModified: 'asc', // Ensure they are ordered chronologically
-                    },
-                },
-            },
-        });
-
-        if (!donatedItem) {
-            return res.status(404).json({
-                error: `Donated item with ID ${donatedItemId} not found`,
-            });
-        }
-
-        // Process each status to fetch and encode its images
-        await Promise.all(
-            donatedItem.statuses.map(async (status: DonatedItemStatus) => {
-                const filenames = status.imageUrls || [];
-                const encodedImages = await fetchImagesFromCloud(filenames);
-                status.images = encodedImages;
-            }),
-        );
-
-        res.json(donatedItem);
-    } catch (error) {
-        if (error instanceof Error) {
-            console.error('Error fetching donated item:', error.message);
-            res.status(
-                error.message.includes('must be an integer') ? 400 : 404,
-            ).json({ error: error.message });
-        } else {
-            console.error('Error fetching donated item:', 'Unknown error');
-            res.status(500).json({ error: 'Unknown error' });
-        }
-    }
-});
-
-// PUT /donatedItem/details/:id - Update non-status details of a DonatedItem
-router.put(
-    '/details/:id',
-    donatedItemValidator,
-    async (req: Request, res: Response) => {
-        try {
-            const donorId = parseInt(req.body.donorId);
-            const programId = parseInt(req.body.programId);
-            try {
-                await validateDonor(donorId);
-                await validateProgram(programId);
-            } catch (error) {
-                if (error instanceof Error) {
-                    return res.status(400).json({ error: error.message });
-                }
-            }
-
-            const updatedItem = await prisma.donatedItem.update({
-                where: { id: Number(req.params.id) },
-                data: {
-                    ...req.body,
-                    donorId,
-                    programId,
-                    lastUpdated: new Date(),
-                },
-            });
-            console.log('Donated item updated:', updatedItem);
-            res.json(updatedItem);
-        } catch (error) {
-            console.error('Error updating donated item details:', error);
-            res.status(500).json({
-                message: 'Error updating donated item details',
-            });
-        }
-    },
-);
-
-//Added cascade deletion of statuses
-// DELETE /donatedItem/:id - Delete a DonatedItem with cascading deletion of its statuses
-router.delete('/:id', async (req: Request, res: Response) => {
-    try {
-        const deletedItem = await prisma.donatedItem.delete({
-            where: { id: Number(req.params.id) },
-        });
-        console.log('Donated item deleted:', deletedItem);
-        res.status(200).json(deletedItem);
-    } catch (error) {
-        console.error('Error deleting donated item:', error);
-        res.status(500).json({ message: 'Error deleting donated item' });
-    }
-});
 
 export default router;
