@@ -59,3 +59,11 @@ model Program {
   aimAndCause String   @db.VarChar(500)  
   donatedItems DonatedItem[] // Add reverse relation to DonatedItem            
 }
+
+model User {
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  password String
+  createdAt DateTime @default(now())
+}

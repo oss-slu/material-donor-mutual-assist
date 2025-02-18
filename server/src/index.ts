@@ -4,6 +4,7 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
+import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client'; // Import Prisma
 const prisma = new PrismaClient(); // Initialize Prisma Client
 import donorRouter from './routes/donorRoutes';
@@ -13,9 +14,9 @@ import donatedItemRouter from './routes/donatedItemRoutes'; // Import DonatedIte
 import donatedItemStatusRouter from './routes/donatedItemStatusRoutes'; // Import DonatedItemStatus routes
 
 const app = express();
+dotenv.config(); // Load environment variables from .env file
 
 app.use(cors({ origin: 'http://localhost:3000' }));
-
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
@@ -26,7 +27,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/donor', donorRouter);
 app.use('/program', programRouter);
-
+app.use('/api', programRouter);
 app.use('/donatedItem', donatedItemRouter); // Use DonatedItem routes
 app.use('/donatedItem/status', donatedItemStatusRouter); // Use DonatedItemStatus routes
 
