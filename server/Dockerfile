@@ -5,4 +5,4 @@ COPY prisma ./prisma/
 RUN npm install
 COPY . .
 EXPOSE 5050
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "dev:docker"]
