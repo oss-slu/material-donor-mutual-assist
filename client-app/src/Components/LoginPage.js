@@ -8,7 +8,6 @@ const LoginPage = props => {
     const [captcha, setCaptcha] = useState('');
     const [captchaValue, setCaptchaValue] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    localStorage.setItem('isLogged', false);
 
     const generateCaptcha = () => {
         const randomCaptcha = Math.random().toString(36).substring(7);
@@ -23,7 +22,7 @@ const LoginPage = props => {
         setCaptchaValue(e.target.value);
     };
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
 
         // Retrieve user data from local storage
@@ -32,11 +31,25 @@ const LoginPage = props => {
             setErrorMessage('Incorrect CAPTCHA. Please try again.');
             return;
         }
-        localStorage.setItem('isLogged', true);
-        window.location.href = '/Donations';
-        alert('Login Success');
 
-        console.log('in login page ', localStorage.getItem('isLogged'));
+        try {
+            const response = await fetch('http://localhost:5000/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(credentials),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                localStorage.setItem('token', data.token);
+                alert('Login Successful');
+                window.location.href = '/Donations';
+            } else {
+                setErrorMessage(data.message || 'Invalid email or password.');
+            }
+        } catch (error) {
+            setErrorMessage('Something went wrong. Please try again.');
+        }
     };
 
     return (
@@ -47,6 +60,9 @@ const LoginPage = props => {
                 <h2 className="login-label">Login</h2>
                 <div className="login-box">
                     <div className="bg-#a9d6e5 shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                        {errorMessage && (
+                            <p style={{ color: 'red' }}>{errorMessage}</p>
+                        )}
                         <form onSubmit={handleSubmit}>
                             <div>
                                 <input
