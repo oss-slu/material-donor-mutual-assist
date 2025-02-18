@@ -1,15 +1,17 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
+import  prisma  from '../prismaClient'; 
+import { fetchImagesFromCloud } from './donatedItemService';
 
 dotenv.config(); // Load environment variables
 
 // Log SMTP credentials to check if they're correctly loaded (excluding the password for security)
-console.log("SMTP Config:");
-console.log("Host:", process.env.SMTP_HOST);
-console.log("Port:", process.env.SMTP_PORT);
-console.log("Secure:", process.env.SMTP_SECURE);
-console.log("User:", process.env.SMTP_USER);
-console.log("Pass is set:", !!process.env.SMTP_PASS); // Check if the password is set without printing it
+console.log('SMTP Config:');
+console.log('Host:', process.env.SMTP_HOST);
+console.log('Port:', process.env.SMTP_PORT);
+console.log('Secure:', process.env.SMTP_SECURE);
+console.log('User:', process.env.SMTP_USER);
+console.log('Pass is set:', !!process.env.SMTP_PASS); // Check if the password is set without printing it
 
 // Configure the email transporter with SMTP
 const transporter = nodemailer.createTransport({
@@ -27,14 +29,17 @@ const transporter = nodemailer.createTransport({
 // Test transporter connection
 transporter.verify((error, success) => {
     if (error) {
-        console.error("SMTP Connection Error:", error);
+        console.error('SMTP Connection Error:', error);
     } else {
-        console.log("✅ SMTP Server is Ready to Send Emails");
+        console.log('✅ SMTP Server is Ready to Send Emails');
     }
 });
 
 // Function to send a welcome email to a new donor
-export const sendWelcomeEmail = async (recipientEmail: string, donorName: string) => {
+export const sendWelcomeEmail = async (
+    recipientEmail: string,
+    donorName: string,
+) => {
     const mailOptions = {
         from: `Donation Team <${process.env.SMTP_USER}>`,
         to: recipientEmail,
@@ -58,18 +63,52 @@ export const sendWelcomeEmail = async (recipientEmail: string, donorName: string
 
 // Function to send a donation confirmation email
 
-export const sendDonationEmail = async (recipientEmail: string, donorName: string, itemType: string, dateDonated:Date,
-    imageUrls: string[]) => {
+const convertImageToBase64 = async (imageUrl: string): Promise<string | null> => {
+    try {
+        const response = await fetch(imageUrl);
+        const buffer = await response.arrayBuffer();
+        const base64String = Buffer.from(buffer).toString('base64');
+        return `data:image/png;base64,${base64String}`; // Adjust format if needed
+    } catch (error) {
+        console.error('Error fetching image:', error);
+        return null;
+    }
+};
+
+export const sendDonationEmail = async (
+    recipientEmail: string,
+    donorName: string,
+    itemType: string,
+    dateDonated: Date,
+    imageUrls: string[],
+    
+) => {
+    const encodedImages = await fetchImagesFromCloud(imageUrls);
+
+    console.log("Image URLs being sent:", imageUrls);
+    console.log("Encoded Images:", encodedImages);
+
+    // Extract image URLs (flatten in case of multiple statuses)
+    // const base64Images = await Promise.all(
+   
+    //         item.imageUrls.map(async (url) => await convertImageToBase64(url))
+    //     )
+    // );
     const formattedDate = dateDonated.toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
     });
-    const imageSection = imageUrls.length > 0
-        ? `<p>Here are the images of your donation:</p>
-           <div>${imageUrls.map(url => `<img src="https://mdmaproject.blob.core.windows.net/mdma-dev/item-2025-02-17T17%3A58%3A03.446Z-75.jpeg?sp=r&st=2025-02-17T18:27:17Z&se=2025-02-21T02:27:17Z&spr=https&sv=2022-11-02&sr=b&sig=XZA9D1FcO8WO%2F9bnIopel3Nqx4whTVaR%2BP%2Fhxm%2F2Cjo%3D" 
-            alt="Donation Image" width="200" style="margin:5px; border-radius:8px;">`).join('')}</div>`
-        : `<p>No images were provided for this donation.</p>`;
+    const imageSection =
+    encodedImages.length > 0
+            ? `<p>Here are the images of your donation:</p>
+           <div>${encodedImages
+               .map(
+                base64 => `<img src="${base64}"  
+            alt="Donation Image" width="200" style="margin:5px; border-radius:8px; max-width:100%;">`,
+               )
+               .join('')}</div>`
+            : `<p>No images were provided for this donation.</p>`;
 
     const mailOptions = {
         from: `Donation Team <${process.env.SMTP_USER}>`,
@@ -84,7 +123,7 @@ export const sendDonationEmail = async (recipientEmail: string, donorName: strin
             <p>We truly appreciate your support.</p>
             <p>Best regards,</p>
             <p><strong>Donation Team</strong></p>
-        `,  
+        `,
     };
 
     try {
@@ -94,4 +133,3 @@ export const sendDonationEmail = async (recipientEmail: string, donorName: strin
         console.log('❌ Error sending donation email:', error);
     }
 };
-

@@ -52,6 +52,11 @@ router.post(
                 },
                 include: {
                     donor: true, // Ensure donor details are fetched
+                    statuses: {
+                        orderBy: {
+                            dateModified: 'asc', // Ensure they are ordered chronologically
+                        },
+                    },
                 },
             });
 
@@ -75,16 +80,24 @@ router.post(
                     imageUrls: imageUrls,
                 },
             });
-
-             // Send email notification to the donor
-             if (newItem.donor?.email) {
-                await sendDonationEmail(newItem.donor.email, 
+            console.log(newItem.statuses);
+            console.log("statuses");
+             
+                    const filenames = newStatus.imageUrls || [];
+                    // const encodedImages = await fetchImagesFromCloud(filenames);
+             
+            // Send email notification to the donor
+            if (newItem.donor?.email) {
+                await sendDonationEmail(
+                    newItem.donor.email,
                     `${newItem.donor.firstName} ${newItem.donor.lastName}`,
                     newItem.itemType,
                     newItem.dateDonated,
-                    newStatus.imageUrls
+                    newStatus.imageUrls,
+                    
                 );
             }
+            
 
             res.status(201).json({
                 donatedItem: newItem,
