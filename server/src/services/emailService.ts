@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 import  prisma  from '../prismaClient'; 
-import { fetchImagesFromCloud } from './donatedItemService';
+import { fetchSASUrls } from './donatedItemService';
 
 dotenv.config(); // Load environment variables
 
@@ -63,18 +63,6 @@ export const sendWelcomeEmail = async (
 
 // Function to send a donation confirmation email
 
-const convertImageToBase64 = async (imageUrl: string): Promise<string | null> => {
-    try {
-        const response = await fetch(imageUrl);
-        const buffer = await response.arrayBuffer();
-        const base64String = Buffer.from(buffer).toString('base64');
-        return `data:image/png;base64,${base64String}`; // Adjust format if needed
-    } catch (error) {
-        console.error('Error fetching image:', error);
-        return null;
-    }
-};
-
 export const sendDonationEmail = async (
     recipientEmail: string,
     donorName: string,
@@ -83,10 +71,7 @@ export const sendDonationEmail = async (
     imageUrls: string[],
     
 ) => {
-    const encodedImages = await fetchImagesFromCloud(imageUrls);
-
-    console.log("Image URLs being sent:", imageUrls);
-    console.log("Encoded Images:", encodedImages);
+    const SASUrls = await fetchSASUrls(imageUrls);
 
     // Extract image URLs (flatten in case of multiple statuses)
     // const base64Images = await Promise.all(
@@ -100,11 +85,11 @@ export const sendDonationEmail = async (
         day: 'numeric',
     });
     const imageSection =
-    encodedImages.length > 0
+    SASUrls.length > 0
             ? `<p>Here are the images of your donation:</p>
-           <div>${encodedImages
+           <div>${SASUrls
                .map(
-                base64 => `<img src="${base64}"  
+                (url: string) => `<img src="${url}"  
             alt="Donation Image" width="200" style="margin:5px; border-radius:8px; max-width:100%;">`,
                )
                .join('')}</div>`
@@ -122,7 +107,7 @@ export const sendDonationEmail = async (
             
             <p>We truly appreciate your support.</p>
             <p>Best regards,</p>
-            <p><strong>Donation Team</strong></p>
+            <p><strong>Donation Team, BWorks</strong></p>
         `,
     };
 

@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@azure/storage-blob": "^12.26.0",
     "@prisma/client": "^5.19.1",
     "@smcloudstore/azure-storage": "^0.2.0",
     "bcryptjs": "^2.4.3",
