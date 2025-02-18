@@ -1,6 +1,11 @@
 import multer from 'multer';
 import { storage } from '../configs/SMCloudStoreConfig';
-const { BlobServiceClient, StorageSharedKeyCredential, generateBlobSASQueryParameters, BlobSASPermissions } = require("@azure/storage-blob");
+const {
+    BlobServiceClient,
+    StorageSharedKeyCredential,
+    generateBlobSASQueryParameters,
+    BlobSASPermissions,
+} = require('@azure/storage-blob');
 import prisma from '../prismaClient';
 import { Readable } from 'stream';
 
@@ -47,7 +52,7 @@ const fetchImageFromCloud = async (url: string): Promise<string | null> => {
         if (!base64Image) {
             return null;
         }
-        
+
         const mimeType = getMimeType(fileName);
         return `data:${mimeType};base64,${base64Image}`;
     } catch (error) {
@@ -66,22 +71,30 @@ const getMimeType = (fileName: string): string => {
         case 'gif':
             return 'image/gif';
         default:
-            return 'image/jpeg';  // Default MIME type
+            return 'image/jpeg'; // Default MIME type
     }
 };
 
 export const fetchSASUrls = async (imageUrls: string[]) => {
-    const sasUrls = await Promise.all(imageUrls.map(async (url) => {
-        return await generateBlobSASUrl(url);
-    }));
+    const sasUrls = await Promise.all(
+        imageUrls.map(async url => {
+            return await generateBlobSASUrl(url);
+        }),
+    );
 
-    return sasUrls; 
-}
+    return sasUrls;
+};
 
 export const generateBlobSASUrl = async (url: string) => {
     const accountName = process.env.AZURE_STORAGE_ACCOUNT_NAME;
-    const sharedKeyCredential = new StorageSharedKeyCredential(accountName, process.env.AZURE_STORAGE_ACCESS_KEY);
-    const blobServiceClient = new BlobServiceClient(`https://${accountName}.blob.core.windows.net`, sharedKeyCredential);
+    const sharedKeyCredential = new StorageSharedKeyCredential(
+        accountName,
+        process.env.AZURE_STORAGE_ACCESS_KEY,
+    );
+    const blobServiceClient = new BlobServiceClient(
+        `https://${accountName}.blob.core.windows.net`,
+        sharedKeyCredential,
+    );
     const url_chunks = url.split('/');
     const containerName = url_chunks[0];
     const fileName = url_chunks[1];
@@ -95,15 +108,17 @@ export const generateBlobSASUrl = async (url: string) => {
     const sasOptions = {
         containerName,
         fileName,
-        permissions: BlobSASPermissions.parse("r"), // Read-only access
-        expiresOn: expiryTime
+        permissions: BlobSASPermissions.parse('r'), // Read-only access
+        expiresOn: expiryTime,
     };
 
     // Generate SAS token
-    const sasToken = generateBlobSASQueryParameters(sasOptions, sharedKeyCredential).toString();
+    const sasToken = generateBlobSASQueryParameters(
+        sasOptions,
+        sharedKeyCredential,
+    ).toString();
     return `${blobClient.url}?${sasToken}`;
 };
-
 
 const streamToBase64 = (stream: Readable): Promise<string | null> => {
     return new Promise((resolve, reject) => {
@@ -136,7 +151,6 @@ export function getFileExtension(mimeType: string) {
             return '.jpg';
     }
 }
-
 
 export function validateDonatedItem(donatedItemId: number) {
     // Check if donatedItemId is a valid number (integer)

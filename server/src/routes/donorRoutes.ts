@@ -13,8 +13,11 @@ router.post('/', donorValidator, async (req: Request, res: Response) => {
         console.log('New donor created:', newDonor);
 
         // Send a welcome email asynchronously
-         try {
-            await sendWelcomeEmail(newDonor.email, `${newDonor.firstName} ${newDonor.lastName}`);
+        try {
+            await sendWelcomeEmail(
+                newDonor.email,
+                `${newDonor.firstName} ${newDonor.lastName}`,
+            );
             console.log('Welcome email sent successfully');
         } catch (emailError) {
             console.error('Failed to send welcome email:', emailError);

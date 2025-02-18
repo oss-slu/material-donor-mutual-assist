@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
-import  prisma  from '../prismaClient'; 
+import prisma from '../prismaClient';
 import { fetchSASUrls } from './donatedItemService';
 
 dotenv.config(); // Load environment variables
@@ -69,13 +69,12 @@ export const sendDonationEmail = async (
     itemType: string,
     dateDonated: Date,
     imageUrls: string[],
-    
 ) => {
     const SASUrls = await fetchSASUrls(imageUrls);
 
     // Extract image URLs (flatten in case of multiple statuses)
     // const base64Images = await Promise.all(
-   
+
     //         item.imageUrls.map(async (url) => await convertImageToBase64(url))
     //     )
     // );
@@ -85,14 +84,12 @@ export const sendDonationEmail = async (
         day: 'numeric',
     });
     const imageSection =
-    SASUrls.length > 0
+        SASUrls.length > 0
             ? `<p>Here are the images of your donation:</p>
-           <div>${SASUrls
-               .map(
-                (url: string) => `<img src="${url}"  
+           <div>${SASUrls.map(
+               (url: string) => `<img src="${url}"  
             alt="Donation Image" width="200" style="margin:5px; border-radius:8px; max-width:100%;">`,
-               )
-               .join('')}</div>`
+           ).join('')}</div>`
             : `<p>No images were provided for this donation.</p>`;
 
     const mailOptions = {
