@@ -80,11 +80,6 @@ router.post(
                     imageUrls: imageUrls,
                 },
             });
-            console.log(newItem.statuses);
-            console.log('statuses');
-
-            const filenames = newStatus.imageUrls || [];
-            // const encodedImages = await fetchImagesFromCloud(filenames);
 
             // Send email notification to the donor
             if (newItem.donor?.email) {

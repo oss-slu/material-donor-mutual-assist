@@ -5,33 +5,23 @@ import { fetchSASUrls } from './donatedItemService';
 
 dotenv.config(); // Load environment variables
 
-// Log SMTP credentials to check if they're correctly loaded (excluding the password for security)
-console.log('SMTP Config:');
-console.log('Host:', process.env.SMTP_HOST);
-console.log('Port:', process.env.SMTP_PORT);
-console.log('Secure:', process.env.SMTP_SECURE);
-console.log('User:', process.env.SMTP_USER);
-console.log('Pass is set:', !!process.env.SMTP_PASS); // Check if the password is set without printing it
-
 // Configure the email transporter with SMTP
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST, // SMTP server host
     port: parseInt(process.env.SMTP_PORT || '587'), // SMTP port
     secure: process.env.SMTP_SECURE === 'true', // Use TLS if set
     auth: {
-        user: process.env.SMTP_USER, // Store in environment variables
+        user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
     },
-    debug: true, // Enables SMTP debug logs
-    logger: true, // Logs the entire email transaction
+    // debug: true, // Enables SMTP debug logs
+    // logger: true, // Logs the entire email transaction
 });
 
 // Test transporter connection
 transporter.verify((error, success) => {
     if (error) {
-        console.error('SMTP Connection Error:', error);
-    } else {
-        console.log('✅ SMTP Server is Ready to Send Emails');
+        console.log('SMTP Connection Error:', error);
     }
 });
 
@@ -55,7 +45,7 @@ export const sendWelcomeEmail = async (
 
     try {
         const result = await transporter.sendMail(mailOptions);
-        console.log('✅ Email sent successfully:', result);
+        transporter.close();
     } catch (error) {
         console.log('❌ Error sending email:', error);
     }

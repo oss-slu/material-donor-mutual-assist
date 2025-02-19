@@ -27,20 +27,6 @@ export const fetchImagesFromCloud = async (imageUrls: string[]) => {
     return encodedImages.filter((e): e is string => e !== null);
 };
 
-// const fetchImageFromCloud = async (url: string): Promise<string | null> => {
-//     try {
-//         console.log('Fetching image', url);
-//         const url_chunks = url.split('/');
-//         const containerName = url_chunks[0];
-//         const fileName = url_chunks[1];
-//         const stream = await storage.getObject(containerName, fileName);
-//         const base64Image = await streamToBase64(stream);
-//         return base64Image;
-//     } catch (error) {
-//         console.error('Failed to fetch or encode image:', error);
-//         return null;
-//     }
-// };
 const fetchImageFromCloud = async (url: string): Promise<string | null> => {
     try {
         console.log('Fetching image', url);

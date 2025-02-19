@@ -20,12 +20,12 @@ router.post('/', donorValidator, async (req: Request, res: Response) => {
             );
             console.log('Welcome email sent successfully');
         } catch (emailError) {
-            console.error('Failed to send welcome email:', emailError);
+            console.log('Failed to send welcome email:', emailError);
         }
 
         res.status(201).json(newDonor);
     } catch (error) {
-        console.error('Error creating donor:', error);
+        console.log('Error creating donor:', error);
         res.status(500).json({ message: 'Error creating donor' });
     }
 });
@@ -35,7 +35,7 @@ router.get('/', async (req: Request, res: Response) => {
         const donors = await prisma.donor.findMany();
         res.json(donors);
     } catch (error) {
-        console.error('Error fetching donor:', error);
+        console.log('Error fetching donor:', error);
         res.status(500).json({ message: 'Error fetching donors' });
     }
 });
