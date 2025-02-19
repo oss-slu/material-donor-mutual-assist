@@ -1,3 +1,7 @@
+.header {
+    padding-top: 60px;
+}
+
 .donor-list {
     width: 90%;
     border-collapse: collapse;

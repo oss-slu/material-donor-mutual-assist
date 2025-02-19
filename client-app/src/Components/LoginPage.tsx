@@ -1,32 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { Link } from 'react-router-dom'; // Import Link for navigation
 import '../css/LoginPage.css'; // Import CSS file for styling
 
-const LoginPage = props => {
-    const [credentials, setCredentials] = useState({ email: '', password: '' });
-    const [showPassword, setShowPassword] = useState(false);
-    const [captcha, setCaptcha] = useState('');
-    const [captchaValue, setCaptchaValue] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
+interface Credentials {
+    email: string;
+    password: string;
+}
 
-    const generateCaptcha = () => {
-        const randomCaptcha = Math.random().toString(36).substring(7);
+const LoginPage: React.FC = () => {
+    const [credentials, setCredentials] = useState<Credentials>({
+        email: '',
+        password: '',
+    });
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [captcha, setCaptcha] = useState<string>('');
+    const [captchaValue, setCaptchaValue] = useState<string>('');
+    const [errorMessage, setErrorMessage] = useState<string>('');
+    const [showPopup, setShowPopup] = useState(false);
+
+    const generateCaptcha = (): void => {
+        //const randomCaptcha = Math.random().toString(36).substring(7);
+        const randomCaptcha = '1';
         setCaptcha(randomCaptcha);
     };
 
-    const onChange = e => {
-        setCredentials({ ...credentials, [e.target.name]: e.target.value });
+    const onChange = (e: ChangeEvent<HTMLInputElement>): void => {
+        setCredentials(prev => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
-    const handleCaptchaChange = e => {
+    const handleCaptchaChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setCaptchaValue(e.target.value);
     };
 
-    const handleSubmit = async e => {
+    const handleSubmit = async (
+        e: FormEvent<HTMLFormElement>,
+    ): Promise<void> => {
         e.preventDefault();
 
-        // Retrieve user data from local storage
-        // const storedUser = localStorage.getItem('user');
+        // Validate CAPTCHA
         if (captchaValue.toLowerCase() !== captcha.toLowerCase()) {
             setErrorMessage('Incorrect CAPTCHA. Please try again.');
             return;
@@ -42,7 +53,11 @@ const LoginPage = props => {
             const data = await response.json();
             if (response.ok) {
                 localStorage.setItem('token', data.token);
-                alert('Login Successful');
+                //alert('Login Successful');
+                setShowPopup(true);
+                setTimeout(() => {
+                    setShowPopup(false);
+                }, 5000);
                 window.location.href = '/Donations';
             } else {
                 setErrorMessage(data.message || 'Invalid email or password.');
@@ -54,8 +69,9 @@ const LoginPage = props => {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-200">
-            {/* <form onSubmit={handleSubmit}> */}
-
+            {showPopup && (
+                <div className="popup">✅ Login Successful! Redirecting...</div>
+            )}
             <div className="login-container">
                 <h2 className="login-label">Login</h2>
                 <div className="login-box">
@@ -110,7 +126,6 @@ const LoginPage = props => {
                                 <button
                                     className="btlSuccess"
                                     type="submit"
-                                    // onClick={handleLogin}
                                     name="login"
                                     disabled={!captchaValue}
                                 >
@@ -139,7 +154,6 @@ const LoginPage = props => {
                     </div>
                 </div>
             </div>
-            {/* </form> */}
         </div>
     );
 };
