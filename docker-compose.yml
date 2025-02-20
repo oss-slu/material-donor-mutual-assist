@@ -2,18 +2,58 @@ version: "3.8"
 
 services:
   mdma-database:
-    build: ./docker-files/database  # Build the image from the current directory (./)
-    image: mdma-database-image:latest  # Tag the built image as "mdma-database:latest"
+    build: ./docker-files/database
+    image: mdma-database-image:latest 
     container_name: mdma-database-container
+    env_file: ".env" 
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin  # Consider replacing with a secure password
-      DATABASE_NAME: mdma
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data1
     ports:
       - "5432:5432"
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d mdma -U admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  
+  mdma-frontend: 
+    build: ./client-app
+    image: mdma-frontend-image:latest
+    container_name: mdma-frontend-container
+    env_file: ".env"
+    environment:
+      PORT: ${FRONTEND_PORT}
+      REACT_APP_BACKEND_API_BASE_URL: ${REACT_APP_BACKEND_API_BASE_URL}
+    ports: 
+      - 3000:3000
+    depends_on:
+      - mdma-backend
+
+  mdma-backend:
+    build: ./server
+    image: mdma-backend-image:latest
+    container_name: mdma-backend-container
+    env_file: ".env"
+    environment: 
+      AZURE_STORAGE_ACCOUNT_NAME: ${AZURE_STORAGE_ACCOUNT_NAME}
+      AZURE_STORAGE_ACCESS_KEY: ${AZURE_STORAGE_ACCESS_KEY}
+      DATABASE_URL: ${DATABASE_URL}
+      PORT: ${BACKEND_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_SECURE: ${SMTP_SECURE}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
+    ports:
+      - 5050:5000
+    depends_on:
+      mdma-database:
+        condition: service_healthy
 
 volumes:
   postgres_data:
-  postgres_conf:  # New volume for configuration

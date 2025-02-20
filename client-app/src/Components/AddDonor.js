@@ -36,7 +36,7 @@ function AddDonorForm() {
         event.preventDefault();
         try {
             const response = await axios.post(
-                'http://localhost:5000/donor',
+                `${process.env.REACT_APP_BACKEND_API_BASE_URL}donor`,
                 donorData,
             );
             setSuccessMessage('Donor added successfully!');

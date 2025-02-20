@@ -41,17 +41,20 @@ const Register = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:5000/api/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
+            const response = await fetch(
+                `${process.env.REACT_APP_BACKEND_API_BASE_URL}api/register`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: credentials.name,
+                        email: credentials.email,
+                        password: credentials.password, // Send only password (confirm_password removed)
+                    }),
                 },
-                body: JSON.stringify({
-                    name: credentials.name,
-                    email: credentials.email,
-                    password: credentials.password, // Send only password (confirm_password removed)
-                }),
-            });
+            );
 
             const data = await response.json();
 
