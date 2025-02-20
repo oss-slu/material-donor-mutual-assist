@@ -96,7 +96,7 @@ const DonatedItemDetails: React.FC = () => {
                                             {status.images.map((image, idx) => (
                                                 <img
                                                     key={idx}
-                                                    src={`data:image/jpeg;base64,${image}`}
+                                                    src={image}
                                                     alt={`Status Image ${idx}`}
                                                     className="status-image"
                                                 />
@@ -166,19 +166,19 @@ const DonatedItemDetails: React.FC = () => {
                             <h2>Program Details</h2>
                         </div>
                         <p>
-                            <strong>Name:</strong> {donatedItem.program.name}
+                            <strong>Name:</strong> {donatedItem.program?.name}
                         </p>
                         <p>
                             <strong>Description:</strong>{' '}
-                            {donatedItem.program.description}
+                            {donatedItem.program?.description}
                         </p>
                         <p>
                             <strong>Start Date:</strong>{' '}
-                            {formatDate(donatedItem.program.startDate)}
+                            {formatDate(donatedItem.program?.startDate)}
                         </p>
                         <p>
                             <strong>Aim and Cause:</strong>{' '}
-                            {donatedItem.program.aimAndCause}
+                            {donatedItem.program?.aimAndCause}
                         </p>
                     </section>
                 </div>
