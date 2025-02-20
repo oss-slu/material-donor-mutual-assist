@@ -42,6 +42,12 @@ AZURE_STORAGE_ACCOUNT_NAME="mdmaproject"
 AZURE_STORAGE_ACCESS_KEY="<enter-azure-storage-access-key>"
 BACKEND_PORT=5000
 DATABASE_URL="postgresql://admin:admin@mdma-database-container:5432/mdma"
+JWT_SECRET="mymdmaSuperKey"
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT="587"
+SMTP_SECURE="false"
+SMTP_USER="enter your gmail"
+SMTP_PASS="enter you App password"
 ```
 
 ### Start the Development Environment
