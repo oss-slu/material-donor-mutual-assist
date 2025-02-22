@@ -21,6 +21,53 @@ const ResetPasswordPage = () => {
                 return;
             }
 
+            // Validate password length
+            if (password.length < 12) {
+                setError('Password must be at least 12 characters');
+                return;
+            }
+
+            // Check for email
+            if (password.match(email)) {
+                setError('Password must not contain email');
+                return;
+            }
+
+            // Check Password Rules
+            const missing = [];
+
+            if (!password.match(/[A-Z]/)) {
+                missing.push('an uppercase');
+            }
+
+            if (!password.match(/[a-z]/)) {
+                missing.push('a lowercase');
+            }
+
+            if (!password.match(/[0-9]/)) {
+                missing.push('a number');
+            }
+
+            if (!password.match(/[^\\w\\s]/)) {
+                missing.push('a special character');
+            }
+
+            if (missing.length !== 0) {
+                if (missing.length === 1) {
+                    setError('Password must contain ' + missing[0] + '!');
+                    return;
+                }
+                const tmp = missing.pop();
+                setError(
+                    'Password must contain ' +
+                        missing.join(', ') +
+                        ' and ' +
+                        tmp +
+                        '!',
+                );
+                return;
+            }
+
             const response = await fetch(
                 `${process.env.REACT_APP_BACKEND_API_BASE_URL}api/auth/resetpassword`,
                 {
