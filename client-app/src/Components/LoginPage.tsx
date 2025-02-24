@@ -56,16 +56,9 @@ const LoginPage: React.FC = () => {
             if (response.ok) {
                 console.log(data);
                 localStorage.setItem('token', data.token);
-                localStorage.setItem('name', data.name);
                 const name = data.name;
-                //const name = localStorage.getItem('name');
-                //alert('Login Successful');
-                setShowPopup(true);
-                setTimeout(() => {
-                    setShowPopup(false);
-                }, 5000);
                 triggerPopup('Welcome ' + name + '!');
-                window.location.href = '/Donations';
+                window.location.href = '/';
             } else {
                 setErrorMessage(data.message || 'Invalid email or password.');
             }
