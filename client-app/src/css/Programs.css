@@ -1,11 +1,13 @@
 .programs-container {
     padding: 20px 7vw;
+    padding-top: 60px;
     text-align: center;
     position: relative;
 }
 
 .add-program {
     position: absolute;
+    padding-top: 40px;
     top: 20px;
     right: 20px;
 }

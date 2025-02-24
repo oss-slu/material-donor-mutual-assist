@@ -71,17 +71,6 @@ const Navbar: React.FC = () => {
                         {isLoggedIn ? (
                             <>
                                 <li
-                                    className="nav-item"
-                                    style={{
-                                        fontSize: '20px',
-                                        paddingLeft: '10px',
-                                        paddingTop: '8px',
-                                    }}
-                                >
-                                    <span>Welcome {user}!</span>
-                                </li>
-
-                                <li
                                     className="nav-item dropdown"
                                     style={{
                                         fontSize: '20px',
