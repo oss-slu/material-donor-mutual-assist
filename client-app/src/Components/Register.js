@@ -23,6 +23,60 @@ const Register = () => {
         } else {
             setPasswordStrength('strong');
         }
+
+        // Validate password length
+        if (value.length < 12) {
+            setErrorMessage('Password must be at least 12 characters');
+            return;
+        }
+
+        // Check for username or email
+        if (value.match(credentials.name)) {
+            setErrorMessage('Password must not contain name');
+            return;
+        }
+
+        if (value.match(credentials.email)) {
+            setErrorMessage('Password must not contain email');
+            return;
+        }
+
+        // Check Password Rules
+        const missing = [];
+
+        if (!value.match(/[A-Z]/)) {
+            missing.push('an uppercase');
+        }
+
+        if (!value.match(/[a-z]/)) {
+            missing.push('a lowercase');
+        }
+
+        if (!value.match(/[0-9]/)) {
+            missing.push('a number');
+        }
+
+        if (!value.match(/[$&+,:;=?@#|'<>.^*()%!-]/)) {
+            missing.push('a special character');
+        }
+
+        if (missing.length !== 0) {
+            if (missing.length === 1) {
+                setErrorMessage('Password must contain ' + missing[0] + '!');
+                return;
+            }
+            const tmp = missing.pop();
+            setErrorMessage(
+                'Password must contain ' +
+                    missing.join(', ') +
+                    ' and ' +
+                    tmp +
+                    '!',
+            );
+            return;
+        } else {
+            setErrorMessage('');
+        }
     };
 
     const handleSubmit = async e => {
@@ -66,7 +120,7 @@ const Register = () => {
             missing.push('a number');
         }
 
-        if (!credentials.password.match(/[^\\w\\s]/)) {
+        if (!credentials.password.match(/[$&+,:;=?@#|'<>.^*()%!-]/)) {
             missing.push('a special character');
         }
 
