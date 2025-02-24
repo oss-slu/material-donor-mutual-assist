@@ -7,6 +7,67 @@ The Material Donor Mutual Assist project by BWorks is designed to streamline the
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## Develop With docker compose
+
+### Prerequisites
+Ensure you have the following installed on your machine:
+
+- [Docker](https://www.docker.com/products/docker-desktop/)
+
+### Clone the Repository
+   Clone the repository to your local machine.
+    ```
+    git clone https://github.com/oss-slu/material-donor-mutual-assist.git
+    ```
+
+### Navigate to the Project Directory  
+   Move into the project folder.
+   ```
+   cd material-donor-mutual-assist
+   ```
+
+## Create Environment Variables
+Create a .env file and define the necessary environment variables:
+```
+# database service
+POSTGRES_USER="admin"
+POSTGRES_PASSWORD="admin"
+
+# frontend service
+FRONTEND_PORT="3000"
+REACT_APP_BACKEND_API_BASE_URL="http://localhost:5050/"
+
+# backend service
+AZURE_STORAGE_ACCOUNT_NAME="mdmaproject"
+AZURE_STORAGE_ACCESS_KEY="<enter-azure-storage-access-key>"
+BACKEND_PORT=5000
+DATABASE_URL="postgresql://admin:admin@mdma-database-container:5432/mdma"
+JWT_SECRET="mymdmaSuperKey"
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT="587"
+SMTP_SECURE="false"
+SMTP_USER="enter your gmail"
+SMTP_PASS="enter you App password"
+```
+
+### Start the Development Environment
+
+Run the following command to build and start the services:
+```
+docker-compose up -d
+```
+This will start all necessary containers in the background.
+
+### Accessing the Application
+- After the applications starts, navigate to ttp://localhost:3000 in your web browser
+
+
+### Stop the Devlopment Environment 
+
+```
+docker compose down
+```
+
 ## Development Setup
 
 Follow these steps to set up your development environment.
