@@ -4,6 +4,7 @@ import Navbar from './Components/Navbar';
 
 import LoginPage from './Components/LoginPage';
 import Login from './Components/Login.tsx';
+import { PopupProvider } from './Components/LoginPopup.tsx';
 import Register from './Components/Register';
 import Home from './Components/Home';
 import ForgotPassword from './Components/ForgotPassword';
@@ -27,6 +28,7 @@ function App() {
 
     return (
         <div className="App">
+            <PopupProvider>
             <Navbar />
             <Routes>
                 {' '}
@@ -53,6 +55,7 @@ function App() {
                 />
                 <Route path="/donations/:id" element={<DonatedItemDetails />} />
             </Routes>
+            </PopupProvider>
         </div>
     );
 }
