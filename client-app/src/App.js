@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom'; // Import Routes and Route pro
 import Navbar from './Components/Navbar';
 
 import LoginPage from './Components/LoginPage';
-import { PopupProvider } from './Components/LoginPopup.tsx';
+import Popup from './Components/LoginPopup.tsx';
 import Register from './Components/Register';
 import Home from './Components/Home';
 import ForgotPassword from './Components/ForgotPassword';
@@ -27,34 +27,45 @@ function App() {
 
     return (
         <div className="App">
-            <PopupProvider>
-            <Navbar />
-            <Routes>
-                {' '}
-                {/* Use Routes component */}
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/about" element={<Home />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/resetpassword" element={<ResetPasswordPage />} />
-                <Route
-                    path="/donatedItem/status/:id"
-                    element={<StatusUpdate />}
-                />
-                <Route path="/donorform" element={<DonorForm />} />
-                <Route path="/donorlist" element={<DonorList />} />
-                <Route path="/donations" element={<DonatedItemsList />} />
-                <Route path="/programs" element={<Programs />} />
-                <Route path="/addprogram" element={<AddProgramPage />} />
-                <Route path="/adddonation" element={<NewItemForm />} />
-                <Route
-                    path="/addprogram"
-                    element={<AddProgramPage onAddProgram={handleAddProgram} />}
-                />
-                <Route path="/donations/:id" element={<DonatedItemDetails />} />
-            </Routes>
-            </PopupProvider>
+            <Popup.PopupProvider>
+                <Navbar />
+                <Routes>
+                    {' '}
+                    {/* Use Routes component */}
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/about" element={<Home />} />
+                    <Route
+                        path="/forgot-password"
+                        element={<ForgotPassword />}
+                    />
+                    <Route
+                        path="/resetpassword"
+                        element={<ResetPasswordPage />}
+                    />
+                    <Route
+                        path="/donatedItem/status/:id"
+                        element={<StatusUpdate />}
+                    />
+                    <Route path="/donorform" element={<DonorForm />} />
+                    <Route path="/donorlist" element={<DonorList />} />
+                    <Route path="/donations" element={<DonatedItemsList />} />
+                    <Route path="/programs" element={<Programs />} />
+                    <Route path="/addprogram" element={<AddProgramPage />} />
+                    <Route path="/adddonation" element={<NewItemForm />} />
+                    <Route
+                        path="/addprogram"
+                        element={
+                            <AddProgramPage onAddProgram={handleAddProgram} />
+                        }
+                    />
+                    <Route
+                        path="/donations/:id"
+                        element={<DonatedItemDetails />}
+                    />
+                </Routes>
+            </Popup.PopupProvider>
         </div>
     );
 }

@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { Link } from 'react-router-dom'; // Import Link for navigation
 import '../css/LoginPage.css'; // Import CSS file for styling
-import { usePopup } from './LoginPopup';
+import Popup from './LoginPopup';
 
 interface Credentials {
     email: string;
@@ -17,12 +17,11 @@ const LoginPage: React.FC = () => {
     const [captcha, setCaptcha] = useState<string>('');
     const [captchaValue, setCaptchaValue] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState<string>('');
-    const [showPopup, setShowPopup] = useState(false);
+    const { usePopup } = Popup;
     const { triggerPopup } = usePopup();
 
     const generateCaptcha = (): void => {
-        //const randomCaptcha = Math.random().toString(36).substring(7);
-        const randomCaptcha = '1';
+        const randomCaptcha = Math.random().toString(36).substring(7);
         setCaptcha(randomCaptcha);
     };
 
@@ -54,10 +53,8 @@ const LoginPage: React.FC = () => {
 
             const data = await response.json();
             if (response.ok) {
-                console.log(data);
                 localStorage.setItem('token', data.token);
-                const name = data.name;
-                triggerPopup('Welcome ' + name + '!');
+                triggerPopup('Welcome ' + data.name + '!');
                 window.location.href = '/';
             } else {
                 setErrorMessage(data.message || 'Invalid email or password.');
