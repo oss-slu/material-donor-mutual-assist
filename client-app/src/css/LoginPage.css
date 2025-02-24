@@ -92,10 +92,11 @@
     margin-top: 10px;
     text-align: center;
 }
+/* Login popup */
 .popup {
     position: fixed;
     top: 60px;
-    right: 20px;
+    right: 0px;
     background-color: #4CAF50;
     color: white;
     padding: 12px 20px;

@@ -54,14 +54,17 @@ const LoginPage: React.FC = () => {
 
             const data = await response.json();
             if (response.ok) {
+                console.log(data);
                 localStorage.setItem('token', data.token);
+                localStorage.setItem('name', data.name);
+                const name = data.name;
+                //const name = localStorage.getItem('name');
                 //alert('Login Successful');
-                // setShowPopup(true);
-                // setTimeout(() => {
-                //     setShowPopup(false);
-                // }, 5000);
-                triggerPopup('Login success!');
-                console.log('Hello');
+                setShowPopup(true);
+                setTimeout(() => {
+                    setShowPopup(false);
+                }, 5000);
+                triggerPopup('Welcome ' + name + '!');
                 window.location.href = '/Donations';
             } else {
                 setErrorMessage(data.message || 'Invalid email or password.');
@@ -73,9 +76,6 @@ const LoginPage: React.FC = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-200">
-            {showPopup && (
-                <div className="popup">✅ Login Successful! Redirecting...</div>
-            )}
             <div className="login-container">
                 <h2 className="login-label">Login</h2>
                 <div className="login-box">

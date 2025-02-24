@@ -100,7 +100,7 @@ router.post(
                 { expiresIn: '1h' },
             );
 
-            return res.status(200).json({ message: 'Login successful', token });
+            return res.status(200).json({ message: 'Login successful', token, name: user.name });
         } catch (error) {
             console.error('Login Error:', error);
             return res.status(500).json({ message: 'Internal server error' });
