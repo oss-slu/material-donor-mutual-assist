@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, ChangeEvent, FormEvent, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom'; // Import Link for navigation
 import '../css/LoginPage.css'; // Import CSS file for styling
 import Popup from './LoginPopup';
@@ -17,12 +17,32 @@ const LoginPage: React.FC = () => {
     const [captcha, setCaptcha] = useState<string>('');
     const [captchaValue, setCaptchaValue] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState<string>('');
+    const captchaCanvasRef = useRef<HTMLCanvasElement | null>(null);
     const { usePopup } = Popup;
     const { triggerPopup } = usePopup();
 
+    useEffect(() => {
+        generateCaptcha(); // Generate CAPTCHA on first load
+    }, []);
+    
     const generateCaptcha = (): void => {
         const randomCaptcha = Math.random().toString(36).substring(7);
         setCaptcha(randomCaptcha);
+        drawCaptcha(randomCaptcha);
+    };
+
+    const drawCaptcha = (text: string): void => {
+        if (captchaCanvasRef.current) {
+            const canvas = captchaCanvasRef.current;
+            const ctx = canvas.getContext('2d');
+
+            if (ctx) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.font = '20px Arial';
+                ctx.fillStyle = 'black';
+                ctx.fillText(text, 20, 25);
+            }
+        }
     };
 
     const onChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -107,8 +127,9 @@ const LoginPage: React.FC = () => {
                             </div>
                             <div>
                                 <label htmlFor="captcha" className="captha">
-                                    CAPTCHA: {captcha}
+                                    CAPTCHA:
                                 </label>
+                                <canvas ref={captchaCanvasRef} width="100" height="30"></canvas>
                                 <input
                                     type="text"
                                     className="istyle"
