@@ -5,6 +5,7 @@ import React, {
     useEffect,
     useRef,
 } from 'react';
+import { RefreshCw } from 'lucide-react';
 import { Link } from 'react-router-dom'; // Import Link for navigation
 import '../css/LoginPage.css'; // Import CSS file for styling
 import Popup from './LoginPopup';
@@ -131,18 +132,21 @@ const LoginPage: React.FC = () => {
                                     required
                                 />
                             </div>
-                            <div>
-                                <label htmlFor="captcha" className="captha">
-                                    CAPTCHA:
-                                </label>
-                                <canvas
-                                    ref={captchaCanvasRef}
-                                    width="100"
-                                    height="30"
-                                ></canvas>
+                            <div className="captcha-container">
+                                <div className="captcha-row">
+                                    <label htmlFor="captcha" className="captcha-label">CAPTCHA:</label>
+                                    <canvas ref={captchaCanvasRef} width="100" height="30"></canvas>
+                                    <RefreshCw
+                                        className="refresh-icon"
+                                        size={20}
+                                        onClick={generateCaptcha}
+                                        style={{ cursor: 'pointer' }}
+                                        aria-label="Refresh CAPTCHA"
+                                    />
+                                </div>
                                 <input
                                     type="text"
-                                    className="istyle"
+                                    className="captcha-input"
                                     value={captchaValue}
                                     onChange={handleCaptchaChange}
                                     id="captcha"
@@ -165,13 +169,6 @@ const LoginPage: React.FC = () => {
                                 >
                                     Forgot Password?
                                 </Link>{' '}
-                                <button
-                                    type="button"
-                                    className="btn btn-secondary"
-                                    onClick={generateCaptcha}
-                                >
-                                    Refresh CAPTCHA
-                                </button>
                             </div>
                         </form>
                     </div>
