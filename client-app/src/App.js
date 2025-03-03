@@ -7,7 +7,7 @@ import Popup from './Components/LoginPopup.tsx';
 import Register from './Components/Register';
 import Home from './Components/Home';
 import ForgotPassword from './Components/ForgotPassword';
-import ResetPasswordPage from './Components/ResetPasswordPage';
+import ResetPasswordPage from './Components/ResetPasswordPage.tsx';
 import DonatedItemsList from './Components/DonatedItemsList';
 import DonorForm from './Components/DonorForm.tsx';
 import StatusUpdate from './Components/AddNewStatus';

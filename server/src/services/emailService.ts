@@ -51,6 +51,34 @@ export const sendWelcomeEmail = async (
     }
 };
 
+// Function to send a password reset
+
+export const sendPasswordReset = async (
+    recipientEmail: string,
+    token: string,
+) => {
+    const mailOptions = {
+        from: `Donation Team <${process.env.SMTP_USER}>`,
+        to: recipientEmail,
+        subject: 'Material Donor Mutual Assist Password Reset',
+        html: `
+            <h2>Hello there!</h2>
+            <p>We have recently received a request to change the password of the account linked to this email.</p>
+            <p>If this was you, please follow this link here http://localhost:3000/resetpassword?token=${token} to reset your password.</p>
+            <p>If this was not you, please feel free to disregard this email.</p>
+            <p>Best regards,</p>
+            <p><strong>Donation Team</strong></p>
+        `,
+    };
+
+    try {
+        const result = await transporter.sendMail(mailOptions);
+        transporter.close();
+    } catch (error) {
+        console.log('❌ Error sending email:', error);
+    }
+};
+
 // Function to send a donation confirmation email
 
 export const sendDonationEmail = async (
