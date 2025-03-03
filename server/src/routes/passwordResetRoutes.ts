@@ -14,9 +14,7 @@ if (!JWT_SECRET) {
 
 router.post(
     '/forgotpassword',
-    [
-        body('email').isEmail().withMessage('Invalid email format'),
-    ],
+    [body('email').isEmail().withMessage('Invalid email format')],
     async (req: Request, res: Response) => {
         const { email } = req.body;
 
@@ -48,41 +46,38 @@ router.post(
             console.error('Login Error:', error);
             return res.status(500).json({ message: 'Internal server error' });
         }
-    }
+    },
 );
 
-router.post(
-    '/resetpassword',
-    async (req: Request, res: Response) => {
-        const { token, password } = req.body;
+router.post('/resetpassword', async (req: Request, res: Response) => {
+    const { token, password } = req.body;
 
-        let decoded:JwtPayload;
-        try {
-            decoded = jwt.verify(token, JWT_SECRET) as JwtPayload; // Decode and verify the token
-        } catch (error) {
-            return res.status(401).json({ message: 'Invalid or expired token' });
-        }
-
-        const userId = decoded.userId;
-
-        try {
-            // Hash the password
-            const newHashedPassword = await bcrypt.hash(password, 10);
-
-            // Store user in database
-            const updatedUser = await prisma.user.update({
-                where: { id: userId },
-                data: { password: newHashedPassword }, // The new hashed password
-            });
-
-            return res.status(201).json({
-                message: 'Password changed successfully',
-            });
-        } catch (error) {
-            console.error('Login Error:', error);
-            return res.status(500).json({ message: 'Internal server error' });
-        }
+    let decoded: JwtPayload;
+    try {
+        decoded = jwt.verify(token, JWT_SECRET) as JwtPayload; // Decode and verify the token
+    } catch (error) {
+        return res.status(401).json({ message: 'Invalid or expired token' });
     }
-);
+
+    const userId = decoded.userId;
+
+    try {
+        // Hash the password
+        const newHashedPassword = await bcrypt.hash(password, 10);
+
+        // Store user in database
+        const updatedUser = await prisma.user.update({
+            where: { id: userId },
+            data: { password: newHashedPassword }, // The new hashed password
+        });
+
+        return res.status(201).json({
+            message: 'Password changed successfully',
+        });
+    } catch (error) {
+        console.error('Login Error:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+});
 
 export default router;
