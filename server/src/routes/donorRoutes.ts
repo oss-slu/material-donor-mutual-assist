@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import prisma from '../prismaClient'; // Import Prisma client
 import { donorValidator } from '../validators/donorValidator';
 import { sendWelcomeEmail } from '../services/emailService';
+import bcrypt from 'bcryptjs';
 
 const router = Router();
 
@@ -37,6 +38,53 @@ router.get('/', async (req: Request, res: Response) => {
     } catch (error) {
         console.log('Error fetching donor:', error);
         res.status(500).json({ message: 'Error fetching donors' });
+    }
+});
+
+function getRandomPassword() {
+    const charset =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890$&+,:;=?@#|'<>.^*()%!-";
+    let valid = false;
+    let password = '';
+    const indicies = new Uint8Array(16);
+    while (!valid) {
+        password = '';
+        crypto.getRandomValues(indicies);
+        for (const i of indicies) {
+            password += charset[i % charset.length];
+        }
+        valid =
+            password.match(/[$&+,:;=?@#|'<>.^*()%!-]/) != null &&
+            password.match(/[A-Z]/) != null &&
+            password.match(/[a-z]/) != null &&
+            password.match(/[0-9]/) != null;
+    }
+    return password;
+}
+router.post('/register', async (req: Request, res: Response) => {
+    try {
+        const { name, email } = req.body;
+        const existingUser = await prisma.user.findUnique({
+            where: { email },
+        });
+        if (existingUser) {
+            return res.status(400).json({ message: 'Email already in use' });
+        }
+        const donorPassword = getRandomPassword();
+        const hashedPassword = await bcrypt.hash(donorPassword, 10);
+
+        // Store user in database
+        const user = await prisma.user.create({
+            data: { name, email, password: hashedPassword, role: 'DONOR' },
+        });
+
+        return res.status(201).json({
+            message: 'User registered successfully',
+            userId: user.id,
+            password: donorPassword,
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Error registering donor' });
     }
 });
 

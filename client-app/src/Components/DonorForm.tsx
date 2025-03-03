@@ -98,20 +98,28 @@ const DonorForm: React.FC = () => {
                     formData,
                 );
                 if (response.status === 201) {
-                    setSuccessMessage('Donor added successfully!');
-                    setFormData({
-                        firstName: '',
-                        lastName: '',
-                        contact: '',
-                        email: '',
-                        addressLine1: '',
-                        addressLine2: '',
-                        state: '',
-                        city: '',
-                        zipcode: '',
-                        emailOptIn: false,
-                    });
-                    navigate('/donorlist');
+                    const login_response = await axios.post(
+                        `${process.env.REACT_APP_BACKEND_API_BASE_URL}donor/register`,
+                        { name: formData.firstName, email: formData.email },
+                    );
+                    if (login_response.status === 201) {
+                        setSuccessMessage('Donor added successfully!');
+                        setFormData({
+                            firstName: '',
+                            lastName: '',
+                            contact: '',
+                            email: '',
+                            addressLine1: '',
+                            addressLine2: '',
+                            state: '',
+                            city: '',
+                            zipcode: '',
+                            emailOptIn: false,
+                        });
+                        navigate('/donorlist');
+                    } else {
+                        setErrorMessage('Donor could not be registered');
+                    }
                 } else {
                     setErrorMessage('Donor not added');
                 }
