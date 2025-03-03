@@ -12,6 +12,7 @@ import programRouter from './routes/programRoutes';
 
 import donatedItemRouter from './routes/donatedItemRoutes'; // Import DonatedItem routes
 import donatedItemStatusRouter from './routes/donatedItemStatusRoutes'; // Import DonatedItemStatus routes
+import passwordResetRouter from './routes/passwordResetRoutes'; 
 
 const app = express();
 dotenv.config(); // Load environment variables from .env file
@@ -28,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/donor', donorRouter);
 app.use('/program', programRouter);
 app.use('/api', programRouter);
+app.use('/passwordResetRoutes', passwordResetRouter);
 app.use('/donatedItem', donatedItemRouter); // Use DonatedItem routes
 app.use('/donatedItem/status', donatedItemStatusRouter); // Use DonatedItemStatus routes
 

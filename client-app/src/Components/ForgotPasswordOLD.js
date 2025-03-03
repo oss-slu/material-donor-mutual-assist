@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import emailjs from 'emailjs-com';
 import { useNavigate } from 'react-router-dom';
+import { sendPasswordReset } from '../../../server/src/services/emailService';
 
 const ForgotPassword = () => {
     const navigate = useNavigate();
@@ -15,6 +16,15 @@ const ForgotPassword = () => {
         // Generate OTP
         const otp_val = Math.floor(Math.random() * 10000);
 
+        try {
+            await sendPasswordReset(
+                newDonor.email,
+                `${newDonor.firstName} ${newDonor.lastName}`,
+            );
+            console.log('Welcome email sent successfully');
+        } catch (emailError) {
+            console.log('Failed to send welcome email:', emailError);
+        }
         // Send OTP via Email
         try {
             var templateParams = {
