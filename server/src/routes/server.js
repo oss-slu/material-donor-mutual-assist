@@ -9,4 +9,3 @@ app.use('/users', userRoutes);
 app.use('/admin', adminRoutes);
 
 app.listen(3000, () => console.log('Server running on port 3000'));
-

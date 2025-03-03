@@ -1,11 +1,11 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-title: "[FEATURE] - Short Description of the feature"
-labels: Donation Details Module, Donor Details Module, Email Module, Feature, Program
-  Assignment Module, Status Assignment Module
+title: '[FEATURE] - Short Description of the feature'
+labels:
+    Donation Details Module, Donor Details Module, Email Module, Feature, Program
+    Assignment Module, Status Assignment Module
 assignees: ''
-
 ---
 
 **Is your feature request related to a problem? Please describe.**
