@@ -1,4 +1,10 @@
-import React, { useState, ChangeEvent, FormEvent, useEffect, useRef } from 'react';
+import React, {
+    useState,
+    ChangeEvent,
+    FormEvent,
+    useEffect,
+    useRef,
+} from 'react';
 import { Link } from 'react-router-dom'; // Import Link for navigation
 import '../css/LoginPage.css'; // Import CSS file for styling
 import Popup from './LoginPopup';
@@ -24,7 +30,7 @@ const LoginPage: React.FC = () => {
     useEffect(() => {
         generateCaptcha(); // Generate CAPTCHA on first load
     }, []);
-    
+
     const generateCaptcha = (): void => {
         const randomCaptcha = Math.random().toString(36).substring(7);
         setCaptcha(randomCaptcha);
@@ -129,7 +135,11 @@ const LoginPage: React.FC = () => {
                                 <label htmlFor="captcha" className="captha">
                                     CAPTCHA:
                                 </label>
-                                <canvas ref={captchaCanvasRef} width="100" height="30"></canvas>
+                                <canvas
+                                    ref={captchaCanvasRef}
+                                    width="100"
+                                    height="30"
+                                ></canvas>
                                 <input
                                     type="text"
                                     className="istyle"
