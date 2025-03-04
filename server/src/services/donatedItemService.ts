@@ -23,11 +23,15 @@ export async function uploadToStorage(
 }
 
 //  Validate each file size (Max 5MB)
-export const validateIndividualFileSize = (imageFiles: Express.Multer.File[]) => {
+export const validateIndividualFileSize = (
+    imageFiles: Express.Multer.File[],
+) => {
     console.log('Validating individual file sizes');
     for (const file of imageFiles) {
         if (file.size > MAX_FILE_SIZE) {
-            throw new Error(`File size is too large. Max file size allowed is 5MB.`);
+            throw new Error(
+                `File size is too large. Max file size allowed is 5MB.`,
+            );
         }
     }
 };

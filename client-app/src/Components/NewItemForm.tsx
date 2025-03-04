@@ -280,12 +280,10 @@ const NewItemForm: React.FC = () => {
                     navigate('/donations');
                 }
             } catch (error: any) {
-              
                 setErrorMessage(
                     error.response?.data?.error || 'Error adding item',
                 );
             }
-        
         } else {
             setErrorMessage('Form has validation errors');
         }

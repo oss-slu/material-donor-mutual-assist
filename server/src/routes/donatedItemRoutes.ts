@@ -20,7 +20,10 @@ import { DonatedItem } from '@prisma/client';
 
 const router = Router();
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // Max file size limit: 5MB
-const upload = multer({ storage: multer.memoryStorage(), limits: { files: 5 } });
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: { files: 5 },
+});
 
 // POST /donatedItem - Create a new DonatedItem
 router.post(
@@ -29,8 +32,8 @@ router.post(
     async (req: Request, res: Response) => {
         try {
             const imageFiles = req.files as Express.Multer.File[];
-             // Call service functions for validation
-            validateIndividualFileSize(imageFiles); 
+            // Call service functions for validation
+            validateIndividualFileSize(imageFiles);
 
             const donorId = parseInt(req.body.donorId);
             const programId = parseInt(req.body.programId);
@@ -103,8 +106,13 @@ router.post(
             });
         } catch (error) {
             // Handle errors for exceeding file size limit
-            if (error instanceof multer.MulterError && error.code === 'LIMIT_FILE_SIZE') {
-                return res.status(400).json({ message: 'Attached files should not exceed 5MB.' });
+            if (
+                error instanceof multer.MulterError &&
+                error.code === 'LIMIT_FILE_SIZE'
+            ) {
+                return res
+                    .status(400)
+                    .json({ message: 'Attached files should not exceed 5MB.' });
             }
             // Handle generic errors
             if (error instanceof Error) {
