@@ -9,6 +9,8 @@ const {
 import prisma from '../prismaClient';
 import { Readable } from 'stream';
 
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // Max file size limit: 5MB
+
 export async function uploadToStorage(
     file: Express.Multer.File,
     filename: string,
@@ -19,6 +21,20 @@ export async function uploadToStorage(
     });
     return `${containerName}/${filename}`;
 }
+
+//  Validate each file size (Max 5MB)
+export const validateIndividualFileSize = (
+    imageFiles: Express.Multer.File[],
+) => {
+    console.log('Validating individual file sizes');
+    for (const file of imageFiles) {
+        if (file.size > MAX_FILE_SIZE) {
+            throw new Error(
+                `File size is too large. Max file size allowed is 5MB.`,
+            );
+        }
+    }
+};
 
 export const fetchImagesFromCloud = async (imageUrls: string[]) => {
     const encodedImages = await Promise.all(

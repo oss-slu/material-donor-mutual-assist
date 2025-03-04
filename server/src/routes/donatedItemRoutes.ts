@@ -7,6 +7,7 @@ import { validateProgram } from '../services/programService';
 import {
     fetchImagesFromCloud,
     validateDonatedItem,
+    validateIndividualFileSize,
 } from '../services/donatedItemService';
 import {
     uploadToStorage,
@@ -18,15 +19,22 @@ import { sendDonationEmail } from '../services/emailService';
 import { DonatedItem } from '@prisma/client';
 
 const router = Router();
-const upload = multer({ storage: multer.memoryStorage() });
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // Max file size limit: 5MB
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: { files: 5 },
+});
 
 // POST /donatedItem - Create a new DonatedItem
 router.post(
     '/',
-    [upload.array('imageFiles'), donatedItemValidator],
+    [upload.array('imageFiles', 5), donatedItemValidator], // Allow up to 5 image files
     async (req: Request, res: Response) => {
         try {
             const imageFiles = req.files as Express.Multer.File[];
+            // Call service functions for validation
+            validateIndividualFileSize(imageFiles);
+
             const donorId = parseInt(req.body.donorId);
             const programId = parseInt(req.body.programId);
             const { dateDonated, ...rest } = req.body;
@@ -97,7 +105,19 @@ router.post(
                 donatedItemStatus: newStatus,
             });
         } catch (error) {
-            console.error('Error creating donated item:', error);
+            // Handle errors for exceeding file size limit
+            if (
+                error instanceof multer.MulterError &&
+                error.code === 'LIMIT_FILE_SIZE'
+            ) {
+                return res
+                    .status(400)
+                    .json({ message: 'Attached files should not exceed 5MB.' });
+            }
+            // Handle generic errors
+            if (error instanceof Error) {
+                return res.status(400).json({ error: error.message });
+            }
             res.status(500).json({ message: 'Error creating donated item' });
         }
     },
