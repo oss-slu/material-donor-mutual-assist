@@ -89,3 +89,11 @@ router.post('/register', async (req: Request, res: Response) => {
 });
 
 export default router;
+const express = require('express');
+const { verifyToken, checkRole } = require('../services/authService');
+const { updateUserRole } = require('../controllers/userController');
+const router = express.Router();
+
+router.put('/update-role', verifyToken, checkRole('admin'), updateUserRole);
+
+module.exports = router;

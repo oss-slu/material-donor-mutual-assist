@@ -1,6 +1,7 @@
 # Material Donor Mutual Assist
 
 ## Overview
+
 The Material Donor Mutual Assist project by BWorks is designed to streamline the process of managing donations, providing a transparent view into the journey of each donated item. This initiative allows donors to track their contributions from the moment they are donated to their ultimate use, offering them a detailed view of how their items are making a difference. By keeping donors informed about the status and use of their donations, the project fosters a sense of trust and community, encouraging continued support and involvement. The system simplifies the administrative tasks involved in updating and managing donations, making it easier to attract and retain donors who are motivated by seeing the tangible impact of their contributions.
 
 ## License
@@ -10,24 +11,29 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Develop With docker compose
 
 ### Prerequisites
+
 Ensure you have the following installed on your machine:
 
 - [Docker](https://www.docker.com/products/docker-desktop/)
 
 ### Clone the Repository
-   Clone the repository to your local machine.
-    ```
-    git clone https://github.com/oss-slu/material-donor-mutual-assist.git
-    ```
 
-### Navigate to the Project Directory  
-   Move into the project folder.
-   ```
-   cd material-donor-mutual-assist
-   ```
+Clone the repository to your local machine.
+`     git clone https://github.com/oss-slu/material-donor-mutual-assist.git
+    `
+
+### Navigate to the Project Directory
+
+Move into the project folder.
+
+```
+cd material-donor-mutual-assist
+```
 
 ## Create Environment Variables
+
 Create a .env file and define the necessary environment variables:
+
 ```
 # database service
 POSTGRES_USER="admin"
@@ -53,16 +59,18 @@ SMTP_PASS="enter you App password"
 ### Start the Development Environment
 
 Run the following command to build and start the services:
+
 ```
 docker-compose up -d
 ```
+
 This will start all necessary containers in the background.
 
 ### Accessing the Application
+
 - After the applications starts, navigate to ttp://localhost:3000 in your web browser
 
-
-### Stop the Devlopment Environment 
+### Stop the Devlopment Environment
 
 ```
 docker compose down
@@ -129,5 +137,4 @@ We use Prettier to ensure consistent code formatting across the project. Before 
     npm run prettier:check
     ```
 
-   Only push the code to the repository once all formatting issues have been resolved.
-
+    Only push the code to the repository once all formatting issues have been resolved.

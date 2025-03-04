@@ -1,34 +1,34 @@
 name: Node.js Server CI
 
 on:
-  push:
-    branches: main
-    paths:
-      - 'server/**'
-      - '.github/workflows/**'
-  pull_request:
-    branches: main
-    paths:
-      - 'server/**'
-      - '.github/workflows/**'
+    push:
+        branches: main
+        paths:
+            - 'server/**'
+            - '.github/workflows/**'
+    pull_request:
+        branches: main
+        paths:
+            - 'server/**'
+            - '.github/workflows/**'
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+    build:
+        runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20.x'
-    - run: cd server && npm install
+        steps:
+            - uses: actions/checkout@v4
+            - name: Use Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20.x'
+            - run: cd server && npm install
 
-    - name: Set Environment Variables
-      run: |
-        echo "AZURE_STORAGE_ACCOUNT_NAME=${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}" >> $GITHUB_ENV
-        echo "AZURE_STORAGE_ACCESS_KEY=${{ secrets.AZURE_STORAGE_ACCESS_KEY }}" >> $GITHUB_ENV
+            - name: Set Environment Variables
+              run: |
+                  echo "AZURE_STORAGE_ACCOUNT_NAME=${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}" >> $GITHUB_ENV
+                  echo "AZURE_STORAGE_ACCESS_KEY=${{ secrets.AZURE_STORAGE_ACCESS_KEY }}" >> $GITHUB_ENV
 
-    - run: cd server && npm test
-      env:
-        CI: true
+            - run: cd server && npm test
+              env:
+                  CI: true
