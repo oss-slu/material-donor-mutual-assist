@@ -125,3 +125,35 @@
         transform: translateY(-10px);
     }
 }
+
+.captcha-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.captcha-row {
+    display: flex;
+    align-items: center; /* Keeps everything on the same line */
+    gap: 8px; /* Adjust spacing between label, image, and button */
+}
+
+.captcha-label {
+    font-weight: normal; /* Normal text, not bold */
+    margin-right: 5px;
+}
+
+.captcha-input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%; /* Adjust width as needed */
+}
+
+.refresh-icon {
+    transition: transform 0.2s ease-in-out;
+}
+
+.refresh-icon:hover {
+    transform: rotate(90deg);
+}
