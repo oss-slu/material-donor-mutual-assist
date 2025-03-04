@@ -278,14 +278,14 @@ const NewItemForm: React.FC = () => {
                     setSuccessMessage('Item added successfully!');
                     handleRefresh();
                     navigate('/donations');
-                } else {
-                    setErrorMessage('Item not added');
                 }
             } catch (error: any) {
+              
                 setErrorMessage(
-                    error.response?.data?.message || 'Error adding item',
+                    error.response?.data?.error || 'Error adding item',
                 );
             }
+        
         } else {
             setErrorMessage('Form has validation errors');
         }
