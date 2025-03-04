@@ -134,8 +134,17 @@ const LoginPage: React.FC = () => {
                             </div>
                             <div className="captcha-container">
                                 <div className="captcha-row">
-                                    <label htmlFor="captcha" className="captcha-label">CAPTCHA:</label>
-                                    <canvas ref={captchaCanvasRef} width="100" height="30"></canvas>
+                                    <label
+                                        htmlFor="captcha"
+                                        className="captcha-label"
+                                    >
+                                        CAPTCHA:
+                                    </label>
+                                    <canvas
+                                        ref={captchaCanvasRef}
+                                        width="100"
+                                        height="30"
+                                    ></canvas>
                                     <RefreshCw
                                         className="refresh-icon"
                                         size={20}
