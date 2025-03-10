@@ -24,7 +24,7 @@ router.post(
             if (!user) {
                 return res.status(401).json({
                     message:
-                        'Invalid email, please register to proceed with login.',
+                        'Email not found',
                 });
             }
 
@@ -43,7 +43,7 @@ router.post(
                 res.status(500).json({ message: 'Error sending email' });
             }
         } catch (error) {
-            console.error('Login Error:', error);
+            console.error('Server Error:', error);
             return res.status(500).json({ message: 'Internal server error' });
         }
     },

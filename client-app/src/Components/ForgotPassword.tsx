@@ -5,9 +5,6 @@ import { useNavigate } from 'react-router-dom';
 const ForgotPassword: React.FC = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState<string>('');
-    const [otp, setOtp] = useState<number | null>(null);
-    const [otpSent, setOtpSent] = useState<boolean>(false);
-    const [otpValidated, setOtpValidated] = useState<boolean>(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -24,16 +21,27 @@ const ForgotPassword: React.FC = () => {
                 },
             );
 
-            if (!response.ok) {
-                throw new Error('Failed to send reset email');
-            }
-
             const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message);
+            }
             console.log('Email sent:', data.message);
             alert('Password reset link sent to your email.');
         } catch (error) {
             console.error('Error sending password reset email:', error);
-            alert('Failed to send reset email. Please try again.');
+            const errorMessage =
+                error instanceof Error
+                    ? error.message
+                    : 'An unknown error occurred';
+            if (errorMessage.includes('not found')) {
+                alert('That email is not linked to a registered account.');
+            } else if (errorMessage.includes('sending email')) {
+                alert(
+                    'There was an error sending the reset email. Please try again.',
+                );
+            } else {
+                alert(error);
+            }
         }
     };
 
