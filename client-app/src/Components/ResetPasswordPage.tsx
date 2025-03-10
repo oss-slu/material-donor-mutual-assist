@@ -53,7 +53,7 @@ const ResetPasswordPage: React.FC = () => {
                 return;
             }
             const response = await fetch(
-                `${process.env.REACT_APP_BACKEND_API_BASE_URL}passwordResetRoutes/resetpassword`,
+                `${process.env.REACT_APP_BACKEND_API_BASE_URL}passwordReset/reset-password`,
                 {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },

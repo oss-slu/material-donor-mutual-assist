@@ -48,7 +48,7 @@ router.post(
     },
 );
 
-router.post('/resetpassword', async (req: Request, res: Response) => {
+router.post('/reset-password', async (req: Request, res: Response) => {
     const { token, password } = req.body;
 
     let decoded: JwtPayload;
