@@ -53,6 +53,7 @@ SMTP_PORT="587"
 SMTP_SECURE="false"
 SMTP_USER="enter your gmail"
 SMTP_PASS="enter you App password"
+FRONTEND_URL="http://localhost:3000/"
 ```
 
 Replace `username`, `password`, and `dbname` with your PostgreSQL username, password, and the name of the database you created.
