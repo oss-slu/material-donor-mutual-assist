@@ -30,7 +30,7 @@ router.post(
             const token = jwt.sign(
                 { userId: user.id, email: user.email },
                 JWT_SECRET,
-                { expiresIn: '1m' },
+                { expiresIn: '1h' },
             );
 
             try {
@@ -73,7 +73,7 @@ router.post('/reset-password', async (req: Request, res: Response) => {
                 .json({ message: 'Authentication failed. Please try again.' });
         }
     }
-    
+
     const userId = decoded.userId;
 
     try {
