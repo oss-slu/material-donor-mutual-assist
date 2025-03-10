@@ -55,18 +55,14 @@ router.post('/reset-password', async (req: Request, res: Response) => {
         decoded = jwt.verify(token, JWT_SECRET) as JwtPayload; // Decode and verify the token
     } catch (error: any) {
         if (error.name === 'TokenExpiredError') {
-            return res
-                .status(401)
-                .json({
-                    message: 'Token has expired. Please request a new one.',
-                });
+            return res.status(401).json({
+                message: 'Token has expired. Please request a new one.',
+            });
         } else if (error.name === 'JsonWebTokenError') {
-            return res
-                .status(401)
-                .json({
-                    message:
-                        'Invalid token. Please check the link or request a new one.',
-                });
+            return res.status(401).json({
+                message:
+                    'Invalid token. Please check the link or request a new one.',
+            });
         } else {
             return res
                 .status(401)
