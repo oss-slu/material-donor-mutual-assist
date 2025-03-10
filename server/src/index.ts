@@ -29,7 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/donor', donorRouter);
 app.use('/program', programRouter);
 app.use('/api', programRouter);
-app.use('/passwordResetRoutes', passwordResetRouter);
+app.use('/passwordReset', passwordResetRouter);
 app.use('/donatedItem', donatedItemRouter); // Use DonatedItem routes
 app.use('/donatedItem/status', donatedItemStatusRouter); // Use DonatedItemStatus routes
 

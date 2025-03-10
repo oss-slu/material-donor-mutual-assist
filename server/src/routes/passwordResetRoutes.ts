@@ -23,8 +23,7 @@ router.post(
             const user = await prisma.user.findUnique({ where: { email } });
             if (!user) {
                 return res.status(401).json({
-                    message:
-                        'Email not found',
+                    message: 'Email not found',
                 });
             }
 
@@ -49,7 +48,7 @@ router.post(
     },
 );
 
-router.post('/resetpassword', async (req: Request, res: Response) => {
+router.post('/reset-password', async (req: Request, res: Response) => {
     const { token, password } = req.body;
 
     let decoded: JwtPayload;

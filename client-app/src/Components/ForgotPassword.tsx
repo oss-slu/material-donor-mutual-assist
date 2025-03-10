@@ -11,7 +11,7 @@ const ForgotPassword: React.FC = () => {
 
         try {
             const response = await fetch(
-                `${process.env.REACT_APP_BACKEND_API_BASE_URL}passwordResetRoutes/forgotpassword`,
+                `${process.env.REACT_APP_BACKEND_API_BASE_URL}passwordReset/forgotpassword`,
                 {
                     method: 'POST',
                     headers: {
