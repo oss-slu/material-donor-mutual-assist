@@ -73,14 +73,13 @@ router.post('/reset-password', async (req: Request, res: Response) => {
                 .json({ message: 'Authentication failed. Please try again.' });
         }
     }
-
+    
     const userId = decoded.userId;
 
     try {
-        // Hash the password
         const newHashedPassword = await bcrypt.hash(password, 10);
 
-        // Store user in database
+        // Store new password in database
         const updatedUser = await prisma.user.update({
             where: { id: userId },
             data: { password: newHashedPassword }, // The new hashed password

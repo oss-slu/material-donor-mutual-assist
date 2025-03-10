@@ -63,7 +63,6 @@ const ResetPasswordPage: React.FC = () => {
 
             const data = await response.json();
             if (!response.ok) {
-                //throw new Error('Failed to reset password');
                 throw new Error(data.message);
             }
             setMessage(data.message);
@@ -78,13 +77,13 @@ const ResetPasswordPage: React.FC = () => {
                 setError(
                     'This link has expired. Please submit another password reset request.',
                 );
-            } else if (errorMessage.includes('invalid')) {
+            } else if (errorMessage.includes('Invalid')) {
                 setError(
-                    'This token is no longer valid. Please submit another password reset request.',
+                    'This token is no longer valid. Please ensure that the URL is correct or submit another password reset request.',
                 );
             } else if (errorMessage.includes('Authentication')) {
                 setError(
-                    'Token authentication failed. Please ensure the URL is correct or submit another password reset request.',
+                    'Token authentication failed. Please ensure that the URL is correct or submit another password reset request.',
                 );
             } else {
                 setError('Error resetting password. Please try again.');
