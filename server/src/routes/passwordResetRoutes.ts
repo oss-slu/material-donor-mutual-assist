@@ -23,8 +23,7 @@ router.post(
             const user = await prisma.user.findUnique({ where: { email } });
             if (!user) {
                 return res.status(401).json({
-                    message:
-                        'Email not found',
+                    message: 'Email not found',
                 });
             }
 
