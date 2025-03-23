@@ -70,6 +70,10 @@ const DonorList: React.FC = () => {
         setModalIsOpen(true);
     };
 
+    const handleEditDonorClick = () => {
+        navigate('/donoredit');
+    };
+
     return (
         <div>
             <div className="header">
@@ -162,12 +166,20 @@ const DonorList: React.FC = () => {
                         </p>
                     </div>
                 )}
-                <button
-                    className="close-button"
-                    onClick={() => setModalIsOpen(false)}
-                >
-                    Close
-                </button>
+                <div>
+                    <button
+                    className="edit-button"
+                    onClick={() => handleEditDonorClick()}
+                    >
+                        Edit
+                    </button>
+                    <button
+                        className="close-button"
+                        onClick={() => setModalIsOpen(false)}
+                    >
+                        Close
+                    </button></div>
+                
             </Modal>
 
             <div style={{ position: 'fixed', bottom: '20px', right: '20px' }}>
