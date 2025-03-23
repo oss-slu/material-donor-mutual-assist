@@ -9,7 +9,10 @@ const router = Router();
 router.post('/', donorValidator, async (req: Request, res: Response) => {
     try {
         const newDonor = await prisma.donor.create({
-            data: req.body,
+            data: {
+            ...req.body, 
+            role : 'DONOR',
+            }
         });
         console.log('New donor created:', newDonor);
 
@@ -75,7 +78,8 @@ router.post('/register', async (req: Request, res: Response) => {
 
         // Store user in database
         const user = await prisma.user.create({
-            data: { name, email, password: hashedPassword, role: 'DONOR' },
+            data: { name, email, password: hashedPassword },
+            //data: { name, email, password: hashedPassword, role: prisma.donor },
         });
 
         return res.status(201).json({
