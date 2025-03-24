@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Donor" ALTER COLUMN "role" SET DEFAULT 'USER';
