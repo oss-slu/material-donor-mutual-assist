@@ -55,7 +55,7 @@ export const sendWelcomeEmail = async (
 
 export const sendPasswordReset = async (
     recipientEmail: string,
-    token: string,
+    resetToken: string,
 ) => {
     const mailOptions = {
         from: `Donation Team <${process.env.SMTP_USER}>`,
@@ -64,8 +64,7 @@ export const sendPasswordReset = async (
         html: `
             <h2>Hello there!</h2>
             <p>We have recently received a request to change the password of the account linked to this email.</p>
-            <p>If this was you, please follow this link here ${process.env.FRONTEND_URL}reset-password?token=${token} to reset your password.
-            This link will expire in 1 hour.</p>
+            <p>If this was you, please follow this link here ${process.env.FRONTEND_URL}reset-password?token=${token} to reset your password.</p>
             <p>If this was not you, please feel free to disregard this email.</p>
             <p>Best regards,</p>
             <p><strong>Donation Team</strong></p>
@@ -73,7 +72,8 @@ export const sendPasswordReset = async (
     };
 
     try {
-        const result = await transporter.sendMail(mailOptions);
+        await transporter.sendMail(mailOptions);
+        console.log(`Password reset email sent to ${recipientEmail}`);
         transporter.close();
     } catch (error) {
         console.log('Error sending email:', error);
