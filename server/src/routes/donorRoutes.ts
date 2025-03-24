@@ -36,7 +36,8 @@ router.post('/', donorValidator, async (req: Request, res: Response) => {
     }
 });
 
-router.get('/', authenticateUser, authorizeAdmin, async (req: Request, res: Response) => {
+//router.get('/', authenticateUser, authorizeAdmin, async (req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
     try {
         const donors = await prisma.donor.findMany();
         res.json(donors);
