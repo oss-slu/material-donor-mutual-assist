@@ -71,6 +71,6 @@ model User {
   name     String
   email    String @unique
   password String
-  role     Role @default(ADMIN)
+  role     Role
   createdAt DateTime @default(now())
 }
