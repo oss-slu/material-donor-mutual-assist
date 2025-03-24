@@ -3,6 +3,20 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../css/DonorForm.css';
 
+interface Donor {
+    id: number;
+    firstName: string;
+    lastName: string;
+    contact: string;
+    email: string;
+    addressLine1: string;
+    addressLine2: string;
+    city: string;
+    state: string;
+    zipcode: string;
+    emailOptIn: boolean;
+}
+
 interface FormData {
     firstName: string;
     lastName: string;
@@ -22,17 +36,27 @@ interface FormErrors {
 
 const DonorEdit: React.FC = () => {
     const navigate = useNavigate();
+    let donor = null;
+    const donorData = localStorage.getItem("donor");
+    if (donorData) {
+        donor = JSON.parse(donorData);
+    }
+    if (!donor) {
+        console.error("Donor does not exist!");
+        navigate('/donorlist');
+    }
+    const donorId = donor.id;
     const [formData, setFormData] = useState<FormData>({
-        firstName: '',
-        lastName: '',
-        contact: '',
-        email: '',
-        addressLine1: '',
-        addressLine2: '',
-        state: '',
-        city: '',
-        zipcode: '',
-        emailOptIn: false,
+        firstName: donor.firstName,
+        lastName: donor.lastName,
+        contact: donor.contact,
+        email: donor.email,
+        addressLine1: donor.addressLine1,
+        addressLine2: donor.addressLine2,
+        state: donor.state,
+        city: donor.city,
+        zipcode: donor.zipcode,
+        emailOptIn: donor.emailOptIn,
     });
 
     const [errors, setErrors] = useState<FormErrors>({});
@@ -92,10 +116,16 @@ const DonorEdit: React.FC = () => {
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (validateForm()) {
+            if (!donorId) {
+                setErrorMessage("Donor ID is missing!");
+                navigate('/donorlist');
+            }
             try {
+                const toSend = { ...formData, id: donorId };
+                console.log(toSend);
                 const response = await axios.post(
                     `${process.env.REACT_APP_BACKEND_API_BASE_URL}donor/edit`,
-                    formData,
+                    toSend,
                 );
                 if (response.status === 200) {
                     navigate('/donorlist');
@@ -105,31 +135,12 @@ const DonorEdit: React.FC = () => {
             } catch (error: unknown) {
                 const message =
                     (error as any).response?.data?.message ||
-                    'Error adding donor';
+                    'Error Updating donor';
                 setErrorMessage(message);
             }
         } else {
             setErrorMessage('Form has validation errors');
         }
-    };
-
-    // Handle form reset
-    const handleRefresh = () => {
-        setFormData({
-            firstName: '',
-            lastName: '',
-            contact: '',
-            email: '',
-            addressLine1: '',
-            addressLine2: '',
-            state: '',
-            city: '',
-            zipcode: '',
-            emailOptIn: false,
-        });
-        setErrors({});
-        setErrorMessage(null);
-        setSuccessMessage(null);
     };
 
     const handleBack = () => {
@@ -211,13 +222,6 @@ const DonorEdit: React.FC = () => {
                 <div className="form-field full-width button-container">
                     <button type="submit" className="submit-button">
                         Update Donor
-                    </button>
-                    <button
-                        type="button"
-                        onClick={handleRefresh}
-                        className="refresh-button"
-                    >
-                        Refresh
                     </button>
                     <button
                         type="button"

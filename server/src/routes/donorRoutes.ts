@@ -88,4 +88,33 @@ router.post('/register', async (req: Request, res: Response) => {
     }
 });
 
+router.post('/edit', async (req: Request, res: Response) => {
+    const donor = req.body;
+    const donorId = parseInt(donor.id);
+    try {
+        const updateDonor = await prisma.donor.update({
+            where: {
+                id: donorId,
+              },
+              data: {
+                firstName: donor.firstName,
+                lastName: donor.lastName,
+                contact: donor.contact,
+                email: donor.email,
+                addressLine1: donor.addressLine1,
+                addressLine2: donor.addressLine2,
+                state: donor.state,
+                city: donor.city,
+                zipcode: donor.zipcode,
+                emailOptIn: donor.emailOptIn,
+              },
+        });
+        res.status(200).json(updateDonor);
+    }
+    catch (error) {
+        console.log('Error fetching donor:', error);
+        res.status(500).json({ message: 'Error fetching donor' });
+    }
+});
+
 export default router;
