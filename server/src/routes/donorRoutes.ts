@@ -2,6 +2,8 @@ import { Router, Request, Response } from 'express';
 import prisma from '../prismaClient'; // Import Prisma client
 import { donorValidator } from '../validators/donorValidator';
 import { sendWelcomeEmail } from '../services/emailService';
+import express from 'express';
+import { authenticateUser, authorizeAdmin } from '../authRoutes';
 import bcrypt from 'bcryptjs';
 
 const router = Router();
@@ -34,7 +36,7 @@ router.post('/', donorValidator, async (req: Request, res: Response) => {
     }
 });
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', authenticateUser, authorizeAdmin, async (req: Request, res: Response) => {
     try {
         const donors = await prisma.donor.findMany();
         res.json(donors);

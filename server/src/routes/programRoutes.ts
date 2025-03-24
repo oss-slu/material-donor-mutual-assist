@@ -95,7 +95,7 @@ router.post(
 
             // Generate JWT token and it expires in 1hr.
             const token = jwt.sign(
-                { userId: user.id, email: user.email },
+                { userId: user.id, email: user.email, role: user.role },
                 JWT_SECRET,
                 { expiresIn: '1h' },
             );
