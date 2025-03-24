@@ -95,8 +95,8 @@ router.post('/edit', async (req: Request, res: Response) => {
         const updateDonor = await prisma.donor.update({
             where: {
                 id: donorId,
-              },
-              data: {
+            },
+            data: {
                 firstName: donor.firstName,
                 lastName: donor.lastName,
                 contact: donor.contact,
@@ -107,11 +107,10 @@ router.post('/edit', async (req: Request, res: Response) => {
                 city: donor.city,
                 zipcode: donor.zipcode,
                 emailOptIn: donor.emailOptIn,
-              },
+            },
         });
         res.status(200).json(updateDonor);
-    }
-    catch (error) {
+    } catch (error) {
         console.log('Error fetching donor:', error);
         res.status(500).json({ message: 'Error fetching donor' });
     }

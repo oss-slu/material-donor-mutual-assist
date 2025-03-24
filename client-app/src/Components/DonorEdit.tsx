@@ -37,12 +37,12 @@ interface FormErrors {
 const DonorEdit: React.FC = () => {
     const navigate = useNavigate();
     let donor = null;
-    const donorData = localStorage.getItem("donor");
+    const donorData = localStorage.getItem('donor');
     if (donorData) {
         donor = JSON.parse(donorData);
     }
     if (!donor) {
-        console.error("Donor does not exist!");
+        console.error('Donor does not exist!');
         navigate('/donorlist');
     }
     const donorId = donor.id;
@@ -117,7 +117,7 @@ const DonorEdit: React.FC = () => {
         event.preventDefault();
         if (validateForm()) {
             if (!donorId) {
-                setErrorMessage("Donor ID is missing!");
+                setErrorMessage('Donor ID is missing!');
                 navigate('/donorlist');
             }
             try {
