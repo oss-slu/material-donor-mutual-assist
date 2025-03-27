@@ -1,6 +1,5 @@
 import { Router, Request, Response } from 'express';
 import prisma from '../prismaClient'; // Import Prisma client
-import { donorValidator } from '../validators/donorValidator';
 import { body, validationResult } from 'express-validator';
 import { sendPasswordReset } from '../services/emailService';
 import jwt, { JwtPayload } from 'jsonwebtoken';
@@ -54,17 +53,29 @@ router.post('/reset-password', async (req: Request, res: Response) => {
     let decoded: JwtPayload;
     try {
         decoded = jwt.verify(token, JWT_SECRET) as JwtPayload; // Decode and verify the token
-    } catch (error) {
-        return res.status(401).json({ message: 'Invalid or expired token' });
+    } catch (error: any) {
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({
+                message: 'Token has expired. Please request a new one.',
+            });
+        } else if (error.name === 'JsonWebTokenError') {
+            return res.status(401).json({
+                message:
+                    'Invalid token. Please check the link or request a new one.',
+            });
+        } else {
+            return res
+                .status(401)
+                .json({ message: 'Authentication failed. Please try again.' });
+        }
     }
 
     const userId = decoded.userId;
 
     try {
-        // Hash the password
         const newHashedPassword = await bcrypt.hash(password, 10);
 
-        // Store user in database
+        // Store new password in database
         const updatedUser = await prisma.user.update({
             where: { id: userId },
             data: { password: newHashedPassword }, // The new hashed password
@@ -74,7 +85,7 @@ router.post('/reset-password', async (req: Request, res: Response) => {
             message: 'Password changed successfully',
         });
     } catch (error) {
-        console.error('Login Error:', error);
+        console.error('Server Error:', error);
         return res.status(500).json({ message: 'Internal server error' });
     }
 });
