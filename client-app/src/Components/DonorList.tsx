@@ -70,6 +70,15 @@ const DonorList: React.FC = () => {
         setModalIsOpen(true);
     };
 
+    const handleEditDonorClick = (donor: Donor | null) => {
+        if (donor === null) {
+            console.error("Donor doesn't exist");
+        } else {
+            localStorage.setItem('donor', JSON.stringify(donor));
+            navigate('/donoredit');
+        }
+    };
+
     return (
         <div>
             <div className="header">
@@ -162,12 +171,20 @@ const DonorList: React.FC = () => {
                         </p>
                     </div>
                 )}
-                <button
-                    className="close-button"
-                    onClick={() => setModalIsOpen(false)}
-                >
-                    Close
-                </button>
+                <div>
+                    <button
+                        className="edit-button"
+                        onClick={() => handleEditDonorClick(donorDetails)}
+                    >
+                        Edit
+                    </button>
+                    <button
+                        className="close-button"
+                        onClick={() => setModalIsOpen(false)}
+                    >
+                        Close
+                    </button>
+                </div>
             </Modal>
 
             <div style={{ position: 'fixed', bottom: '20px', right: '20px' }}>
