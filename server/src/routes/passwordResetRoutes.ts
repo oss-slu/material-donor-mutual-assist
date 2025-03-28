@@ -4,6 +4,7 @@ import { body, validationResult } from 'express-validator';
 import { sendPasswordReset } from '../services/emailService';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 
 const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET; // Use secret from .env
@@ -50,30 +51,21 @@ router.post(
 router.post('/reset-password', async (req: Request, res: Response) => {
     const { token, password } = req.body;
 
-    let decoded: JwtPayload;
     try {
-        decoded = jwt.verify(token, JWT_SECRET) as JwtPayload; // Decode and verify the token
-    } catch (error: any) {
-        if (error.name === 'TokenExpiredError') {
-            return res.status(401).json({
-                message: 'Token has expired. Please request a new one.',
-            });
-        } else if (error.name === 'JsonWebTokenError') {
-            return res.status(401).json({
-                message:
-                    'Invalid token. Please check the link or request a new one.',
-            });
-        } else {
+        let decoded: JwtPayload;
+        try {
+            decoded = jwt.verify(token, JWT_SECRET) as JwtPayload; // Decode and verify the token
+        } catch (error) {
             return res
                 .status(401)
-                .json({ message: 'Authentication failed. Please try again.' });
+                .json({ message: 'Invalid or expired token' });
         }
-    }
 
-    const userId = decoded.userId;
+        const userId = decoded.userId;
 
-    try {
-        const newHashedPassword = await bcrypt.hash(password, 10);
+        try {
+            // Hash the password
+            const newHashedPassword = await bcrypt.hash(password, 10);
 
         // Store new password in database
         const updatedUser = await prisma.user.update({
@@ -81,12 +73,62 @@ router.post('/reset-password', async (req: Request, res: Response) => {
             data: { password: newHashedPassword }, // The new hashed password
         });
 
-        return res.status(201).json({
-            message: 'Password changed successfully',
-        });
-    } catch (error) {
-        console.error('Server Error:', error);
-        return res.status(500).json({ message: 'Internal server error' });
+            return res.status(201).json({
+                message: 'Password changed successfully',
+            });
+        } catch (error) {
+            console.error('Login Error:', error);
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+    } catch (jwtError) {
+        try {
+            console.log(
+                'Not a valid JWT, trying first login hashed token flow...',
+            );
+
+            const hashedToken = crypto
+                .createHash('sha256')
+                .update(token)
+                .digest('hex');
+
+            const user = await prisma.user.findFirst({
+                where: {
+                    resetToken: hashedToken,
+                    resetTokenExpiry: { gte: new Date() },
+                },
+            });
+
+            if (!user) {
+                return res
+                    .status(400)
+                    .json({ message: 'Invalid or expired reset token' });
+            }
+
+            if (user.firstLogin && user.role === 'DONOR') {
+                const newHashedPassword = await bcrypt.hash(password, 10);
+
+                await prisma.user.update({
+                    where: { id: user.id },
+                    data: {
+                        password: newHashedPassword,
+                        resetToken: null,
+                        resetTokenExpiry: null,
+                        firstLogin: false, // Mark as completed
+                    },
+                });
+
+                return res
+                    .status(200)
+                    .json({ message: 'Password reset successful' });
+            } else {
+                return res
+                    .status(403)
+                    .json({ message: 'Reset not allowed for this user' });
+            }
+        } catch (dbError) {
+            console.error('Error during first login token flow:', dbError);
+            return res.status(500).json({ message: 'Internal server error' });
+        }
     }
 });
 
