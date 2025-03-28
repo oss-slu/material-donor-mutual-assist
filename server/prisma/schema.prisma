@@ -13,11 +13,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  ADMIN
-  USER
-}
-
 model Donor {
   id           Int     @id @default(autoincrement())
   firstName    String  @db.VarChar(50)
@@ -30,7 +25,6 @@ model Donor {
   city         String? @db.VarChar(15)
   zipcode      String  @db.VarChar(20)
   emailOptIn   Boolean
-  role         Role
   donatedItems DonatedItem[] // Add reverse relation to DonatedItem
 }
 
@@ -64,6 +58,11 @@ model Program {
   startDate   DateTime     @db.Date                          
   aimAndCause String   @db.VarChar(500)  
   donatedItems DonatedItem[] // Add reverse relation to DonatedItem            
+}
+
+enum Role {
+  ADMIN
+  DONOR
 }
 
 model User {

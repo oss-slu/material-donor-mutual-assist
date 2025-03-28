@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "Donor" ALTER COLUMN "role" DROP DEFAULT;
