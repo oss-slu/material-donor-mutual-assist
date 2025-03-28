@@ -48,7 +48,7 @@ router.post(
 
             // Store user in database
             const user = await prisma.user.create({
-                data: { name, email, password: hashedPassword },
+                data: { name, email, password: hashedPassword, role: 'ADMIN' },
             });
 
             return res.status(201).json({
@@ -95,7 +95,7 @@ router.post(
 
             // Generate JWT token and it expires in 1hr.
             const token = jwt.sign(
-                { userId: user.id, email: user.email },
+                { userId: user.id, email: user.email, role: user.role },
                 JWT_SECRET,
                 { expiresIn: '1h' },
             );
