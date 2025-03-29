@@ -3,8 +3,10 @@ import prisma from '../prismaClient'; // Import Prisma client
 import { donorValidator } from '../validators/donorValidator';
 import { sendWelcomeEmail } from '../services/emailService';
 import express from 'express';
-import { authenticateUser, authorizeAdmin } from '../authRoutes';
+import { authenticateUser } from './routeProtection';
 import bcrypt from 'bcryptjs';
+
+import jwt from 'jsonwebtoken';
 
 const router = Router();
 
@@ -36,6 +38,22 @@ router.post('/', donorValidator, async (req: Request, res: Response) => {
 //router.get('/', authenticateUser, authorizeAdmin, async (req: Request, res: Response) => {
 router.get('/', async (req: Request, res: Response) => {
     try {
+        console.log("The req is " + req.headers.authorization);
+
+        // const JWT_SECRET = process.env.JWT_SECRET;
+        // if (!JWT_SECRET) {
+        //     throw new Error('JWT_SECRET is not set in .env file!');
+        // }
+        // const authHeader = req.headers.authorization;
+        //       if (!authHeader) {
+        //         return res.status(401).json({message: "Access denied: No token given"});
+        //       }
+        //       const decoded = jwt.verify(authHeader, JWT_SECRET) as {role: string};
+        //       console.log("Decoded: " + decoded);
+        //       console.log("Role: " + decoded.role);
+              //console.log("Req user: " + req.user);
+
+        authenticateUser(req, res);
         const donors = await prisma.donor.findMany();
         res.json(donors);
     } catch (error) {
