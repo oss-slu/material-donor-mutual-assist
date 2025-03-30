@@ -35,27 +35,20 @@ router.post('/', donorValidator, async (req: Request, res: Response) => {
     }
 });
 
-//router.get('/', authenticateUser, authorizeAdmin, async (req: Request, res: Response) => {
 router.get('/', async (req: Request, res: Response) => {
     try {
         console.log("The req is " + req.headers.authorization);
-
-        // const JWT_SECRET = process.env.JWT_SECRET;
-        // if (!JWT_SECRET) {
-        //     throw new Error('JWT_SECRET is not set in .env file!');
+        const permGranted = await authenticateUser(req, res, true);
+        if (permGranted) {
+            const donors = await prisma.donor.findMany();
+            res.json(donors);
+        }
+        // if (!permGranted) {
+        //     //return res.status(401).json({ message: 'Permission Error'});
+        //     return;
         // }
-        // const authHeader = req.headers.authorization;
-        //       if (!authHeader) {
-        //         return res.status(401).json({message: "Access denied: No token given"});
-        //       }
-        //       const decoded = jwt.verify(authHeader, JWT_SECRET) as {role: string};
-        //       console.log("Decoded: " + decoded);
-        //       console.log("Role: " + decoded.role);
-              //console.log("Req user: " + req.user);
-
-        authenticateUser(req, res);
-        const donors = await prisma.donor.findMany();
-        res.json(donors);
+        // const donors = await prisma.donor.findMany();
+        // res.json(donors);
     } catch (error) {
         console.log('Error fetching donor:', error);
         res.status(500).json({ message: 'Error fetching donors' });
