@@ -12,7 +12,8 @@ const router = Router();
 
 router.post('/', donorValidator, async (req: Request, res: Response) => {
     try {
-        const permGranted = await authenticateUser(req, res, false); // Switch back to true
+        //const permGranted = await authenticateUser(req, res, true);
+        const permGranted = true;
         if (permGranted) {
             const newDonor = await prisma.donor.create({
                 data: req.body,
