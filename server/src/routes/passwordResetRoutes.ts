@@ -52,34 +52,38 @@ router.post('/reset-password', async (req: Request, res: Response) => {
     const { token, password } = req.body;
 
     if (!token || !password) {
-        return res.status(400).json({ message: 'Token and password are required' });
-      }
+        return res
+            .status(400)
+            .json({ message: 'Token and password are required' });
+    }
 
-      const isJwt = token.split('.').length === 3; // Check if it's a JWT
-    if (isJwt){
+    const isJwt = token.split('.').length === 3; // Check if it's a JWT
+    if (isJwt) {
         // Handle Forgot Password (JWT Token)
-    try {
-        let decoded: JwtPayload;
-        decoded = jwt.verify(token, JWT_SECRET) as JwtPayload; // Decode and verify the token
-        const userId = decoded.userId;
-        const hashedPassword = await bcrypt.hash(password, 10);
+        try {
+            let decoded: JwtPayload;
+            decoded = jwt.verify(token, JWT_SECRET) as JwtPayload; // Decode and verify the token
+            const userId = decoded.userId;
+            const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Store new password in database
-        // const updatedUser = 
-        await prisma.user.update({
-            where: { id: userId },
-            data: { password: hashedPassword }, // The new hashed password
-        });
+            // Store new password in database
+            // const updatedUser =
+            await prisma.user.update({
+                where: { id: userId },
+                data: { password: hashedPassword }, // The new hashed password
+            });
 
             return res.status(200).json({
                 message: 'Password changed successfully',
             });
         } catch (error) {
-             console.log('Login Error. JWT validation failed.');
-             return res.status(401).json({ message: 'Invalid or expired token.' });
-         }
-     } else {
-        try{
+            console.log('Login Error. JWT validation failed.');
+            return res
+                .status(401)
+                .json({ message: 'Invalid or expired token.' });
+        }
+    } else {
+        try {
             const hashedToken = crypto
                 .createHash('sha256')
                 .update(token)
@@ -92,9 +96,10 @@ router.post('/reset-password', async (req: Request, res: Response) => {
                 },
             });
             if (!user) {
-                return res
-                    .status(400)
-                    .json({ message: 'Invalid or expired reset token. Please submit another password reset request.' });
+                return res.status(400).json({
+                    message:
+                        'Invalid or expired reset token. Please submit another password reset request.',
+                });
             }
 
             if (user.firstLogin && user.role === 'DONOR') {
