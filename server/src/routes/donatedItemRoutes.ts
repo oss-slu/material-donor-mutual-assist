@@ -32,7 +32,7 @@ router.post(
     [upload.array('imageFiles', 5), donatedItemValidator], // Allow up to 5 image files
     async (req: Request, res: Response) => {
         try {
-            const permGranted = await authenticateUser(req, res, true);
+            const permGranted = await authenticateUser(req, res, false);
             if (permGranted) {
                 const imageFiles = req.files as Express.Multer.File[];
                 // Call service functions for validation
