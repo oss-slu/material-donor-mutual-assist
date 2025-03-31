@@ -15,14 +15,10 @@ export const authenticateUser = async (
     try {
         const authHeader = req.headers.authorization;
         if (!authHeader) {
-            //res.status(401).json({ message: 'Access denied: Not logged in' });
-            res.status(500).json({ message: 'Development error' });
+            res.status(401).json({ message: 'Access denied: Not logged in' });
             return false;
         }
         const decoded = jwt.verify(authHeader, JWT_SECRET) as { role: string };
-        // PLEASE REMOVE THE CODE MAKING adminPerm FALSE - JUST FOR CLEARING THE TESTS
-        adminPerm = false;
-        // REMOVE THE CODE ABOVE
         if (decoded.role != 'ADMIN' && adminPerm) {
             res.status(401).json({
                 message: 'Access denied: Insufficient permissions',

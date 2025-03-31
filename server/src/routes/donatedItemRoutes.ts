@@ -32,8 +32,7 @@ router.post(
     [upload.array('imageFiles', 5), donatedItemValidator], // Allow up to 5 image files
     async (req: Request, res: Response) => {
         try {
-            //const permGranted = await authenticateUser(req, res, true);
-            const permGranted = true;
+            const permGranted = await authenticateUser(req, res, true);
             if (permGranted) {
                 const imageFiles = req.files as Express.Multer.File[];
                 // Call service functions for validation
@@ -131,18 +130,21 @@ router.post(
 // GET /donatedItem - Fetch all donated items
 router.get('/', async (req: Request, res: Response) => {
     try {
-        const donatedItems = await prisma.donatedItem.findMany({
-            include: {
-                donor: true, // Include all donor details
-                program: true, // Include all program details
-                statuses: {
-                    orderBy: {
-                        dateModified: 'asc', // Ensure they are ordered chronologically
+        const permGranted = await authenticateUser(req, res, true);
+        if (permGranted) {
+            const donatedItems = await prisma.donatedItem.findMany({
+                include: {
+                    donor: true, // Include all donor details
+                    program: true, // Include all program details
+                    statuses: {
+                        orderBy: {
+                            dateModified: 'asc', // Ensure they are ordered chronologically
+                        },
                     },
                 },
-            },
-        });
-        res.json(donatedItems);
+            });
+            res.json(donatedItems);
+        }
     } catch (error) {
         if (error instanceof Error) {
             console.error('Error fetching donated item:', error.message);

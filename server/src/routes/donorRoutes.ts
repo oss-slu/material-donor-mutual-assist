@@ -12,8 +12,7 @@ const router = Router();
 
 router.post('/', donorValidator, async (req: Request, res: Response) => {
     try {
-        //const permGranted = await authenticateUser(req, res, true);
-        const permGranted = true;
+        const permGranted = await authenticateUser(req, res, true);
         if (permGranted) {
             const newDonor = await prisma.donor.create({
                 data: req.body,
@@ -41,7 +40,6 @@ router.post('/', donorValidator, async (req: Request, res: Response) => {
 
 router.get('/', async (req: Request, res: Response) => {
     try {
-        //console.log('The req is ' + req.headers.authorization);
         const permGranted = await authenticateUser(req, res, true);
         if (permGranted) {
             const donors = await prisma.donor.findMany();

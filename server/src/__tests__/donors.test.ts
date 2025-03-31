@@ -28,7 +28,6 @@ describe('Donor API', () => {
         mockPrismaClient.donor.create.mockResolvedValue({
             id: 1,
             ...newDonor,
-            role: 'ADMIN',
         });
 
         const response = await request(app)
