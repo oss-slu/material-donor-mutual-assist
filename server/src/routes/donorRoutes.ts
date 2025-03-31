@@ -47,12 +47,6 @@ router.get('/', async (req: Request, res: Response) => {
             const donors = await prisma.donor.findMany();
             res.json(donors);
         }
-        // if (!permGranted) {
-        //     //return res.status(401).json({ message: 'Permission Error'});
-        //     return;
-        // }
-        // const donors = await prisma.donor.findMany();
-        // res.json(donors);
     } catch (error) {
         console.log('Error fetching donor:', error);
         res.status(500).json({ message: 'Error fetching donors' });

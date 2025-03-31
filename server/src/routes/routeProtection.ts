@@ -15,7 +15,8 @@ export const authenticateUser = async (
     try {
         const authHeader = req.headers.authorization;
         if (!authHeader) {
-            res.status(401).json({ message: 'Access denied: Not logged in' });
+            //res.status(401).json({ message: 'Access denied: Not logged in' });
+            res.status(500).json({ message: 'Development error' });
             return false;
         }
         const decoded = jwt.verify(authHeader, JWT_SECRET) as { role: string };
