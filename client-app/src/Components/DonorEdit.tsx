@@ -46,6 +46,7 @@ const DonorEdit: React.FC = () => {
         navigate('/donorlist');
     }
     const donorId = donor.id;
+    const oldEmail = donor.email;
     const [formData, setFormData] = useState<FormData>({
         firstName: donor.firstName,
         lastName: donor.lastName,
@@ -121,7 +122,7 @@ const DonorEdit: React.FC = () => {
                 navigate('/donorlist');
             }
             try {
-                const toSend = { ...formData, id: donorId };
+                const toSend = { ...formData, id: donorId, old: oldEmail };
                 console.log(toSend);
                 const response = await axios.post(
                     `${process.env.REACT_APP_BACKEND_API_BASE_URL}donor/edit`,

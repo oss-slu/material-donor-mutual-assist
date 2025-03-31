@@ -91,6 +91,7 @@ router.post('/register', async (req: Request, res: Response) => {
 router.post('/edit', async (req: Request, res: Response) => {
     const donor = req.body;
     const donorId = parseInt(donor.id);
+    const oldEmail = donor.old;
     try {
         const updateDonor = await prisma.donor.update({
             where: {
@@ -109,7 +110,17 @@ router.post('/edit', async (req: Request, res: Response) => {
                 emailOptIn: donor.emailOptIn,
             },
         });
-        res.status(200).json(updateDonor);
+
+        const updateUser = await prisma.user.update({
+            where: {
+                email: oldEmail,
+            },
+            data: {
+                name: donor.firstName,
+                email: donor.email,
+            },
+        });
+        res.status(200).json({ ...updateDonor, ...updateUser });
     } catch (error) {
         console.log('Error fetching donor:', error);
         res.status(500).json({ message: 'Error fetching donor' });
