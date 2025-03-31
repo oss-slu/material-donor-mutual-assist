@@ -51,41 +51,35 @@ router.post(
 router.post('/reset-password', async (req: Request, res: Response) => {
     const { token, password } = req.body;
 
+    if (!token || !password) {
+        return res.status(400).json({ message: 'Token and password are required' });
+      }
+
+      const isJwt = token.split('.').length === 3; // Check if it's a JWT
+    if (isJwt){
+        // Handle Forgot Password (JWT Token)
     try {
         let decoded: JwtPayload;
-        try {
-            decoded = jwt.verify(token, JWT_SECRET) as JwtPayload; // Decode and verify the token
-        } catch (error) {
-            return res
-                .status(401)
-                .json({ message: 'Invalid or expired token' });
-        }
-
+        decoded = jwt.verify(token, JWT_SECRET) as JwtPayload; // Decode and verify the token
         const userId = decoded.userId;
-
-        try {
-            // Hash the password
-            const newHashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
         // Store new password in database
-        const updatedUser = await prisma.user.update({
+        // const updatedUser = 
+        await prisma.user.update({
             where: { id: userId },
-            data: { password: newHashedPassword }, // The new hashed password
+            data: { password: hashedPassword }, // The new hashed password
         });
 
-            return res.status(201).json({
+            return res.status(200).json({
                 message: 'Password changed successfully',
             });
         } catch (error) {
-            console.error('Login Error:', error);
-            return res.status(500).json({ message: 'Internal server error' });
-        }
-    } catch (jwtError) {
-        try {
-            console.log(
-                'Not a valid JWT, trying first login hashed token flow...',
-            );
-
+             console.log('Login Error. JWT validation failed.');
+             return res.status(401).json({ message: 'Invalid or expired token.' });
+         }
+     } else {
+        try{
             const hashedToken = crypto
                 .createHash('sha256')
                 .update(token)
@@ -97,11 +91,10 @@ router.post('/reset-password', async (req: Request, res: Response) => {
                     resetTokenExpiry: { gte: new Date() },
                 },
             });
-
             if (!user) {
                 return res
                     .status(400)
-                    .json({ message: 'Invalid or expired reset token' });
+                    .json({ message: 'Invalid or expired reset token. Please submit another password reset request.' });
             }
 
             if (user.firstLogin && user.role === 'DONOR') {
@@ -120,13 +113,9 @@ router.post('/reset-password', async (req: Request, res: Response) => {
                 return res
                     .status(200)
                     .json({ message: 'Password reset successful' });
-            } else {
-                return res
-                    .status(403)
-                    .json({ message: 'Reset not allowed for this user' });
             }
-        } catch (dbError) {
-            console.error('Error during first login token flow:', dbError);
+        } catch (error) {
+            console.error('Error during first login token flow:', error);
             return res.status(500).json({ message: 'Internal server error' });
         }
     }
