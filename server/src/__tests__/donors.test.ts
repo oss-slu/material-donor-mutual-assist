@@ -5,7 +5,7 @@ import mockPrismaClient from '../__mocks__/mockPrismaClient'; // Mock Prisma
 import jwt from 'jsonwebtoken';
 
 const generateTestToken = (role: string = 'ADMIN') => {
-    const JWT_SECRET = process.env.JWT_SECRET;
+    const JWT_SECRET = process.env.JWT_SECRET || 'xalngJIazn';
     if (!JWT_SECRET) {
         throw new Error('JWT_SECRET is not set in .env file!');
     }
