@@ -37,7 +37,7 @@ router.post('/', donorValidator, async (req: Request, res: Response) => {
 
 router.get('/', async (req: Request, res: Response) => {
     try {
-        console.log("The req is " + req.headers.authorization);
+        console.log('The req is ' + req.headers.authorization);
         const permGranted = await authenticateUser(req, res, true);
         if (permGranted) {
             const donors = await prisma.donor.findMany();
