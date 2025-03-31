@@ -32,8 +32,7 @@ router.post(
     [upload.array('imageFiles', 5), donatedItemValidator], // Allow up to 5 image files
     async (req: Request, res: Response) => {
         try {
-            //const permGranted = await authenticateUser(req, res, false); // Change to true later
-            const permGranted = true;
+            const permGranted = await authenticateUser(req, res, true);
             if (permGranted) {
                 const imageFiles = req.files as Express.Multer.File[];
                 // Call service functions for validation
@@ -159,7 +158,7 @@ router.get('/', async (req: Request, res: Response) => {
 // GET /donatedItem - Fetch donated item by ID
 router.get('/:id', async (req: Request, res: Response) => {
     try {
-        const permGranted = await authenticateUser(req, res, false); // Change to true later
+        const permGranted = await authenticateUser(req, res, true);
         if (permGranted) {
             const donatedItemId = parseInt(req.params.id);
             await validateDonatedItem(donatedItemId);
