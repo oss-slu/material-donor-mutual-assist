@@ -3,6 +3,7 @@ import prisma from '../prismaClient'; // Import Prisma client
 import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { authenticateUser } from './routeProtection';
 
 const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET; // Use secret from .env
@@ -113,21 +114,24 @@ router.post(
 // Route to create a new program
 router.post('/', async (req: Request, res: Response) => {
     try {
-        const { name, description, startDate, aimAndCause } = req.body;
+        const permGranted = await authenticateUser(req, res, true);
+        if (permGranted) {
+            const { name, description, startDate, aimAndCause } = req.body;
 
-        // Convert the date to include time (e.g., "YYYY-MM-DDT00:00:00Z")
-        const dateTime = new Date(`${startDate}T00:00:00Z`);
+            // Convert the date to include time (e.g., "YYYY-MM-DDT00:00:00Z")
+            const dateTime = new Date(`${startDate}T00:00:00Z`);
 
-        // Create the new program with the full DateTime for startDate
-        const newProgram = await prisma.program.create({
-            data: {
-                name,
-                description,
-                startDate: dateTime, // Pass the DateTime to backend
-                aimAndCause,
-            },
-        });
-        res.status(201).json(newProgram);
+            // Create the new program with the full DateTime for startDate
+            const newProgram = await prisma.program.create({
+                data: {
+                    name,
+                    description,
+                    startDate: dateTime, // Pass the DateTime to backend
+                    aimAndCause,
+                },
+            });
+            res.status(201).json(newProgram);
+        }
     } catch (error) {
         console.error('Error creating program:', error);
         res.status(500).json({ message: 'Error creating program' });
@@ -137,8 +141,11 @@ router.post('/', async (req: Request, res: Response) => {
 // Route to get all programs
 router.get('/', async (req: Request, res: Response) => {
     try {
-        const programs = await prisma.program.findMany();
-        res.json(programs);
+        const permGranted = await authenticateUser(req, res, false);
+        if (permGranted) {
+            const programs = await prisma.program.findMany();
+            res.json(programs);
+        }
     } catch (error) {
         console.error('Error fetching programs:', error);
         res.status(500).json({ message: 'Error fetching programs' });

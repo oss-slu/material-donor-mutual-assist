@@ -12,23 +12,26 @@ const router = Router();
 
 router.post('/', donorValidator, async (req: Request, res: Response) => {
     try {
-        const newDonor = await prisma.donor.create({
-            data: req.body,
-        });
-        console.log('New donor created:', newDonor);
+        const permGranted = await authenticateUser(req, res, true);
+        if (permGranted) {
+            const newDonor = await prisma.donor.create({
+                data: req.body,
+            });
+            console.log('New donor created:', newDonor);
 
-        // Send a welcome email asynchronously
-        try {
-            await sendWelcomeEmail(
-                newDonor.email,
-                `${newDonor.firstName} ${newDonor.lastName}`,
-            );
-            console.log('Welcome email sent successfully');
-        } catch (emailError) {
-            console.log('Failed to send welcome email:', emailError);
+            // Send a welcome email asynchronously
+            try {
+                await sendWelcomeEmail(
+                    newDonor.email,
+                    `${newDonor.firstName} ${newDonor.lastName}`,
+                );
+                console.log('Welcome email sent successfully');
+            } catch (emailError) {
+                console.log('Failed to send welcome email:', emailError);
+            }
+
+            res.status(201).json(newDonor);
         }
-
-        res.status(201).json(newDonor);
     } catch (error) {
         console.log('Error creating donor:', error);
         res.status(500).json({ message: 'Error creating donor' });
@@ -37,7 +40,7 @@ router.post('/', donorValidator, async (req: Request, res: Response) => {
 
 router.get('/', async (req: Request, res: Response) => {
     try {
-        console.log('The req is ' + req.headers.authorization);
+        //console.log('The req is ' + req.headers.authorization);
         const permGranted = await authenticateUser(req, res, true);
         if (permGranted) {
             const donors = await prisma.donor.findMany();
