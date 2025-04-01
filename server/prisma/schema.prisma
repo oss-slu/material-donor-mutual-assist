@@ -72,4 +72,7 @@ model User {
   password String
   createdAt DateTime @default(now())
   role      Role?
+  firstLogin        Boolean  @default(true)
+  resetToken        String?
+  resetTokenExpiry  DateTime?
 }

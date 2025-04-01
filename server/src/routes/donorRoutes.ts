@@ -1,8 +1,9 @@
 import { Router, Request, Response } from 'express';
 import prisma from '../prismaClient'; // Import Prisma client
 import { donorValidator } from '../validators/donorValidator';
-import { sendWelcomeEmail } from '../services/emailService';
+import { sendWelcomeEmail, sendPasswordReset } from '../services/emailService';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto'; // Make sure this is imported
 
 const router = Router();
 
@@ -75,8 +76,32 @@ router.post('/register', async (req: Request, res: Response) => {
 
         // Store user in database
         const user = await prisma.user.create({
-            data: { name, email, password: hashedPassword, role: 'DONOR' },
+            data: {
+                name,
+                email,
+                password: hashedPassword,
+                role: 'DONOR',
+                firstLogin: true,
+            },
         });
+
+        const rawToken = crypto.randomBytes(32).toString('hex');
+        const hashedToken = crypto
+            .createHash('sha256')
+            .update(rawToken)
+            .digest('hex');
+        const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+
+        await prisma.user.update({
+            where: { id: user.id },
+            data: {
+                resetToken: hashedToken,
+                resetTokenExpiry: expiresAt,
+            },
+        });
+
+        await sendPasswordReset(user.email, rawToken);
+        console.log(`Password reset email sent to ${user.email}`);
 
         return res.status(201).json({
             message: 'User registered successfully',
