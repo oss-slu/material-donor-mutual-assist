@@ -16,6 +16,7 @@ import AddProgramPage from './Components/AddProgramPage'; // Import AddProgramPa
 import NewItemForm from './Components/NewItemForm.tsx';
 import DonorList from './Components/DonorList.tsx';
 import DonatedItemDetails from './Components/DonatedItemDetails';
+import DonorEdit from './Components/DonorEdit.tsx';
 import AddDonor from './Components/AddDonor'; // Why is this here?
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
                         element={<StatusUpdate />}
                     />
                     <Route path="/donorform" element={<DonorForm />} />
+                    <Route path="/donoredit" element={<DonorEdit />} />
                     <Route path="/donorlist" element={<DonorList />} />
                     <Route path="/donations" element={<DonatedItemsList />} />
                     <Route path="/programs" element={<Programs />} />
