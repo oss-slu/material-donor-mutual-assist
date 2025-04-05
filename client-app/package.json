@@ -56,7 +56,9 @@
     "test:watch": "jest --watch",
     "eject": "react-scripts eject",
     "tsc": "tsc",
-    "tsc:watch": "tsc-w"
+    "tsc:watch": "tsc-w",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
