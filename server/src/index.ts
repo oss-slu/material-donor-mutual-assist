@@ -62,7 +62,7 @@ const startServer = async () => {
 
         const port = process.env.PORT || 5000;
         app.listen(port, () => {
-            console.log(`[${timestamp}] Server running on http://localhost:${port}`);
+            console.log(`[${timestamp}] Server running on https://material-donor-mutual-assist.onrender.com`);
         });
     } catch (error) {
         console.error(`[${timestamp}] Error connecting to the database:`, (error as Error).message);
