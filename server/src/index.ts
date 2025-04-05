@@ -5,72 +5,73 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { PrismaClient } from '@prisma/client'; // Import Prisma
-const prisma = new PrismaClient(); // Initialize Prisma Client
-import donorRouter from './routes/donorRoutes';
-import programRouter from './routes/programRoutes';
+import { PrismaClient } from '@prisma/client';
 
-import donatedItemRouter from './routes/donatedItemRoutes'; // Import DonatedItem routes
-import donatedItemStatusRouter from './routes/donatedItemStatusRoutes'; // Import DonatedItemStatus routes
-import passwordResetRouter from './routes/passwordResetRoutes';
+dotenv.config(); // Load environment variables
 
 const app = express();
-dotenv.config(); // Load environment variables from .env file
+const prisma = new PrismaClient(); // Initialize Prisma Client
 
-app.use(cors({ origin: 'http://localhost:3000' }));
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
+// Middleware
+app.use(cors({ origin: 'https://material-donor-mutual-assist.onrender.com' }));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Routers
+import donorRouter from './routes/donorRoutes';
+import programRouter from './routes/programRoutes';
+import donatedItemRouter from './routes/donatedItemRoutes';
+import donatedItemStatusRouter from './routes/donatedItemStatusRoutes';
+import passwordResetRouter from './routes/passwordResetRoutes';
+
 app.use('/donor', donorRouter);
 app.use('/program', programRouter);
-app.use('/api', programRouter);
+app.use('/api', programRouter); // You may want to review this duplicate
 app.use('/passwordReset', passwordResetRouter);
-app.use('/donatedItem', donatedItemRouter); // Use DonatedItem routes
-app.use('/donatedItem/status', donatedItemStatusRouter); // Use DonatedItemStatus routes
+app.use('/donatedItem', donatedItemRouter);
+app.use('/donatedItem/status', donatedItemStatusRouter);
 
+// Optional: root route to verify API is running
+app.get('/', (req: Request, res: Response) => {
+    res.send('Material Donor API is live!');
+});
+
+// 404 handler
 app.use((req: Request, res: Response, next: NextFunction) => {
-    next(createError(404));
+    next(createError(404, 'Route not found'));
 });
+
+// Global error handler (no view rendering)
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
-    res.status(err.status || 500);
-    res.render('error');
+    res.status(err.status || 500).json({
+        message: err.message || 'Internal Server Error',
+        error: process.env.NODE_ENV === 'development' ? err : undefined,
+    });
 });
+
+// Start server and connect to DB
 const startServer = async () => {
-    const timestamp = new Date().toISOString(); // Get the current timestamp
+    const timestamp = new Date().toISOString();
 
     try {
-        // Connect to the database
         await prisma.$connect();
-        console.log(
-            `[${timestamp}] Logger: Connected to the database successfully!`,
-        );
+        console.log(`[${timestamp}] Logger: Connected to the database successfully!`);
 
-        // Start the server
-        const port = process.env.PORT;
-
+        const port = process.env.PORT || 5000;
         app.listen(port, () => {
-            console.log(
-                `[${timestamp}] Server running on http://localhost:${port}`,
-            );
+            console.log(`[${timestamp}] Server running on http://localhost:${port}`);
         });
     } catch (error) {
-        console.error('Error connecting to the database:', error);
-        console.error(
-            `[${timestamp}] Error connecting to the database:`,
-            (error as Error).message,
-        );
+        console.error(`[${timestamp}] Error connecting to the database:`, (error as Error).message);
         console.error('Stack Trace:', (error as Error).stack);
     }
 };
-// Call the startServer function to start the server and connect to the DB
+
 startServer();
+
 process.on('SIGINT', async () => {
     await prisma.$disconnect();
     console.log('Prisma client disconnected');
