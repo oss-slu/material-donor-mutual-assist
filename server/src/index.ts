@@ -13,7 +13,19 @@ const app = express();
 const prisma = new PrismaClient(); // Initialize Prisma Client
 
 // Middleware
-app.use(cors({ origin: 'https://material-donor-mutual-assist.onrender.com' }));
+app.use(cors({
+    origin: (origin, callback) => {
+      const allowedLocalhost = 'http://localhost:3000';
+      const githubPagesPattern = /^https:\/\/([a-zA-Z0-9-]+)\.github\.io$/;
+  
+      if (!origin || origin === allowedLocalhost || githubPagesPattern.test(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS: Origin ${origin} not allowed`));
+      }
+    },
+    credentials: true
+  }));  
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
