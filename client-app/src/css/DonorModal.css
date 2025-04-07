@@ -10,7 +10,7 @@
     justify-content: center;
     align-items: flex-start; /* Align modal to the top */
     z-index: 1000; /* Ensure modal appears above all other elements */
-    padding-top: 80px;  /* Adjust padding to ensure the modal is below the navbar */
+    padding-top: 80px; /* Adjust padding to ensure the modal is below the navbar */
 }
 
 /* Modal content styling */
@@ -21,9 +21,9 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     width: 80%;
     max-width: 600px;
-    max-height: 80vh;  /* Prevent overflowing the screen */
-    overflow-y: auto;  /* Enable scrolling if content exceeds the height */
-    position: relative;  /* Ensure the modal content is positioned correctly */
+    max-height: 80vh; /* Prevent overflowing the screen */
+    overflow-y: auto; /* Enable scrolling if content exceeds the height */
+    position: relative; /* Ensure the modal content is positioned correctly */
 }
 
 /* Close button styling */
@@ -61,8 +61,6 @@
 .close-button:hover {
     background-color: #0056b3;
 }
-
-
 
 /* Default modal styles (already defined) */
 .modal-content {

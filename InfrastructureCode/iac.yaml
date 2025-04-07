@@ -2,83 +2,82 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: AWS Infrastructure deployment with CloudFormation
 
 Resources:
-  MyVPC:
-    Type: AWS::EC2::VPC
-    Properties:
-      CidrBlock: 10.0.0.0/16
-      EnableDnsSupport: true
-      EnableDnsHostnames: true
+    MyVPC:
+        Type: AWS::EC2::VPC
+        Properties:
+            CidrBlock: 10.0.0.0/16
+            EnableDnsSupport: true
+            EnableDnsHostnames: true
 
-  MyInternetGateway:
-    Type: AWS::EC2::InternetGateway
+    MyInternetGateway:
+        Type: AWS::EC2::InternetGateway
 
-  MyVPCGatewayAttachment:
-    Type: AWS::EC2::VPCGatewayAttachment
-    Properties:
-      VpcId: !Ref MyVPC
-      InternetGatewayId: !Ref MyInternetGateway
+    MyVPCGatewayAttachment:
+        Type: AWS::EC2::VPCGatewayAttachment
+        Properties:
+            VpcId: !Ref MyVPC
+            InternetGatewayId: !Ref MyInternetGateway
 
-  MySubnet:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref MyVPC
-      CidrBlock: 10.0.1.0/24
-      MapPublicIpOnLaunch: true
+    MySubnet:
+        Type: AWS::EC2::Subnet
+        Properties:
+            VpcId: !Ref MyVPC
+            CidrBlock: 10.0.1.0/24
+            MapPublicIpOnLaunch: true
 
-  MyEC2Instance:
-    Type: AWS::EC2::Instance
-    Properties:
-      ImageId: ami-12345678 
-      InstanceType: t2.micro
-      SubnetId: !Ref MySubnet
+    MyEC2Instance:
+        Type: AWS::EC2::Instance
+        Properties:
+            ImageId: ami-12345678
+            InstanceType: t2.micro
+            SubnetId: !Ref MySubnet
 
-  MyDBInstance:
-    Type: AWS::RDS::DBInstance
-    Properties:
-      DBName: MyDatabase
-      AllocatedStorage: 20
-      DBInstanceClass: db.t2.micro
-      Engine: mysql
-      MasterUsername: admin
-      MasterUserPassword: securepassword
+    MyDBInstance:
+        Type: AWS::RDS::DBInstance
+        Properties:
+            DBName: MyDatabase
+            AllocatedStorage: 20
+            DBInstanceClass: db.t2.micro
+            Engine: mysql
+            MasterUsername: admin
+            MasterUserPassword: securepassword
 
-  MyLoadBalancer:
-    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
-    Properties:
-      Subnets:
-        - !Ref MySubnet
+    MyLoadBalancer:
+        Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+        Properties:
+            Subnets:
+                - !Ref MySubnet
 
-  MyBucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: mdma-bucket
-
+    MyBucket:
+        Type: AWS::S3::Bucket
+        Properties:
+            BucketName: mdma-bucket
 
 Parameters:
-  InstanceType:
-    Type: String
-    Default: t2.micro
-    Description: 'EC2 type'
-  KeyName:
-    Type: String
-    Description: 'EC2 name'
-  DBInstanceName:
-    Type: String
-    Default: 'mydbinstance'
-    Description: 'RDS database instance'
-  DBInstanceClass:
-    Type: String
-    Default: db.t3.micro
-    Description: 'RDS instance class'
-  DBName:
-    Type: String
-    Default: mydatabase
-    Description: 'Name'
-  DBUsername:
-    Type: String
-    Default: myadmin
-    Description: 'User_database'
-  DBPassword:
-    Type: String
-    NoEcho: true
-    Description: 'Database password'
+    InstanceType:
+        Type: String
+        Default: t2.micro
+        Description: 'EC2 type'
+    KeyName:
+        Type: String
+        Description: 'EC2 name'
+    DBInstanceName:
+        Type: String
+        Default: 'mydbinstance'
+        Description: 'RDS database instance'
+    DBInstanceClass:
+        Type: String
+        Default: db.t3.micro
+        Description: 'RDS instance class'
+    DBName:
+        Type: String
+        Default: mydatabase
+        Description: 'Name'
+    DBUsername:
+        Type: String
+        Default: myadmin
+        Description: 'User_database'
+    DBPassword:
+        Type: String
+        NoEcho: true
+        Description: 'Database password'

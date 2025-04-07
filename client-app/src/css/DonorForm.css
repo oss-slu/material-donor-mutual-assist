@@ -113,9 +113,6 @@
     font-weight: bold;
 }
 
-
-
-
 /* Default modal styles (already defined) */
 .modal-content {
     background-color: white;
@@ -128,4 +125,3 @@
     overflow-y: auto;
     position: relative;
 }
-

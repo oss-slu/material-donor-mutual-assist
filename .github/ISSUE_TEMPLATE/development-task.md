@@ -1,10 +1,9 @@
 ---
 name: Development task
 about: Describe a task that needs to be completed, to make progress toward a feature.
-title: "[TASK] - Short Description of the task"
+title: '[TASK] - Short Description of the task'
 labels: ''
 assignees: ''
-
 ---
 
 **Is this task related to a feature or a bug? Please include relevant issue numbers below.**
