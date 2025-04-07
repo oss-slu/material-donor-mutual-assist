@@ -67,7 +67,10 @@ function App() {
                         path="/donations/:id"
                         element={<DonatedItemDetails />}
                     />
-                    <Route path = "/donorDashboard" element = {<DonorDashboard/>}/>
+                    <Route
+                        path="/donorDashboard"
+                        element={<DonorDashboard />}
+                    />
                 </Routes>
             </Popup.PopupProvider>
         </div>
