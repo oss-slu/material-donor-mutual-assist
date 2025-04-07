@@ -85,7 +85,7 @@ const LoginPage: React.FC = () => {
             if (response.ok) {
                 localStorage.setItem('token', data.token);
                 triggerPopup('Welcome ' + data.name + '!');
-                window.location.href = '/';
+                window.location.href = '/material-donor-mutual-assist';
             } else {
                 setErrorMessage(data.message || 'Invalid email or password.');
             }

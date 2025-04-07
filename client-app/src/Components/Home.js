@@ -20,7 +20,7 @@ export default function Home() {
                         alt="Children learning"
                         className="rounded-circle"
                         height="400"
-                        src="/cycle.jpg"
+                        src="/material-donor-mutual-assist/cycle.jpg"
                         style={{
                             aspectRatio: '400/400',
                             objectFit: 'cover',
@@ -31,7 +31,7 @@ export default function Home() {
                         alt="Be more"
                         className="rounded-circle position-absolute bottom-0 end-0 translate-middle"
                         height="200"
-                        src="/image.jpg"
+                        src="/material-donor-mutual-assist/image.jpg"
                         style={{
                             aspectRatio: '200/200',
                             objectFit: 'cover',

@@ -39,7 +39,7 @@ const Navbar: React.FC = () => {
 
         // Ensure UI updates by reloading the page or using event dispatch
         window.dispatchEvent(new Event('storage'));
-        window.location.href = '/';
+        window.location.href = '/material-donor-mutual-assist';
     };
 
     return (
@@ -47,7 +47,7 @@ const Navbar: React.FC = () => {
             <div className="container-fluid">
                 <Link className="navbar-brand" to="/">
                     <img
-                        src="/bworks.png"
+                        src="/material-donor-mutual-assist/bworks.png"
                         alt="Logo"
                         style={{ width: '100px', height: '50px' }}
                     />

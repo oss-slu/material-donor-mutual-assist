@@ -1,19 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom'; // Import BrowserRouter properly
+import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
     <React.StrictMode>
-        <BrowserRouter>
-            {' '}
-            {/* Wrap your App component with BrowserRouter */}
+        <BrowserRouter basename="/material-donor-mutual-assist">
             <App />
         </BrowserRouter>
     </React.StrictMode>,
-    document.getElementById('root'),
+    document.getElementById('root')
 );
 
 reportWebVitals();
