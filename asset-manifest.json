@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/material-donor-mutual-assist/static/css/main.1416184c.css",
-    "main.js": "/material-donor-mutual-assist/static/js/main.f4994ef6.js",
+    "main.js": "/material-donor-mutual-assist/static/js/main.40e3122c.js",
     "static/js/592.7f72a991.chunk.js": "/material-donor-mutual-assist/static/js/592.7f72a991.chunk.js",
     "index.html": "/material-donor-mutual-assist/index.html",
     "main.1416184c.css.map": "/material-donor-mutual-assist/static/css/main.1416184c.css.map",
-    "main.f4994ef6.js.map": "/material-donor-mutual-assist/static/js/main.f4994ef6.js.map",
+    "main.40e3122c.js.map": "/material-donor-mutual-assist/static/js/main.40e3122c.js.map",
     "592.7f72a991.chunk.js.map": "/material-donor-mutual-assist/static/js/592.7f72a991.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.1416184c.css",
-    "static/js/main.f4994ef6.js"
+    "static/js/main.40e3122c.js"
   ]
 }
