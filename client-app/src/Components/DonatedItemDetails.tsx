@@ -33,6 +33,11 @@ const DonatedItemDetails: React.FC = () => {
                 console.log(id);
                 const response = await axios.get<DonatedItem>(
                     `${API_BASE_URL}donatedItem/${id}`,
+                    {
+                        headers: {
+                            Authorization: localStorage.getItem('token'),
+                        },
+                    },
                 );
 
                 console.log(response);
