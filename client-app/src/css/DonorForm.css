@@ -8,6 +8,7 @@
     border-radius: 12px;
     font-family: 'Poppins', sans-serif;
     color: #fff;
+    position: relative;
 }
 
 /* Center and style the heading */
@@ -51,20 +52,6 @@
     color: #333;
 }
 
-/* Email Opt-in checkbox section */
-.donor-form .form-field input[type='checkbox'] {
-    transform: scale(1.2);
-    margin-right: 5px;
-}
-
-.donor-form .form-field label {
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    font-weight: 600;
-    color: #fff;
-}
-
 /* Button styling */
 .donor-form .submit-button {
     padding: 10px 25px;
@@ -92,25 +79,6 @@
         background-color 0.3s ease,
         transform 0.2s ease;
     margin-right: 20px;
-}
-
-/* This should be fixed to a point where it is not hardcoded some point in the future*/
-.donor-form .back-button:hover {
-    background-color: #eb2e1d;
-    transform: translateY(-42px);
-}
-
-.donor-form .refresh-button {
-    padding: 10px 25px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    transition:
-        background-color 0.3s ease,
-        transform 0.2s ease;
 }
 
 /* Button hover effect */
@@ -145,45 +113,19 @@
     font-weight: bold;
 }
 
-/* Image preview container */
-.image-preview-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-top: 10px;
-}
 
-/* Single image preview */
-.preview-item {
+
+
+/* Default modal styles (already defined) */
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
     position: relative;
 }
 
-.preview-image {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 8px;
-    transition: transform 0.3s ease;
-}
-
-.preview-image:hover {
-    transform: scale(1.05);
-}
-
-/* Remove button for images */
-.remove-image-button {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background-color: rgba(255, 0, 0, 0.7);
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    padding: 4px;
-    cursor: pointer;
-    font-size: 10px;
-}
-
-.remove-image-button:hover {
-    background-color: rgba(255, 0, 0, 0.9);
-}

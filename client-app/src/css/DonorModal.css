@@ -1,0 +1,86 @@
+/* Modal overlay to cover the whole screen */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Transparent overlay */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align modal to the top */
+    z-index: 1000; /* Ensure modal appears above all other elements */
+    padding-top: 80px;  /* Adjust padding to ensure the modal is below the navbar */
+}
+
+/* Modal content styling */
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    max-width: 600px;
+    max-height: 80vh;  /* Prevent overflowing the screen */
+    overflow-y: auto;  /* Enable scrolling if content exceeds the height */
+    position: relative;  /* Ensure the modal content is positioned correctly */
+}
+
+/* Close button styling */
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Modal header */
+.modal-header {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Edit button styling */
+.edit-button,
+.close-button {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.edit-button:hover,
+.close-button:hover {
+    background-color: #0056b3;
+}
+
+
+
+/* Default modal styles (already defined) */
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+/* Add this media query at the bottom of the CSS */
+@media (max-width: 600px) {
+    .modal-content {
+        width: 90%; /* Make the modal smaller on mobile devices */
+        max-height: 70vh; /* Allow more height on mobile */
+    }
+}
