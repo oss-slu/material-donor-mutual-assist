@@ -11,6 +11,29 @@ jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe('DonorForm', () => {
+    beforeAll(async () => {
+        const credentials = {
+            email: 'testadmin@test.edu',
+            password: 'testPassword11!',
+        };
+        const temp = await axios.post(
+            `${process.env.REACT_APP_BACKEND_API_BASE_URL}api/register`,
+            {
+                name: 'Admin',
+                email: credentials.email,
+                password: credentials.password,
+            },
+        );
+        const response = await axios.post(
+            `${process.env.REACT_APP_BACKEND_API_BASE_URL}api/login`,
+            credentials,
+        );
+        console.log('Hello!');
+        console.log('Response: ' + response);
+        console.log('Response data: ' + response.data);
+        const { token } = response.data;
+        localStorage.setItem('token', token);
+    });
     beforeEach(() => {
         // Reset mocks before each test
         mockedAxios.post.mockReset();
@@ -92,6 +115,11 @@ describe('DonorForm', () => {
                     city: 'City',
                     zipcode: '12345',
                     emailOptIn: true,
+                },
+                {
+                    headers: {
+                        Authorization: localStorage.getItem('token'),
+                    },
                 },
             );
         });
