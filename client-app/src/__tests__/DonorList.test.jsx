@@ -10,45 +10,45 @@ jest.mock('axios');
 describe('DonorList Component', () => {
     process.env.REACT_APP_BACKEND_API_BASE_URL = 'http://localhost:5000/';
     beforeAll(async () => {
-            const credentials = {
-                email: 'testadmin@test.edu',
-                password: 'testPassword11!',
-            };
-            try {
-                const temp = await axios.post(
-                    `http://localhost:5000/api/register`,
-                    //`${process.env.REACT_APP_BACKEND_API_BASE_URL}api/register`,
-                    {
-                        name: 'Admin',
-                        email: credentials.email,
-                        password: credentials.password,
-                    },
-                );
-                const response = await axios.post(
-                    `http://localhost:5000/api/login`,
-                    //`${process.env.REACT_APP_BACKEND_API_BASE_URL}api/login`,
-                    credentials,
-                );
-                const { token } = response.data;
-                localStorage.setItem('token', token);
-            } catch (error) {
-                console.error('Error during registration or login:');
-    
-                if (axios.isAxiosError(error)) {
-                    console.error('Axios error message:', error.message);
-                    console.error('Axios error response:', error.response?.data);
-                    console.error('Axios error status:', error.response?.status);
-                } else {
-                    console.error('Unexpected error:', error);
-                }
+        const credentials = {
+            email: 'testadmin@test.edu',
+            password: 'testPassword11!',
+        };
+        try {
+            const temp = await axios.post(
+                `http://localhost:5000/api/register`,
+                //`${process.env.REACT_APP_BACKEND_API_BASE_URL}api/register`,
+                {
+                    name: 'Admin',
+                    email: credentials.email,
+                    password: credentials.password,
+                },
+            );
+            const response = await axios.post(
+                `http://localhost:5000/api/login`,
+                //`${process.env.REACT_APP_BACKEND_API_BASE_URL}api/login`,
+                credentials,
+            );
+            const { token } = response.data;
+            localStorage.setItem('token', token);
+        } catch (error) {
+            console.error('Error during registration or login:');
+
+            if (axios.isAxiosError(error)) {
+                console.error('Axios error message:', error.message);
+                console.error('Axios error response:', error.response?.data);
+                console.error('Axios error status:', error.response?.status);
+            } else {
+                console.error('Unexpected error:', error);
             }
-        });
-        // beforeAll(() => {
-        //     // Option 1: Mock the login response and store token
-        //     (axios.post as jest.Mock).mockResolvedValueOnce({ data: { message: 'Registered' } });
-        //     (axios.post as jest.Mock).mockResolvedValueOnce({ data: { token: 'test-token' } });
-        //     localStorage.setItem('token', 'test-token');
-        // });
+        }
+    });
+    // beforeAll(() => {
+    //     // Option 1: Mock the login response and store token
+    //     (axios.post as jest.Mock).mockResolvedValueOnce({ data: { message: 'Registered' } });
+    //     (axios.post as jest.Mock).mockResolvedValueOnce({ data: { token: 'test-token' } });
+    //     localStorage.setItem('token', 'test-token');
+    // });
     test('renders donor details correctly', async () => {
         // Mock the response from the API
         const donorsData = [
