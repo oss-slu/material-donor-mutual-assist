@@ -12,27 +12,41 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe('DonorForm', () => {
     beforeAll(async () => {
+        console.log('Here we go');
         const credentials = {
             email: 'testadmin@test.edu',
             password: 'testPassword11!',
         };
-        const temp = await axios.post(
-            `${process.env.REACT_APP_BACKEND_API_BASE_URL}api/register`,
-            {
-                name: 'Admin',
-                email: credentials.email,
-                password: credentials.password,
-            },
-        );
-        const response = await axios.post(
-            `${process.env.REACT_APP_BACKEND_API_BASE_URL}api/login`,
-            credentials,
-        );
-        console.log('Hello!');
-        console.log('Response: ' + response);
-        console.log('Response data: ' + response.data);
-        const { token } = response.data;
-        localStorage.setItem('token', token);
+        try {
+            const temp = await axios.post(
+                `${process.env.REACT_APP_BACKEND_API_BASE_URL}api/register`,
+                {
+                    name: 'Admin',
+                    email: credentials.email,
+                    password: credentials.password,
+                },
+            );
+            console.log('Temp is: ' + temp);
+            const response = await axios.post(
+                `${process.env.REACT_APP_BACKEND_API_BASE_URL}api/login`,
+                credentials,
+            );
+            console.log('Hello!');
+            console.log('Response: ' + response);
+            console.log('Response data: ' + response.data);
+            const { token } = response.data;
+            localStorage.setItem('token', token);
+        } catch (error) {
+            console.error('Error during registration or login:');
+
+            if (axios.isAxiosError(error)) {
+                console.error('Axios error message:', error.message);
+                console.error('Axios error response:', error.response?.data);
+                console.error('Axios error status:', error.response?.status);
+            } else {
+                console.error('Unexpected error:', error);
+            }
+        }
     });
     beforeEach(() => {
         // Reset mocks before each test
