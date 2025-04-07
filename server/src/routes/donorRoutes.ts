@@ -162,4 +162,27 @@ router.post('/edit', async (req: Request, res: Response) => {
     }
 });
 
+router.get('/me', async (req: Request, res: Response) => {
+    const permitted = await authenticateUser(req, res, false); // Donor or Admin
+    if (!permitted) return;
+
+    const user = (req as any).user;
+
+    try {
+        const profile = await prisma.user.findUnique({
+            where: { id: user.id },
+            select: { id: true, name: true, email: true },
+        });
+
+        const donations = await prisma.donatedItem.findMany({
+            where: { donorId: user.id },
+        });
+
+        res.json({ profile, donations });
+    } catch (error) {
+        console.error('Error fetching donor data:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
 export default router;

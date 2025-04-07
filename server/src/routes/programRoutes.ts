@@ -131,6 +131,8 @@ router.post(
                 JWT_SECRET,
                 { expiresIn: '1h' },
             );
+            console.log('JWT_SECRET during token sign:', JWT_SECRET);
+
 
             return res
                 .status(200)

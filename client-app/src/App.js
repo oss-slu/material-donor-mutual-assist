@@ -18,6 +18,7 @@ import DonorList from './Components/DonorList.tsx';
 import DonatedItemDetails from './Components/DonatedItemDetails';
 import DonorEdit from './Components/DonorEdit.tsx';
 import AddDonor from './Components/AddDonor'; // Why is this here?
+import DonorDashboard from 'Components/DonorDashboard';
 
 function App() {
     // Define handleAddProgram function here
@@ -66,6 +67,7 @@ function App() {
                         path="/donations/:id"
                         element={<DonatedItemDetails />}
                     />
+                    <Route path = "/donorDashboard" element = {<DonorDashboard/>}/>
                 </Routes>
             </Popup.PopupProvider>
         </div>
