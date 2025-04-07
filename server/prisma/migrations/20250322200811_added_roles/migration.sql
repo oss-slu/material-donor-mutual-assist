@@ -5,4 +5,4 @@
 
 */
 -- AlterTable
-ALTER TABLE "Donor" ADD COLUMN     "role" "Role" NOT NULL;
+ALTER TABLE "Donor" ADD COLUMN "role" "Role" NOT NULL;

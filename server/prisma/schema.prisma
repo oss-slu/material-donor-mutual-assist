@@ -70,6 +70,9 @@ model User {
   name     String
   email    String @unique
   password String
-  role     Role
+  role     Role?
   createdAt DateTime @default(now())
+  firstLogin        Boolean  @default(true)
+  resetToken        String?
+  resetTokenExpiry  DateTime?
 }

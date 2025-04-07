@@ -4,6 +4,8 @@ import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { authenticateUser } from './routeProtection';
+import crypto from 'crypto';
+import { sendPasswordReset } from '../services/emailService';
 
 const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET; // Use secret from .env
@@ -92,6 +94,35 @@ router.post(
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) {
                 return res.status(401).json({ message: 'Invalid password.' });
+            }
+
+            // First Login: Force Password Reset
+            if (user.firstLogin && user.role === 'DONOR') {
+                // Generate a secure token
+                const rawToken = crypto.randomBytes(32).toString('hex');
+                const hashedToken = crypto
+                    .createHash('sha256')
+                    .update(rawToken)
+                    .digest('hex');
+                const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 60 minutes
+
+                // Save token and expiry in the user record
+                await prisma.user.update({
+                    where: { id: user.id },
+                    data: {
+                        resetToken: hashedToken,
+                        resetTokenExpiry: expiresAt,
+                    },
+                });
+
+                // Send reset email with the raw token
+                await sendPasswordReset(user.email, rawToken);
+
+                return res.status(403).json({
+                    message:
+                        'Please reset your password using the link sent to your email.',
+                    requireReset: true,
+                });
             }
 
             // Generate JWT token and it expires in 1hr.
