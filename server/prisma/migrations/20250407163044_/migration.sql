@@ -1,4 +1,4 @@
--- ALTER TABLE "User" ADD COLUMN     "firstLogin" BOOLEAN NOT NULL DEFAULT true;
-ALTER TABLE "User" 
-ADD COLUMN "resetToken" TEXT,
-ADD COLUMN "resetTokenExpiry" TIMESTAMP(3);
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "firstLogin" BOOLEAN NOT NULL DEFAULT true,
+ADD COLUMN     "resetToken" TEXT,
+ADD COLUMN     "resetTokenExpiry" TIMESTAMP(3);
