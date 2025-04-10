@@ -85,7 +85,18 @@ const LoginPage: React.FC = () => {
             if (response.ok) {
                 localStorage.setItem('token', data.token);
                 triggerPopup('Welcome ' + data.name + '!');
-                window.location.href = '/';
+
+                console.log('User logged in:', data);
+
+                if (data.role === 'ADMIN') {
+                    window.location.href = '/';
+                } else if (data.role === 'DONOR') {
+                    window.location.href = '/donor-profile';
+                } else {
+                    setErrorMessage(
+                        'Unknown user role. Please contact support.',
+                    );
+                }
             } else {
                 setErrorMessage(data.message || 'Invalid email or password.');
             }

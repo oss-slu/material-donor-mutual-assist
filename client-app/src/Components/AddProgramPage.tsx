@@ -37,6 +37,11 @@ const AddProgramPage = () => {
             const response = await axios.post(
                 `${process.env.REACT_APP_BACKEND_API_BASE_URL}program`,
                 formData,
+                {
+                    headers: {
+                        Authorization: localStorage.getItem('token'),
+                    },
+                },
             );
 
             if (response.status === 201) {
