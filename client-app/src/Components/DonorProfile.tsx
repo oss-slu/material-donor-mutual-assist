@@ -15,7 +15,6 @@ interface Profile {
     old?: string;
 }
 
-  
 const DonorProfile = () => {
     const [profile, setProfile] = useState<Profile | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -42,7 +41,7 @@ const DonorProfile = () => {
                 if (!res.ok) throw new Error('Failed to fetch donor profile.');
                 const data = await res.json();
                 setProfile(data.profile);
-                setEditForm({ ...data.profile }); // Pre-fill form 
+                setEditForm({ ...data.profile }); // Pre-fill form
             })
             .catch(err => {
                 console.error('Profile fetch error:', err);
@@ -88,23 +87,26 @@ const DonorProfile = () => {
             alert('Something went wrong while updating your profile.');
         }
     };
-      
+
     if (loading) return <p>Loading your dashboard...</p>;
     if (error) return <p style={{ color: 'red' }}>{error}</p>;
     if (!profile) return <p>No profile found.</p>;
 
     return (
         <div style={{ padding: '2rem', paddingTop: '4rem' }}>
-            <h2>Welcome, {profile.firstName} {profile.lastName}</h2>
+            <h2>
+                Welcome, {profile.firstName} {profile.lastName}
+            </h2>
 
-            <div style={{
-                maxWidth: '600px',
-                margin: 'auto',
-                padding: '2rem',
-                borderRadius: '10px',
-                background: '#f8f9fa',
-                marginTop: '2rem'
-            }}
+            <div
+                style={{
+                    maxWidth: '600px',
+                    margin: 'auto',
+                    padding: '2rem',
+                    borderRadius: '10px',
+                    background: '#f8f9fa',
+                    marginTop: '2rem',
+                }}
             >
                 {!isEditing && editForm && (
                     <>
@@ -119,13 +121,21 @@ const DonorProfile = () => {
                         <p>City: {profile.city}</p>
                         <p>State: {profile.state}</p>
                         <p>Zipcode: {profile.zipcode}</p>
-                        <p>Opted in for Emails: {profile.emailOptIn ? 'Yes' : 'No'}</p>
+                        <p>
+                            Opted in for Emails:{' '}
+                            {profile.emailOptIn ? 'Yes' : 'No'}
+                        </p>
 
                         <div style={{ marginTop: '1rem' }}>
-                            <button onClick={() => handleEditDonorClick(profile)}>
+                            <button
+                                onClick={() => handleEditDonorClick(profile)}
+                            >
                                 Edit Details
                             </button>
-                            <button onClick={() => setModalIsOpen(false)} style={{ marginLeft: '1rem' }}>
+                            <button
+                                onClick={() => setModalIsOpen(false)}
+                                style={{ marginLeft: '1rem' }}
+                            >
                                 Close
                             </button>
                         </div>
@@ -140,7 +150,14 @@ const DonorProfile = () => {
                                 type="text"
                                 value={editForm.firstName}
                                 onChange={e =>
-                                    setEditForm(prev => prev ? { ...prev, firstName: e.target.value } : prev)
+                                    setEditForm(prev =>
+                                        prev
+                                            ? {
+                                                  ...prev,
+                                                  firstName: e.target.value,
+                                              }
+                                            : prev,
+                                    )
                                 }
                                 placeholder="First Name"
                             />
@@ -148,7 +165,14 @@ const DonorProfile = () => {
                                 type="text"
                                 value={editForm.lastName}
                                 onChange={e =>
-                                    setEditForm(prev => prev ? { ...prev, lastName: e.target.value } : prev)
+                                    setEditForm(prev =>
+                                        prev
+                                            ? {
+                                                  ...prev,
+                                                  lastName: e.target.value,
+                                              }
+                                            : prev,
+                                    )
                                 }
                                 placeholder="Last Name"
                             />
@@ -156,7 +180,14 @@ const DonorProfile = () => {
                                 type="text"
                                 value={editForm.contact}
                                 onChange={e =>
-                                    setEditForm(prev => prev ? { ...prev, contact: e.target.value } : prev)
+                                    setEditForm(prev =>
+                                        prev
+                                            ? {
+                                                  ...prev,
+                                                  contact: e.target.value,
+                                              }
+                                            : prev,
+                                    )
                                 }
                                 placeholder="Contact Number"
                             />
@@ -164,7 +195,14 @@ const DonorProfile = () => {
                                 type="text"
                                 value={editForm.addressLine1}
                                 onChange={e =>
-                                    setEditForm(prev => prev ? { ...prev, addressLine1: e.target.value } : prev)
+                                    setEditForm(prev =>
+                                        prev
+                                            ? {
+                                                  ...prev,
+                                                  addressLine1: e.target.value,
+                                              }
+                                            : prev,
+                                    )
                                 }
                                 placeholder="Address Line 1"
                             />
@@ -172,7 +210,14 @@ const DonorProfile = () => {
                                 type="text"
                                 value={editForm.addressLine2}
                                 onChange={e =>
-                                    setEditForm(prev => prev ? { ...prev, addressLine2: e.target.value } : prev)
+                                    setEditForm(prev =>
+                                        prev
+                                            ? {
+                                                  ...prev,
+                                                  addressLine2: e.target.value,
+                                              }
+                                            : prev,
+                                    )
                                 }
                                 placeholder="Address Line 2"
                             />
@@ -180,7 +225,11 @@ const DonorProfile = () => {
                                 type="text"
                                 value={editForm.city}
                                 onChange={e =>
-                                    setEditForm(prev => prev ? { ...prev, city: e.target.value } : prev)
+                                    setEditForm(prev =>
+                                        prev
+                                            ? { ...prev, city: e.target.value }
+                                            : prev,
+                                    )
                                 }
                                 placeholder="City"
                             />
@@ -188,7 +237,11 @@ const DonorProfile = () => {
                                 type="text"
                                 value={editForm.state}
                                 onChange={e =>
-                                    setEditForm(prev => prev ? { ...prev, state: e.target.value } : prev)
+                                    setEditForm(prev =>
+                                        prev
+                                            ? { ...prev, state: e.target.value }
+                                            : prev,
+                                    )
                                 }
                                 placeholder="State"
                             />
@@ -196,7 +249,14 @@ const DonorProfile = () => {
                                 type="text"
                                 value={editForm.zipcode}
                                 onChange={e =>
-                                    setEditForm(prev => prev ? { ...prev, zipcode: e.target.value } : prev)
+                                    setEditForm(prev =>
+                                        prev
+                                            ? {
+                                                  ...prev,
+                                                  zipcode: e.target.value,
+                                              }
+                                            : prev,
+                                    )
                                 }
                                 placeholder="Zipcode"
                             />
