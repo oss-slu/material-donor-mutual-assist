@@ -18,7 +18,9 @@ import DonorList from './Components/DonorList.tsx';
 import DonatedItemDetails from './Components/DonatedItemDetails';
 import DonorEdit from './Components/DonorEdit.tsx';
 import AddDonor from './Components/AddDonor'; // Why is this here?
-import DonorDashboard from 'Components/DonorDashboard';
+import DonorProfile from 'Components/DonorProfile';
+import ProtectedRoute from 'Components/ProtectedRoute';
+import DonorDonations from './Components/DonorDonations';
 
 function App() {
     // Define handleAddProgram function here
@@ -68,8 +70,20 @@ function App() {
                         element={<DonatedItemDetails />}
                     />
                     <Route
-                        path="/donorDashboard"
-                        element={<DonorDashboard />}
+                        path="/donor-profile"
+                        element={
+                            <ProtectedRoute allowedRole="DONOR">
+                                <DonorProfile />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/my-donations"
+                        element={
+                            <ProtectedRoute allowedRole="DONOR">
+                                <DonorDonations />
+                            </ProtectedRoute>
+                        }
                     />
                 </Routes>
             </Popup.PopupProvider>
