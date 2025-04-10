@@ -21,14 +21,14 @@ const EditProgramPage = () => {
         program = JSON.parse(programData);
     }
     if (!program) {
-        console.error('Donor does not exist!');
+        console.error('Program does not exist!');
         navigate('/programs');
     }
     const programId = program.id;
     const [formData, setFormData] = useState<ProgramData>({
         name: program.name,
         description: program.description,
-        startDate: program.startDate, //ISSUE TO DO: date not auto-populating
+        startDate: program.startDate.toString().split('T')[0],
         aimAndCause: program.aimAndCause,
     });
 
