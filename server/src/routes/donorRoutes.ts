@@ -169,13 +169,25 @@ router.get('/me', async (req: Request, res: Response) => {
     const user = (req as any).user;
 
     try {
-        const profile = await prisma.user.findUnique({
-            where: { id: user.id },
-            select: { id: true, name: true, email: true },
+        const profile = await prisma.donor.findUnique({
+            where: { email: user.email },
+            select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                email: true,
+                contact: true,
+                addressLine1: true,
+                addressLine2: true,
+                city: true,
+                state: true,
+                zipcode: true,
+                emailOptIn: true,
+            },
         });
 
         const donations = await prisma.donatedItem.findMany({
-            where: { donorId: user.id },
+            where: { donorId: profile?.id },
         });
 
         res.json({ profile, donations });
