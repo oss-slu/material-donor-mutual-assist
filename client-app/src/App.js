@@ -13,6 +13,7 @@ import DonorForm from './Components/DonorForm.tsx';
 import StatusUpdate from './Components/AddNewStatus';
 import Programs from './Components/Programs';
 import AddProgramPage from './Components/AddProgramPage'; // Import AddProgramPage correctly
+import EditProgramPage from './Components/EditProgramPage';
 import NewItemForm from './Components/NewItemForm.tsx';
 import DonorList from './Components/DonorList.tsx';
 import DonatedItemDetails from './Components/DonatedItemDetails';
@@ -55,6 +56,7 @@ function App() {
                     <Route path="/donations" element={<DonatedItemsList />} />
                     <Route path="/programs" element={<Programs />} />
                     <Route path="/addprogram" element={<AddProgramPage />} />
+                    <Route path="/editprogram" element={<EditProgramPage />} />
                     <Route path="/adddonation" element={<NewItemForm />} />
                     <Route
                         path="/addprogram"
