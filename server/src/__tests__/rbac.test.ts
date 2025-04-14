@@ -11,14 +11,22 @@ const generateTestToken = (role: string = 'ADMIN', expired: boolean) => {
         throw new Error('JWT_SECRET is not set in .env file!');
     }
     if (expired) {
-        return jwt.sign({ id: 1, email: 'john@example.com', role }, JWT_SECRET, {
-            expiresIn: '-1m',
-        });
+        return jwt.sign(
+            { id: 1, email: 'john@example.com', role },
+            JWT_SECRET,
+            {
+                expiresIn: '-1m',
+            },
+        );
     } else {
-    return jwt.sign({ id: 1, email: 'john@example.com', role }, JWT_SECRET, {
-        expiresIn: '1h',
-    });
-}
+        return jwt.sign(
+            { id: 1, email: 'john@example.com', role },
+            JWT_SECRET,
+            {
+                expiresIn: '1h',
+            },
+        );
+    }
 };
 
 const app: Express = express();
@@ -77,7 +85,7 @@ describe('General Role Based Access', () => {
     });
 
     it('blocks compromised tokens', async () => {
-        compromisedToken = adminToken + "k";
+        compromisedToken = adminToken + 'k';
         req.headers.authorization = compromisedToken;
 
         const result = await authenticateUser(req, res, true);
@@ -112,13 +120,12 @@ describe('General Role Based Access', () => {
     });
 });
 
-
 describe('Donor List RBAC', () => {
     let donorToken: string;
     let adminToken: string;
     beforeAll(() => {
         donorToken = generateTestToken('DONOR', false);
-        adminToken = generateTestToken('ADMIN', false)
+        adminToken = generateTestToken('ADMIN', false);
     });
     beforeEach(() => {
         jest.clearAllMocks(); // Clear mocks before each test to avoid interference
@@ -176,8 +183,8 @@ describe('Donor List RBAC', () => {
             .expect(200)
             .expect('Content-Type', /json/);
 
-            expect(response.body).toHaveLength(1);
-            expect(response.body[0].firstName).toBe('John');
-            expect(mockPrismaClient.donor.findMany).toHaveBeenCalled();
+        expect(response.body).toHaveLength(1);
+        expect(response.body[0].firstName).toBe('John');
+        expect(mockPrismaClient.donor.findMany).toHaveBeenCalled();
     });
 });
