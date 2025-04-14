@@ -32,7 +32,7 @@ const generateTestToken = (role: string = 'ADMIN', expired: boolean) => {
 const app: Express = express();
 app.use(express.json());
 
-describe('General Role Based Access', () => {
+describe('General Role Based Access Tests', () => {
     let req: any;
     let res: any;
     let donorToken: string;
