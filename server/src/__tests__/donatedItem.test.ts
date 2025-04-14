@@ -15,8 +15,7 @@ import jwt from 'jsonwebtoken';
 const generateTestToken = (role: string = 'ADMIN') => {
     const JWT_SECRET = process.env.JWT_SECRET || 'xalngJIazn';
     if (!JWT_SECRET) {
-        throw new Error('JWT_SECRET is not set in .env file!');
-    }
+        throw new Error('JWT_SECRET is not set in .env file!');}
     return jwt.sign({ id: 1, email: 'john@example.com', role }, JWT_SECRET, {
         expiresIn: '1h',
     });
