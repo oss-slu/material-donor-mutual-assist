@@ -14,40 +14,6 @@ process.env.REACT_APP_BACKEND_API_BASE_URL = 'http://localhost:5000/';
 describe('DonorForm', () => {
     beforeAll(() => {
         localStorage.setItem('token', 'mock-token');
-        /*beforeAll(async () => {
-        const credentials = {
-            email: 'testadmin@test.edu',
-            password: 'testPassword11!',
-        };
-        try {
-            console.log(
-                'The process is: ' + process.env.REACT_APP_BACKEND_API_BASE_URL,
-            );
-            const temp = await axios.post(
-                `${process.env.REACT_APP_BACKEND_API_BASE_URL}api/register`,
-                {
-                    name: 'Admin',
-                    email: credentials.email,
-                    password: credentials.password,
-                },
-            );
-            const response = await axios.post(
-                `${process.env.REACT_APP_BACKEND_API_BASE_URL}api/login`,
-                credentials,
-            );
-            const { token } = response.data;
-            localStorage.setItem('token', token);
-        } catch (error) {
-            console.error('Error during registration or login:');
-
-            if (axios.isAxiosError(error)) {
-                console.error('Axios error message:', error.message);
-                console.error('Axios error response:', error.response?.data);
-                console.error('Axios error status:', error.response?.status);
-            } else {
-                console.error('Unexpected error:', error);
-            }
-        }*/
     });
     beforeEach(() => {
         // Reset mocks before each test
