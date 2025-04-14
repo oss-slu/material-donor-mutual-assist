@@ -74,3 +74,12 @@ function App() {
     );
 }
 export default App;
+
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Contact from './pages/Contact';
+// other imports...
+
+<Routes>
+  {/* existing routes */}
+  <Route path="/contact" element={<Contact />} />
+</Routes>
