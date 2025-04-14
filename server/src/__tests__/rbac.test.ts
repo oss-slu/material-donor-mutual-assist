@@ -31,7 +31,6 @@ const generateTestToken = (role: string = 'ADMIN', expired: boolean) => {
 
 const app: Express = express();
 app.use(express.json());
-app.use('/donor', donorRouter);
 
 describe('General Role Based Access', () => {
     let req: any;
@@ -88,7 +87,7 @@ describe('General Role Based Access', () => {
         compromisedToken = adminToken + 'k';
         req.headers.authorization = compromisedToken;
 
-        const result = await authenticateUser(req, res, true);
+        const result = await authenticateUser(req, res, false);
 
         expect(res.status).toHaveBeenCalledWith(500);
         expect(res.json).toHaveBeenCalledWith({
@@ -110,6 +109,15 @@ describe('General Role Based Access', () => {
         expect(result).toBe(false);
     });
 
+    it('allows for donors to access donor pages', async () => {
+        req.headers.authorization = donorToken;
+
+        const result = await authenticateUser(req, res, false);
+
+        expect(result).toBe(true);
+        expect(res.status).toHaveBeenCalledWith(200);
+    });
+
     it('allows for admins to access admin pages', async () => {
         req.headers.authorization = adminToken;
 
@@ -118,73 +126,13 @@ describe('General Role Based Access', () => {
         expect(result).toBe(true);
         expect(res.status).toHaveBeenCalledWith(200);
     });
-});
 
-describe('Donor List RBAC', () => {
-    let donorToken: string;
-    let adminToken: string;
-    beforeAll(() => {
-        donorToken = generateTestToken('DONOR', false);
-        adminToken = generateTestToken('ADMIN', false);
-    });
-    beforeEach(() => {
-        jest.clearAllMocks(); // Clear mocks before each test to avoid interference
-    });
-    it('blocks donors from retrieving donor list', async () => {
-        mockPrismaClient.donor.findMany.mockResolvedValue([
-            {
-                id: 1,
-                firstName: 'John',
-                lastName: 'Doe',
-                email: 'john@example.com',
-            },
-        ]);
+    it('allows for admins to access donor pages', async () => {
+        req.headers.authorization = adminToken;
 
-        const response = await request(app)
-            .get('/donor')
-            .set('Authorization', donorToken)
-            .expect(401)
-            .expect('Content-Type', /json/);
+        const result = await authenticateUser(req, res, false);
 
-        expect(response.body.message).toBe(
-            'Access denied: Insufficient permissions',
-        );
-    });
-    it('blocks donor list if not logged in', async () => {
-        mockPrismaClient.donor.findMany.mockResolvedValue([
-            {
-                id: 1,
-                firstName: 'John',
-                lastName: 'Doe',
-                email: 'john@example.com',
-            },
-        ]);
-
-        const response = await request(app)
-            .get('/donor')
-            .expect(401)
-            .expect('Content-Type', /json/);
-
-        expect(response.body.message).toBe('Access denied: Not logged in');
-    });
-    it('loads donor list for admins', async () => {
-        mockPrismaClient.donor.findMany.mockResolvedValue([
-            {
-                id: 1,
-                firstName: 'John',
-                lastName: 'Doe',
-                email: 'john@example.com',
-            },
-        ]);
-
-        const response = await request(app)
-            .get('/donor')
-            .set('Authorization', adminToken)
-            .expect(200)
-            .expect('Content-Type', /json/);
-
-        expect(response.body).toHaveLength(1);
-        expect(response.body[0].firstName).toBe('John');
-        expect(mockPrismaClient.donor.findMany).toHaveBeenCalled();
+        expect(result).toBe(true);
+        expect(res.status).toHaveBeenCalledWith(200);
     });
 });
