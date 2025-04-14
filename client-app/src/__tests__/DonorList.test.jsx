@@ -8,8 +8,10 @@ import DonorList from '../Components/DonorList';
 jest.mock('axios');
 
 describe('DonorList Component', () => {
+    beforeAll(() => {
     process.env.REACT_APP_BACKEND_API_BASE_URL = 'http://localhost:5000/';
-    beforeAll(async () => {
+    localStorage.setItem('token', 'mock-token');
+    /*beforeAll(async () => {
         const credentials = {
             email: 'testadmin@test.edu',
             password: 'testPassword11!',
@@ -41,7 +43,7 @@ describe('DonorList Component', () => {
             } else {
                 console.error('Unexpected error:', error);
             }
-        }
+        }*/
     });
     // beforeAll(() => {
     //     // Option 1: Mock the login response and store token
