@@ -296,9 +296,10 @@ const DonatedItemsList: React.FC = () => {
                             <td>{item.itemType}</td>
                             <td>{item.currentStatus}</td>
                             <td>
-                                {new Date(
-                                    item.dateDonated,
-                                ).toLocaleDateString()}
+                                {new Date(item.dateDonated).toLocaleDateString(
+                                    undefined,
+                                    { timeZone: 'UTC' },
+                                )}
                             </td>
                             <td>
                                 <div>
@@ -336,14 +337,18 @@ const DonatedItemsList: React.FC = () => {
                             Date Donated:{' '}
                             {new Date(
                                 selectedItemDetails.dateDonated,
-                            ).toLocaleDateString()}
+                            ).toLocaleDateString(undefined, {
+                                timeZone: 'UTC',
+                            })}
                         </p>
                         {selectedItemDetails.lastUpdated && (
                             <p>
                                 Last Updated:{' '}
                                 {new Date(
                                     selectedItemDetails.lastUpdated,
-                                ).toLocaleDateString()}
+                                ).toLocaleDateString(undefined, {
+                                    timeZone: 'UTC',
+                                })}
                             </p>
                         )}
                         <p>
@@ -370,7 +375,10 @@ const DonatedItemsList: React.FC = () => {
                                                     {status.statusType} -{' '}
                                                     {new Date(
                                                         status.dateModified,
-                                                    ).toLocaleDateString()}
+                                                    ).toLocaleDateString(
+                                                        undefined,
+                                                        { timeZone: 'UTC' },
+                                                    )}
                                                 </li>
                                             ),
                                         )}
