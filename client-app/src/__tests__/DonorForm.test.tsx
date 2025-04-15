@@ -9,8 +9,12 @@ import { BrowserRouter } from 'react-router-dom';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
+process.env.REACT_APP_BACKEND_API_BASE_URL = 'http://localhost:5000/';
 
 describe('DonorForm', () => {
+    beforeAll(() => {
+        localStorage.setItem('token', 'mock-token');
+    });
     beforeEach(() => {
         // Reset mocks before each test
         mockedAxios.post.mockReset();
@@ -92,6 +96,11 @@ describe('DonorForm', () => {
                     city: 'City',
                     zipcode: '12345',
                     emailOptIn: true,
+                },
+                {
+                    headers: {
+                        Authorization: localStorage.getItem('token'),
+                    },
                 },
             );
         });

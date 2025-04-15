@@ -52,6 +52,11 @@ const NewItemForm: React.FC = () => {
             try {
                 const response = await axios.get(
                     `${process.env.REACT_APP_BACKEND_API_BASE_URL}donor`,
+                    {
+                        headers: {
+                            Authorization: localStorage.getItem('token'),
+                        },
+                    },
                 );
                 const emailOptions = response.data.map((donor: any) => ({
                     value: donor.id,
@@ -68,6 +73,11 @@ const NewItemForm: React.FC = () => {
             try {
                 const response = await axios.get(
                     `${process.env.REACT_APP_BACKEND_API_BASE_URL}program`,
+                    {
+                        headers: {
+                            Authorization: localStorage.getItem('token'),
+                        },
+                    },
                 );
                 const programOptions = response.data.map((program: any) => ({
                     value: program.id,
@@ -270,6 +280,7 @@ const NewItemForm: React.FC = () => {
                     {
                         headers: {
                             'Content-Type': 'multipart/form-data',
+                            Authorization: localStorage.getItem('token'),
                         },
                     },
                 );

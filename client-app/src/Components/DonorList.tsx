@@ -35,6 +35,11 @@ const DonorList: React.FC = () => {
             try {
                 const response = await axios.get<Donor[]>(
                     `${process.env.REACT_APP_BACKEND_API_BASE_URL}donor`,
+                    {
+                        headers: {
+                            Authorization: localStorage.getItem('token'),
+                        },
+                    },
                 );
                 console.log('Fetched donor data:', response.data); // Log the response data
                 setCurrentDonors(response.data); // Set the fetched data

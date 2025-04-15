@@ -96,6 +96,11 @@ const DonorForm: React.FC = () => {
                 const response = await axios.post(
                     `${process.env.REACT_APP_BACKEND_API_BASE_URL}donor`,
                     formData,
+                    {
+                        headers: {
+                            Authorization: localStorage.getItem('token'),
+                        },
+                    },
                 );
                 if (response.status === 201) {
                     const login_response = await axios.post(
