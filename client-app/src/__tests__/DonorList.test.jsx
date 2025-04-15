@@ -12,7 +12,6 @@ describe('DonorList Component', () => {
         process.env.REACT_APP_BACKEND_API_BASE_URL = 'http://localhost:5000/';
         localStorage.setItem('token', 'mock-token');
     });
-
     test('renders donor details correctly', async () => {
         // Mock the response from the API
         const donorsData = [

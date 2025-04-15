@@ -186,4 +186,30 @@ router.get('/', async (req: Request, res: Response) => {
     }
 });
 
+router.post('/edit', async (req: Request, res: Response) => {
+    try {
+        const program = req.body;
+
+        // Convert the date to include time (e.g., "YYYY-MM-DDT00:00:00Z")
+        const dateTime = new Date(`${program.startDate}T00:00:00Z`);
+
+        // Create the new program with the full DateTime for startDate
+        const editProgram = await prisma.program.update({
+            where: {
+                id: program.id,
+            },
+            data: {
+                name: program.name,
+                description: program.description,
+                startDate: dateTime, // Pass the DateTime to backend
+                aimAndCause: program.aimAndCause,
+            },
+        });
+        res.status(200).json(editProgram);
+    } catch (error) {
+        console.error('Error editing program:', error);
+        res.status(500).json({ message: 'Error editing program' });
+    }
+});
+
 export default router;
