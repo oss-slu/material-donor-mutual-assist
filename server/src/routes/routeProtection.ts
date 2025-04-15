@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-//const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_SECRET = 'xalngJIazn'; // I don't know why calling the process above was always creating errors during the checks. It works when checked manually
+const JWT_SECRET = process.env.JWT_SECRET || 'xalngJIazn' ;
+//const JWT_SECRET = 'xalngJIazn'; // I don't know why calling the process above was always creating errors during the checks. It works when checked manually
 if (!JWT_SECRET) {
     throw new Error('JWT_SECRET is not set in .env file!');
 }
