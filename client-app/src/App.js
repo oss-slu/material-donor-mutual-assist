@@ -94,3 +94,29 @@ function App() {
 }
 
 export default App;
+
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+import HomePage from './pages/HomePage';
+import AdminPage from './pages/AdminPage';
+// Import the footer
+import Footer from './components/Footer';
+
+function App() {
+  return (
+    <Router>
+      <div className="app-container">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/admin" element={<AdminPage />} />
+          {/* Add all your other routes here */}
+        </Routes>
+        {/* Place Footer here to show on all pages */}
+        <Footer />
+      </div>
+    </Router>
+  );
+}
+
+export default App;
