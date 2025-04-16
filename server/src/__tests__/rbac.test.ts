@@ -66,7 +66,7 @@ describe('General Role Based Access Tests', () => {
 
         expect(res.status).toHaveBeenCalledWith(401);
         expect(res.json).toHaveBeenCalledWith({
-            message: 'Access denied: Not logged in',
+            message: 'Authorization token missing or Access denied.',
         });
         expect(result).toBe(false);
     });
@@ -76,9 +76,9 @@ describe('General Role Based Access Tests', () => {
 
         const result = await authenticateUser(req, res, true);
 
-        expect(res.status).toHaveBeenCalledWith(401);
+        expect(res.status).toHaveBeenCalledWith(403);
         expect(res.json).toHaveBeenCalledWith({
-            message: 'Access denied: Insufficient permissions',
+            message: 'Access denied: Admins only.',
         });
         expect(result).toBe(false);
     });
@@ -89,9 +89,9 @@ describe('General Role Based Access Tests', () => {
 
         const result = await authenticateUser(req, res, false);
 
-        expect(res.status).toHaveBeenCalledWith(500);
+        expect(res.status).toHaveBeenCalledWith(401);
         expect(res.json).toHaveBeenCalledWith({
-            message: 'Internal server error',
+            message: 'Invalid or expired token',
         });
         expect(result).toBe(false);
     });
@@ -102,9 +102,9 @@ describe('General Role Based Access Tests', () => {
 
         const result = await authenticateUser(req, res, true);
 
-        expect(res.status).toHaveBeenCalledWith(500);
+        expect(res.status).toHaveBeenCalledWith(401);
         expect(res.json).toHaveBeenCalledWith({
-            message: 'Internal server error',
+            message: 'Invalid or expired token',
         });
         expect(result).toBe(false);
     });
@@ -115,7 +115,8 @@ describe('General Role Based Access Tests', () => {
         const result = await authenticateUser(req, res, false);
 
         expect(result).toBe(true);
-        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.status).not.toHaveBeenCalledWith();
+        expect(res.json).not.toHaveBeenCalled();
     });
 
     it('allows for admins to access admin pages', async () => {
@@ -124,7 +125,8 @@ describe('General Role Based Access Tests', () => {
         const result = await authenticateUser(req, res, true);
 
         expect(result).toBe(true);
-        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.status).not.toHaveBeenCalledWith();
+        expect(res.json).not.toHaveBeenCalled();
     });
 
     it('allows for admins to access donor pages', async () => {
@@ -133,6 +135,7 @@ describe('General Role Based Access Tests', () => {
         const result = await authenticateUser(req, res, false);
 
         expect(result).toBe(true);
-        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.status).not.toHaveBeenCalledWith();
+        expect(res.json).not.toHaveBeenCalled();
     });
 });

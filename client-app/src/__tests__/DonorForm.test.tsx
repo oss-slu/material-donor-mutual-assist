@@ -19,12 +19,10 @@ describe('DonorForm', () => {
         // Reset mocks before each test
         mockedAxios.post.mockReset();
     });
-
     const renderWithRouter = (ui: any, { route = '/' } = {}) => {
         window.history.pushState({}, 'Test page', route);
         return render(<BrowserRouter>{ui}</BrowserRouter>);
     };
-
     it('renders correctly', () => {
         renderWithRouter(<DonorForm />);
         expect(screen.getByText(/Add Donor Details/i)).toBeInTheDocument();
@@ -41,17 +39,14 @@ describe('DonorForm', () => {
             screen.getByRole('button', { name: /Add Donor/i }),
         ).toBeInTheDocument();
     });
-
     it('allows input to be entered', () => {
         renderWithRouter(<DonorForm />);
         const firstNameInput = screen.getByLabelText(/First Name/i);
         act(() => {
             userEvent.type(firstNameInput, 'John');
         });
-
         expect(firstNameInput).toHaveValue('John');
     });
-
     it('validates and submits the form data', async () => {
         renderWithRouter(<DonorForm />);
         const submitButton = screen.getByRole('button', { name: /Add Donor/i });
@@ -73,15 +68,12 @@ describe('DonorForm', () => {
             userEvent.type(screen.getByLabelText(/Zip Code/i), '12345');
             userEvent.click(screen.getByLabelText(/Email Opt-in/i));
         });
-
         // Set up axios mock to simulate successful form submission
         mockedAxios.post.mockResolvedValue({ status: 201 });
-
         act(() => {
             // Click submit
             userEvent.click(submitButton);
         });
-
         await waitFor(() => {
             expect(mockedAxios.post).toHaveBeenCalledWith(
                 `${process.env.REACT_APP_BACKEND_API_BASE_URL}donor`,
@@ -111,7 +103,6 @@ describe('DonorForm', () => {
             ).toBeInTheDocument();
         });
     });
-
     it('displays an error message on submission failure', async () => {
         renderWithRouter(<DonorForm />);
         act(() => {
@@ -131,7 +122,6 @@ describe('DonorForm', () => {
             userEvent.type(screen.getByLabelText(/Zip Code/i), '12345');
             userEvent.click(screen.getByLabelText(/Email Opt-in/i));
         });
-
         // Mock failure response
         mockedAxios.post.mockRejectedValue({
             response: {
@@ -140,22 +130,18 @@ describe('DonorForm', () => {
                 },
             },
         });
-
         act(() => {
             userEvent.click(screen.getByRole('button', { name: /Add Donor/i }));
         });
-
         await waitFor(() => {
             expect(screen.getByText(/Error adding donor/i)).toBeInTheDocument();
         });
     });
-
     it('shows validation errors when fields are incomplete', async () => {
         renderWithRouter(<DonorForm />);
         act(() => {
             userEvent.click(screen.getByRole('button', { name: /Add Donor/i }));
         });
-
         await waitFor(() => {
             expect(
                 screen.getByText(/First Name is required/i),

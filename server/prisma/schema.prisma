@@ -18,7 +18,7 @@ model Donor {
   firstName    String  @db.VarChar(50)
   lastName     String  @db.VarChar(50)
   contact      String? @db.VarChar(10)
-  email        String  @db.VarChar(100)
+  email        String  @db.VarChar(100)@unique
   addressLine1 String? @db.VarChar(50)
   addressLine2 String? @db.VarChar(50)
   state        String? @db.VarChar(15)
