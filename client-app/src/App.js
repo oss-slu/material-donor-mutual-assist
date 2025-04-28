@@ -4,8 +4,8 @@ import Navbar from './Components/Navbar';
 
 import LoginPage from './Components/LoginPage';
 import Popup from './Components/LoginPopup.tsx';
-import Register from './Components/Register';
-import Home from './Components/Home';
+import Register from './Components/Register.tsx';
+import Home from './Components/Home.tsx';
 import ForgotPassword from './Components/ForgotPassword.tsx';
 import ResetPasswordPage from './Components/ResetPasswordPage.tsx';
 import DonatedItemsList from './Components/DonatedItemsList';
@@ -18,7 +18,6 @@ import NewItemForm from './Components/NewItemForm.tsx';
 import DonorList from './Components/DonorList.tsx';
 import DonatedItemDetails from './Components/DonatedItemDetails';
 import DonorEdit from './Components/DonorEdit.tsx';
-import AddDonor from './Components/AddDonor'; // Why is this here?
 import DonorProfile from 'Components/DonorProfile';
 import ProtectedRoute from 'Components/ProtectedRoute';
 import DonorDonations from './Components/DonorDonations';
