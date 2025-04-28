@@ -169,7 +169,8 @@ router.get('/me', async (req: Request, res: Response) => {
     const user = (req as any).user;
 
     try {
-        const profile = await prisma.donor.findFirst({ // Would not let me run it with unique
+        const profile = await prisma.donor.findFirst({
+            // Would not let me run it with unique
 
             // FUTURE ME, REVERT BACK TO findUnique!!!!
             where: { email: user.email },
