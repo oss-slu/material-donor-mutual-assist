@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import LoadingSpinner from './LoadingSpinner';
 import '../css/AddProgramPage.css';
 import axios from 'axios';
 
@@ -20,6 +21,7 @@ const AddProgramPage = () => {
 
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (
@@ -33,6 +35,7 @@ const AddProgramPage = () => {
     };
 
     const handleSave = async () => {
+        setIsLoading(true);
         try {
             const response = await axios.post(
                 `${process.env.REACT_APP_BACKEND_API_BASE_URL}program`,
@@ -68,6 +71,8 @@ const AddProgramPage = () => {
                 'Error creating program';
             setError(message);
             setSuccess(null);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -143,7 +148,11 @@ const AddProgramPage = () => {
                 {error && <p className="error-message">{error}</p>}
                 {success && <p className="success-message">{success}</p>}
                 <div className="button-group">
-                    <button className="save-button" type="submit">
+                    <button
+                        className="save-button"
+                        type="submit"
+                        disabled={isLoading}
+                    >
                         Save
                     </button>
                     <button
@@ -161,6 +170,7 @@ const AddProgramPage = () => {
                         </button>
                     </Link>
                 </div>
+                {isLoading && <LoadingSpinner />}
             </form>
         </div>
     );
