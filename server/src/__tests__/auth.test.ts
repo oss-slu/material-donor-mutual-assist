@@ -1,6 +1,7 @@
 // mock BEFORE imports
 jest.mock('bcryptjs');
 jest.mock('jsonwebtoken');
+process.env.JWT_SECRET = process.env.JWT_SECRET || 'xalngJIazn';
 
 import request from 'supertest';
 import express, { Express } from 'express';
