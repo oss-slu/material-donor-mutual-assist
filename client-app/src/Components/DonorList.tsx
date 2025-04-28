@@ -202,3 +202,44 @@ const DonorList: React.FC = () => {
 };
 
 export default DonorList;
+
+{selectedDonor && (
+    <div
+      className="modal fade show"
+      style={{
+        display: 'block',
+        paddingTop: '80px', // ensures it's not under the navbar
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        zIndex: 1050, // ensures it sits above navbar
+        overflowY: 'auto',
+      }}
+      tabIndex={-1}
+    >
+      <div
+        className="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+        style={{
+          maxHeight: '80vh',
+          margin: 'auto',
+        }}
+      >
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">Donor Details</h5>
+            <button
+              type="button"
+              className="btn-close"
+              onClick={() => setSelectedDonor(null)}
+            ></button>
+          </div>
+          <div className="modal-body">
+            {/* Replace this with your actual donor details */}
+            <p><strong>Name:</strong> {selectedDonor.name}</p>
+            <p><strong>Email:</strong> {selectedDonor.email}</p>
+            <p><strong>Address:</strong> {selectedDonor.address}</p>
+            {/* Add more fields as necessary */}
+          </div>
+        </div>
+      </div>
+    </div>
+  )}
+  

@@ -421,3 +421,5 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
+
+<nav className="navbar navbar-expand-lg navbar-light bg-light" style={{ zIndex: 1040 }}>
