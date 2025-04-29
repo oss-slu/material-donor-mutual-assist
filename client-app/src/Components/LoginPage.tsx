@@ -9,6 +9,8 @@ import { RefreshCw } from 'lucide-react';
 import { Link } from 'react-router-dom'; // Import Link for navigation
 import '../css/LoginPage.css'; // Import CSS file for styling
 import Popup from './LoginPopup';
+import axiosInstance from '../api/axiosInstance';
+
 
 interface Credentials {
     email: string;
@@ -72,25 +74,18 @@ const LoginPage: React.FC = () => {
         }
 
         try {
-            const response = await fetch(
-                `${process.env.REACT_APP_BACKEND_API_BASE_URL}api/login`,
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(credentials),
-                },
-            );
+            const response = await axiosInstance.post('api/login', credentials);
+            const { token, name } = response.data;
 
-            const data = await response.json();
-            if (response.ok) {
-                localStorage.setItem('token', data.token);
-                triggerPopup('Welcome ' + data.name + '!');
-                window.location.href = '/';
-            } else {
-                setErrorMessage(data.message || 'Invalid email or password.');
-            }
-        } catch (error) {
-            setErrorMessage('Something went wrong. Please try again.');
+            localStorage.setItem('token', token);
+
+            // Show welcome popup and redirect
+            triggerPopup('Welcome ' + name + '!');
+            window.location.href = '/';
+        } catch (error: any) {
+            console.error('Login error full response:', error);
+            const errorMsg = error?.response?.data?.message || 'Login failed. Try again.';
+            setErrorMessage(errorMsg);
         }
     };
 
