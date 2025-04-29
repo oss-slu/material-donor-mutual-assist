@@ -17,7 +17,7 @@ import passwordResetRouter from './routes/passwordResetRoutes';
 const app = express();
 dotenv.config(); // Load environment variables from .env file
 
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 

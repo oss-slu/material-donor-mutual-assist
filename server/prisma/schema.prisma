@@ -72,4 +72,5 @@ model User {
   password String
   createdAt DateTime @default(now())
   role      Role?
+  refreshToken  String?  // Store the hashed refresh token
 }

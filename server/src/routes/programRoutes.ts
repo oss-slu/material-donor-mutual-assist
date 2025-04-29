@@ -3,12 +3,29 @@ import prisma from '../prismaClient'; // Import Prisma client
 import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import rateLimit from 'express-rate-limit';
 
 const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET; // Use secret from .env
+const REFRESH_SECRET = process.env.REFRESH_TOKEN_SECRET!;
+
 if (!JWT_SECRET) {
     throw new Error('JWT_SECRET is not set in .env file!');
 }
+
+// Rate limiter: only 5 attempts allowed per IP in 15 minutes
+const loginLimiter = rateLimit({
+    windowMs: 15* 60 * 1000, // 15 minutes
+    max: 5, // allow only 5 requests per IP
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { message: 'Too many login attempts. Try again in 15 minutes.' },
+    handler: (req, res) => {
+        console.log('Rate limiter triggered for IP:', req.ip);
+        res.status(429).json({ message: 'Too many login attempts. Try again after 15 minutes.' });
+      }
+      
+  });
 
 // Route to register a new user
 router.post(
@@ -65,6 +82,8 @@ router.post(
 // Route to login user
 router.post(
     '/login',
+    loginLimiter,
+    
     [
         body('email').isEmail().withMessage('Invalid email format'),
         body('password').notEmpty().withMessage('Password is required'),
@@ -93,12 +112,34 @@ router.post(
                 return res.status(401).json({ message: 'Invalid password.' });
             }
 
-            // Generate JWT token and it expires in 1hr.
+            // Generate JWT token and it expires in 15m.
             const token = jwt.sign(
                 { userId: user.id, email: user.email },
                 JWT_SECRET,
-                { expiresIn: '1h' },
+                { expiresIn: '15m' },
             );
+
+            // Generate long-lived refresh token (1 day)
+            const refreshToken = jwt.sign(
+                { userId: user.id },
+                REFRESH_SECRET,
+                { expiresIn: '1d' },
+            );
+
+            // storing hashed refresh token in DB
+            const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+            await prisma.user.update({
+                where: { id: user.id },
+                data: { refreshToken: hashedRefreshToken },
+            });
+
+            // Set refresh token in HttpOnly cookie
+            res.cookie('refreshToken', refreshToken, {
+                httpOnly: true,
+                secure: false, 
+                sameSite: 'strict',
+                maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
+            });
 
             return res
                 .status(200)
@@ -144,5 +185,56 @@ router.get('/', async (req: Request, res: Response) => {
         res.status(500).json({ message: 'Error fetching programs' });
     }
 });
+
+router.post('/refresh-token', async (req: Request, res: Response) => {
+    const refToken = req.cookies?.refreshToken;
+  
+    if (!refToken) {
+      return res.status(401).json({ message: 'No refresh token provided.' });
+    }
+  
+    try {
+      const payload = jwt.verify(refToken, REFRESH_SECRET) as { userId: string };
+      const user = await prisma.user.findUnique({ where: { id: payload.userId } });
+  
+      if (!user || !user.refreshToken) {
+        return res.status(403).json({ message: 'Invalid refresh token.' });
+      }
+  
+      const isValid = await bcrypt.compare(refToken, user.refreshToken);
+      if (!isValid) {
+        return res.status(403).json({ message: 'Refresh token mismatch.' });
+      }
+  
+      const newToken = jwt.sign(
+        { userId: user.id, email: user.email },
+        JWT_SECRET,
+        { expiresIn: '15m' },
+      );
+  
+      const newRefreshToken = jwt.sign(
+        { userId: user.id },
+        REFRESH_SECRET,
+        { expiresIn: '3d' },
+      );
+
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { refreshToken: await bcrypt.hash(newRefreshToken, 10) },
+      });
+  
+      res.cookie('refreshToken', newRefreshToken, {
+        httpOnly: true,
+        secure: false, // change this state to true in production
+        sameSite: 'strict',
+        maxAge: 3 * 24 * 60 * 60 * 1000,
+      });
+  
+      return res.status(200).json({ token: newToken });
+    } catch (err) {
+      console.error('Refresh Token Error:', err);
+      return res.status(403).json({ message: 'Could not verify refresh token.' });
+    }
+  });
 
 export default router;
