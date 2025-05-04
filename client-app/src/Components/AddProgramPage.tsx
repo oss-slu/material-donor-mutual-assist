@@ -77,12 +77,14 @@ const AddProgramPage = () => {
     };
 
     const handleClear = () => {
+        setIsLoading(true);
         setFormData({
             name: '',
             description: '',
             startDate: '',
             aimAndCause: '',
         });
+        setIsLoading(false);
     };
 
     return (
@@ -158,6 +160,7 @@ const AddProgramPage = () => {
                     <button
                         className="clear-button"
                         type="button"
+                        disabled={isLoading}
                         onClick={handleClear}
                     >
                         Clear
@@ -165,7 +168,7 @@ const AddProgramPage = () => {
                 </div>
                 <div className="back-to-programs">
                     <Link to="/programs">
-                        <button className="back-button">
+                        <button className="back-button" disabled={isLoading}>
                             Back to Programs
                         </button>
                     </Link>

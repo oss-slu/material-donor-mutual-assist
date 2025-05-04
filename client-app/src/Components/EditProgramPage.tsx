@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../css/AddProgramPage.css';
 import axios from 'axios';
+import LoadingSpinner from './LoadingSpinner';
 
 interface ProgramData {
     name: string;
@@ -13,6 +14,7 @@ interface ProgramData {
 const EditProgramPage = () => {
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     let program = null;
@@ -43,6 +45,7 @@ const EditProgramPage = () => {
     };
 
     const handleSave = async () => {
+        setIsLoading(true);
         try {
             const response = await axios.post(
                 `${process.env.REACT_APP_BACKEND_API_BASE_URL}program/edit`,
@@ -73,6 +76,8 @@ const EditProgramPage = () => {
                 'Error creating program';
             setError(message);
             setSuccess(null);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -139,17 +144,22 @@ const EditProgramPage = () => {
                 {error && <p className="error-message">{error}</p>}
                 {success && <p className="success-message">{success}</p>}
                 <div className="button-group">
-                    <button className="save-button" type="submit">
+                    <button
+                        className="save-button"
+                        type="submit"
+                        disabled={isLoading}
+                    >
                         Save
                     </button>
                 </div>
                 <div className="back-to-programs">
                     <Link to="/programs">
-                        <button className="back-button">
+                        <button className="back-button" disabled={isLoading}>
                             Back to Programs
                         </button>
                     </Link>
                 </div>
+                {isLoading && <LoadingSpinner />}
             </form>
         </div>
     );

@@ -306,6 +306,7 @@ const NewItemForm: React.FC = () => {
     };
 
     const handleRefresh = () => {
+        setIsLoading(true);
         setFormData({
             itemType: '',
             currentStatus: 'Received',
@@ -318,10 +319,13 @@ const NewItemForm: React.FC = () => {
         setErrors({});
         setErrorMessage(null);
         setSuccessMessage(null);
+        setIsLoading(false);
     };
 
     const handleBack = () => {
+        setIsLoading(true);
         navigate('/donations');
+        setIsLoading(false);
     };
 
     const renderFormField = (
@@ -456,6 +460,7 @@ const NewItemForm: React.FC = () => {
                         type="button"
                         onClick={handleRefresh}
                         className="refresh-button"
+                        disabled={isLoading}
                     >
                         Refresh
                     </button>
@@ -463,6 +468,7 @@ const NewItemForm: React.FC = () => {
                         type="button"
                         onClick={handleBack}
                         className="back-button"
+                        disabled={isLoading}
                     >
                         Back
                     </button>

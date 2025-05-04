@@ -146,6 +146,7 @@ const DonorForm: React.FC = () => {
 
     // Handle form reset
     const handleRefresh = () => {
+        setIsLoading(true);
         setFormData({
             firstName: '',
             lastName: '',
@@ -161,10 +162,13 @@ const DonorForm: React.FC = () => {
         setErrors({});
         setErrorMessage(null);
         setSuccessMessage(null);
+        setIsLoading(false);
     };
 
     const handleBack = () => {
+        setIsLoading(true);
         navigate('/donorlist');
+        setIsLoading(false);
     };
 
     // Reusable function to render form fields (text and checkbox)
@@ -251,6 +255,7 @@ const DonorForm: React.FC = () => {
                         type="button"
                         onClick={handleRefresh}
                         className="refresh-button"
+                        disabled={isLoading}
                     >
                         Refresh
                     </button>
@@ -258,6 +263,7 @@ const DonorForm: React.FC = () => {
                         type="button"
                         onClick={handleBack}
                         className="back-button"
+                        disabled={isLoading}
                     >
                         Back
                     </button>
