@@ -2,6 +2,7 @@ import React, { useState, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../css/DonorForm.css';
+import LoadingSpinner from './LoadingSpinner';
 
 interface Donor {
     id: number;
@@ -63,6 +64,7 @@ const DonorEdit: React.FC = () => {
     const [errors, setErrors] = useState<FormErrors>({});
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     // Handle input change for all fields
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -116,6 +118,7 @@ const DonorEdit: React.FC = () => {
     // Handle form submission
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setIsLoading(true);
         if (validateForm()) {
             if (!donorId) {
                 setErrorMessage('Donor ID is missing!');
@@ -138,6 +141,8 @@ const DonorEdit: React.FC = () => {
                     (error as any).response?.data?.message ||
                     'Error Updating donor';
                 setErrorMessage(message);
+            } finally {
+                setIsLoading(false);
             }
         } else {
             setErrorMessage('Form has validation errors');
@@ -145,7 +150,9 @@ const DonorEdit: React.FC = () => {
     };
 
     const handleBack = () => {
+        setIsLoading(true);
         navigate('/donorlist');
+        setIsLoading(false);
     };
 
     // Reusable function to render form fields (text and checkbox)
@@ -221,17 +228,23 @@ const DonorEdit: React.FC = () => {
                     </div>
                 </div>
                 <div className="form-field full-width button-container">
-                    <button type="submit" className="submit-button">
+                    <button
+                        type="submit"
+                        className="submit-button"
+                        disabled={isLoading}
+                    >
                         Update Donor
                     </button>
                     <button
                         type="button"
                         onClick={handleBack}
                         className="back-button"
+                        disabled={isLoading}
                     >
                         Back
                     </button>
                 </div>
+                {isLoading && <LoadingSpinner />}
             </form>
         </div>
     );

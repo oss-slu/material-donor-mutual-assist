@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import LoadingSpinner from './LoadingSpinner';
 import '../css/DonorForm.css';
 
 interface FormData {
@@ -38,6 +39,7 @@ const DonorForm: React.FC = () => {
     const [errors, setErrors] = useState<FormErrors>({});
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     // Handle input change for all fields
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -91,6 +93,7 @@ const DonorForm: React.FC = () => {
     // Handle form submission
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setIsLoading(true);
         if (validateForm()) {
             try {
                 const response = await axios.post(
@@ -133,6 +136,8 @@ const DonorForm: React.FC = () => {
                     (error as any).response?.data?.message ||
                     'Error adding donor';
                 setErrorMessage(message);
+            } finally {
+                setIsLoading(false);
             }
         } else {
             setErrorMessage('Form has validation errors');
@@ -141,6 +146,7 @@ const DonorForm: React.FC = () => {
 
     // Handle form reset
     const handleRefresh = () => {
+        setIsLoading(true);
         setFormData({
             firstName: '',
             lastName: '',
@@ -156,10 +162,13 @@ const DonorForm: React.FC = () => {
         setErrors({});
         setErrorMessage(null);
         setSuccessMessage(null);
+        setIsLoading(false);
     };
 
     const handleBack = () => {
+        setIsLoading(true);
         navigate('/donorlist');
+        setIsLoading(false);
     };
 
     // Reusable function to render form fields (text and checkbox)
@@ -235,13 +244,18 @@ const DonorForm: React.FC = () => {
                     </div>
                 </div>
                 <div className="form-field full-width button-container">
-                    <button type="submit" className="submit-button">
+                    <button
+                        type="submit"
+                        className="submit-button"
+                        disabled={isLoading}
+                    >
                         Add Donor
                     </button>
                     <button
                         type="button"
                         onClick={handleRefresh}
                         className="refresh-button"
+                        disabled={isLoading}
                     >
                         Refresh
                     </button>
@@ -249,10 +263,12 @@ const DonorForm: React.FC = () => {
                         type="button"
                         onClick={handleBack}
                         className="back-button"
+                        disabled={isLoading}
                     >
                         Back
                     </button>
                 </div>
+                {isLoading && <LoadingSpinner />}
             </form>
         </div>
     );
