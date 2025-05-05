@@ -103,6 +103,7 @@ export const sendDonationEmail = async (
         year: 'numeric',
         month: 'long',
         day: 'numeric',
+        timeZone: 'UTC',
     });
     const imageSection =
         SASUrls.length > 0
