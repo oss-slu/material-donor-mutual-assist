@@ -29,8 +29,6 @@ const DonatedItemDetails: React.FC = () => {
             try {
                 const API_BASE_URL =
                     process.env.REACT_APP_BACKEND_API_BASE_URL || '';
-                console.log(API_BASE_URL);
-                console.log(id);
                 const response = await axios.get<DonatedItem>(
                     `${API_BASE_URL}donatedItem/${id}`,
                     {
@@ -40,7 +38,6 @@ const DonatedItemDetails: React.FC = () => {
                     },
                 );
 
-                console.log(response);
                 setDonatedItem(response.data);
             } catch (err) {
                 if (axios.isAxiosError(err)) {
@@ -59,9 +56,12 @@ const DonatedItemDetails: React.FC = () => {
         fetchDonatedItemDetails();
     }, [id]);
 
-    const formatDate = (dateString: string) => {
+    const formatDate = (dateString: string, isUTC: boolean) => {
         const date = new Date(dateString);
-        return isNaN(date.getTime()) ? 'Invalid date' : date.toDateString();
+        if (isNaN(date.getTime())) return 'Invalid date';
+        if (!isUTC)
+            date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+        return date.toDateString();
     };
 
     if (loading) return <div>Loading...</div>;
@@ -94,7 +94,7 @@ const DonatedItemDetails: React.FC = () => {
                                     active={true}
                                     completed={false}
                                 >
-                                    <StepLabel>{`${status.statusType} (${formatDate(status.dateModified)})`}</StepLabel>
+                                    <StepLabel>{`${status.statusType} (${formatDate(status.dateModified, false)})`}</StepLabel>
 
                                     <StepContent>
                                         <div className="image-scroll-container">
@@ -129,11 +129,11 @@ const DonatedItemDetails: React.FC = () => {
                         </p>
                         <p>
                             <strong>Donated On:</strong>{' '}
-                            {formatDate(donatedItem.dateDonated)}
+                            {formatDate(donatedItem.dateDonated, false)}
                         </p>
                         <p>
                             <strong>Last Updated:</strong>{' '}
-                            {formatDate(donatedItem.lastUpdated)}
+                            {formatDate(donatedItem.lastUpdated, true)}
                         </p>
                     </section>
 
@@ -179,7 +179,7 @@ const DonatedItemDetails: React.FC = () => {
                         </p>
                         <p>
                             <strong>Start Date:</strong>{' '}
-                            {formatDate(donatedItem.program?.startDate)}
+                            {formatDate(donatedItem.program?.startDate, false)}
                         </p>
                         <p>
                             <strong>Aim and Cause:</strong>{' '}
