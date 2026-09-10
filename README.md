@@ -27,45 +27,101 @@ cd material-donor-mutual-assist
 ```
 
 ## Create Environment Variables
-Create a `.env` file and define the necessary environment variables:
-```
-# database service
-POSTGRES_USER="admin"
-POSTGRES_PASSWORD="admin"
 
-# frontend service
-FRONTEND_PORT="3000"
-REACT_APP_BACKEND_API_BASE_URL="http://localhost:5050/"
+Copy the template to a `.env` file in the repository root, then fill in the
+secrets (Azure, Gemini, SMTP):
 
-# backend service
-AZURE_STORAGE_ACCOUNT_NAME="mdmaproject"
-AZURE_STORAGE_ACCESS_KEY="<enter-azure-storage-access-key>"
-BACKEND_PORT=5000
-DATABASE_URL="postgresql://admin:admin@mdma-database-container:5432/mdma"
-JWT_SECRET="mymdmaSuperKey"
-SMTP_HOST="smtp.gmail.com"
-SMTP_PORT="587"
-SMTP_SECURE="false"
-SMTP_USER="enter your gmail"
-SMTP_PASS="enter your App password"
 ```
+cp .env.example .env
+```
+
+`.env.example` documents every variable the services read. Two of them cause
+most setup failures, so check these first if something does not work:
+
+- **`DATABASE_URL`** must use the compose hostname `mdma-database-container`.
+  Using `localhost` here resolves to the backend container itself and fails
+  with `P1001: Can't reach database server`. If your password contains any of
+  `@ : / ? # [ ]`, percent-encode it (`p@ss` becomes `p%40ss`).
+- **`REACT_APP_BACKEND_API_BASE_URL`** must use host port **5050**, not 5000.
+  The backend listens on 5000 inside its container, but compose publishes it
+  on 5050. This value is used by the browser, so it needs the host port.
+
+Your `.env` is gitignored — never commit it.
 
 ### Start the Development Environment
 
 Run the following command to build and start the services:
 ```
-docker-compose up -d
+docker compose up -d
 ```
-This will start all necessary containers in the background.
+This will start all necessary containers in the background. On the first run
+the backend applies all database migrations before it starts serving, which
+takes a minute or so.
 
 ### Accessing the Application
 After the application starts, navigate to http://localhost:3000 in your web browser.
 
-### Stop the Development Environment 
+### Create the First Admin Account
 
+Accounts registered through the app start with status `PENDING`, and approving
+an account requires an admin who is already `ACTIVE`. On a new database there
+is none, so the first account has to be activated directly in the database.
+
+Register at http://localhost:3000/register, then run:
+
+```
+docker exec mdma-database-container psql -U admin -d mdma \
+  -c "UPDATE \"User\" SET status='ACTIVE' WHERE email='your@email.com';"
+```
+
+The double quotes around `"User"` are required — PostgreSQL lowercases
+unquoted identifiers, and `user` is a reserved word.
+
+Log out and back in afterwards, because your account status is embedded in the
+JWT issued at login. You can then approve everyone else from
+**Admin → User Management** (http://localhost:3000/admin/user-management), and
+this command should not be needed again.
+
+### Stop the Development Environment
+
+To stop the containers while keeping the database:
+```
+docker compose stop
+```
+
+To remove the containers (the database volume is kept, so your data survives):
 ```
 docker compose down
 ```
+
+To also delete the database and start completely fresh:
+```
+docker compose down -v
+```
+
+### Troubleshooting
+
+**`address already in use` on startup.** Another service holds one of the
+published ports — most often a PostgreSQL installed directly on your machine
+using 5432. Either stop it, or remap the host port without editing the
+committed compose file by creating `docker-compose.override.yml` (gitignored):
+
+```yaml
+services:
+  mdma-database:
+    ports: !override
+      - "5435:5432"
+```
+
+Containers reach each other over the compose network, so this only changes how
+you connect from your own machine (`psql -h localhost -p 5435`).
+
+**`CORS request did not succeed` / `NetworkError` in the browser.** Either the
+frontend is calling the wrong port (see `REACT_APP_BACKEND_API_BASE_URL`
+above), or you are running the frontend on a port that is not allow-listed. Add
+it to `CORS_ALLOWED_ORIGINS` in `.env` as a comma-separated list, for example
+`"http://localhost:3000,http://localhost:3001"`, then restart the backend with
+`docker compose restart mdma-backend`.
 
 ## Development Setup
 

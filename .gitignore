@@ -3,3 +3,5 @@ node_modules
 *.DS_Store
 .vscode
 .env
+# Local docker compose overrides (host-specific port remaps, etc.)
+docker-compose.override.yml
