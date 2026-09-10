@@ -1,11 +1,11 @@
 {
   "devDependencies": {
-    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.2",
-    "@testing-library/user-event": "^14.6.1",
+    "@testing-library/user-event": "^14.6.3",
     "@types/jest": "^30.0.0",
-    "concurrently": "^9.2.1",
-    "prettier": "^3.8.3",
+    "concurrently": "^10.0.4",
+    "prettier": "^3.9.6",
     "serve": "^14.2.6"
   },
   "scripts": {
@@ -22,7 +22,7 @@
     "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\""
   },
   "dependencies": {
-    "bwip-js": "^4.9.0",
+    "bwip-js": "^4.11.2",
     "cors": "^2.8.6",
     "express": "^5.2.1"
   }

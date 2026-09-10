@@ -11,11 +11,13 @@ permissions:
 jobs:
   automerge:
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
+    #if: github.actor == 'dependabot[bot]'
+    if: ${{ github.actor == 'dependabot[bot]' }}
+
     steps:
       # Checkout the repository so .git exists
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       # Enable auto-merge
       - name: Enable auto-merge
@@ -23,3 +25,5 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           merge-method: merge
+          pull-request-number: ${{ github.event.pull_request.number }}
+
