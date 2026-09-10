@@ -155,15 +155,18 @@ const DonatedItemsList: React.FC = () => {
                         ),
                 );
 
+                const isNumericSearch = /^\d+$/.test(searchTerm);
+
                 const matchesSearch =
                     !searchTerm ||
-                    item.id.toString().includes(searchTerm) ||
-                    normalize(item.itemType).includes(searchTerm) ||
-                    normalize(item.category).includes(searchTerm) ||
-                    normalize(item.currentStatus).includes(searchTerm) ||
-                    normalize(donorName).includes(searchTerm) ||
-                    normalize(item.program?.name).includes(searchTerm) ||
-                    attributeMatchesSearch;
+                    (isNumericSearch
+                        ? item.id.toString() === searchTerm
+                        : normalize(item.itemType).includes(searchTerm) ||
+                          normalize(item.category).includes(searchTerm) ||
+                          normalize(item.currentStatus).includes(searchTerm) ||
+                          normalize(donorName).includes(searchTerm) ||
+                          normalize(item.program?.name).includes(searchTerm) ||
+                          attributeMatchesSearch);
 
                 const matchesItemType =
                     !itemTypeFilter ||
@@ -445,7 +448,6 @@ const DonatedItemsList: React.FC = () => {
         const descriptor = (
             descriptorInput ?? selectedAttributeDescriptor
         ).trim();
-
         if (!descriptor) return;
 
         const alreadySelected = attributeFilters.some(
