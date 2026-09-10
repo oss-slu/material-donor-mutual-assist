@@ -30,14 +30,31 @@ const allowedOrigins = (process.env.CORS_ALLOWED_ORIGINS || '')
 app.use(
     cors({
         origin: (origin, callback) => {
-            if (!origin || allowedOrigins.includes(origin)) {
-                callback(null, true);
-                return;
-            }
-            callback(new Error(`CORS blocked for origin: ${origin}`));
+            // Never pass an error here. It propagates to the central error
+            // handler, which responds 500 without any CORS headers, so the
+            // browser reports a misleading "Access-Control-Allow-Origin
+            // missing" instead of the real reason. Disallowed origins are
+            // answered explicitly below.
+            callback(null, !origin || allowedOrigins.includes(origin));
         },
     }),
 );
+
+// Answer disallowed origins with a clear 403 rather than letting the request
+// (including preflights) fall through to the routers.
+app.use((req: Request, res: Response, next: NextFunction) => {
+    const origin = req.get('Origin');
+    if (origin && !allowedOrigins.includes(origin)) {
+        res.status(403).json({
+            message:
+                `Origin ${origin} is not allowed. Add it to ` +
+                `CORS_ALLOWED_ORIGINS in your .env (comma-separated), then ` +
+                `recreate the backend with: docker compose up -d mdma-backend`,
+        });
+        return;
+    }
+    next();
+});
 
 // View engine (if you actually use Pug views)
 app.set('views', path.join(__dirname, 'views'));
