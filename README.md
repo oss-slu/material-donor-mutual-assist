@@ -120,8 +120,14 @@ you connect from your own machine (`psql -h localhost -p 5435`).
 frontend is calling the wrong port (see `REACT_APP_BACKEND_API_BASE_URL`
 above), or you are running the frontend on a port that is not allow-listed. Add
 it to `CORS_ALLOWED_ORIGINS` in `.env` as a comma-separated list, for example
-`"http://localhost:3000,http://localhost:3001"`, then restart the backend with
-`docker compose restart mdma-backend`.
+`"http://localhost:3000,http://localhost:3001"`, then recreate the backend:
+
+```
+docker compose up -d mdma-backend
+```
+
+Use `up -d`, not `docker compose restart` — `restart` reuses the container's
+existing environment and silently ignores changes to `.env`.
 
 ## Development Setup
 
