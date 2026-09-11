@@ -241,6 +241,25 @@ async function findOrCreateDonorByEmail(email: string) {
     });
 }
 
+// Tables that this importer writes with explicit ids, and therefore whose
+// sequences must be realigned once an import finishes.
+const SEQUENCE_OWNERS = ['DonatedItem', 'DonatedItemStatus', 'Donor'];
+
+async function resyncSequences(): Promise<void> {
+    for (const table of SEQUENCE_OWNERS) {
+        try {
+            await prisma.$executeRawUnsafe(
+                `SELECT setval(pg_get_serial_sequence('"${table}"', 'id'),
+                        COALESCE((SELECT MAX(id) FROM "${table}"), 1), true)`,
+            );
+        } catch (error) {
+            // A failure here must not fail the import: the rows are already
+            // committed. Log it so the mismatch can be corrected manually.
+            console.error(`Failed to resync sequence for ${table}:`, error);
+        }
+    }
+}
+
 // POST /api/csv - Import multiple donated items from a CSV upload
 router.post(
     '/api/csv',
@@ -375,6 +394,15 @@ router.post(
                                 : 'Unknown import error',
                     });
                 }
+            }
+
+            // Rows above are inserted with ids taken from the CSV. Postgres
+            // only advances a sequence when it generates the value itself, so
+            // an explicit id leaves the sequence behind the table and the next
+            // ordinary create fails with "Unique constraint failed on the
+            // fields: (id)". Push each sequence past the highest id in use.
+            if (importedItems.length > 0) {
+                await resyncSequences();
             }
 
             const responseStatus = failedRows.length > 0 ? 207 : 201;
