@@ -31,6 +31,6 @@ _Detail the key modifications in the codebase, highlighting significant files, f
 _Include screenshots or visual representations of the changes, especially for user interface updates._
 
 - **Before:**
-  - _Attach screenshot_
+    - _Attach screenshot_
 - **After:**
-  - _Attach screenshot_
+    - _Attach screenshot_
