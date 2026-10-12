@@ -1,6 +1,7 @@
 # Material Derailleur
 
 ## Overview
+
 The Material Derailleur project by BWorks is designed to streamline the process of managing donations, providing a transparent view into the journey of each donated item. This initiative allows donors to track their contributions from the moment they are donated to their ultimate use, offering them a detailed view of how their items are making a difference. By keeping donors informed about the status and use of their donations, the project fosters a sense of trust and community, encouraging continued support and involvement. The system simplifies the administrative tasks involved in updating and managing donations, making it easier to attract and retain donors who are motivated by seeing the tangible impact of their contributions.
 
 ## License
@@ -10,18 +11,23 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Develop With Docker Compose
 
 ### Prerequisites
+
 Ensure you have the following installed on your machine:
 
 - [Docker](https://www.docker.com/products/docker-desktop/)
 
 ### Clone the Repository
+
 Clone the repository to your local machine.
+
 ```
 git clone https://github.com/oss-slu/material-donor-mutual-assist.git
 ```
 
-### Navigate to the Project Directory  
+### Navigate to the Project Directory
+
 Move into the project folder.
+
 ```
 cd material-donor-mutual-assist
 ```
@@ -51,14 +57,17 @@ Your `.env` is gitignored — never commit it.
 ### Start the Development Environment
 
 Run the following command to build and start the services:
+
 ```
 docker compose up -d
 ```
+
 This will start all necessary containers in the background. On the first run
 the backend applies all database migrations before it starts serving, which
 takes a minute or so.
 
 ### Accessing the Application
+
 After the application starts, navigate to http://localhost:3000 in your web browser.
 
 ### Create the First Admin Account
@@ -85,16 +94,19 @@ this command should not be needed again.
 ### Stop the Development Environment
 
 To stop the containers while keeping the database:
+
 ```
 docker compose stop
 ```
 
 To remove the containers (the database volume is kept, so your data survives):
+
 ```
 docker compose down
 ```
 
 To also delete the database and start completely fresh:
+
 ```
 docker compose down -v
 ```
@@ -108,9 +120,9 @@ committed compose file by creating `docker-compose.override.yml` (gitignored):
 
 ```yaml
 services:
-  mdma-database:
-    ports: !override
-      - "5435:5432"
+    mdma-database:
+        ports: !override
+            - '5435:5432'
 ```
 
 Containers reach each other over the compose network, so this only changes how
@@ -190,25 +202,4 @@ We use Prettier to ensure consistent code formatting across the project. Before 
     npm run prettier:check
     ```
 
-   Only push the code to the repository once all formatting issues have been resolved.
-
-## Container Images, SBOMs, and Provenance
-
-Every push to `main` runs the [build-and-push workflow](.github/workflows/build-and-push.yml), which publishes the `server` and `client` images to `ghcr.io/oss-slu/material-derailleur/server` and `ghcr.io/oss-slu/material-derailleur/client`. For each image, the workflow also:
-
-- Generates a Software Bill of Materials (SBOM) in SPDX JSON format with [Syft](https://github.com/anchore/syft). The SBOM lists the packages inside the published image.
-- Creates a signed build provenance attestation for the image digest. The attestation records the repository, commit, and workflow that built the image.
-
-### Download an SBOM
-
-Open a run of the [build-and-push workflow](https://github.com/oss-slu/material-derailleur/actions/workflows/build-and-push.yml) and download `sbom-server` or `sbom-client` from the **Artifacts** section of the run summary.
-
-### Verify an Image
-
-The run summary also links to each image's attestation, which shows the image digest. To check that an image was built by this repository's workflow, run this with the [GitHub CLI](https://cli.github.com/):
-
-```bash
-gh attestation verify oci://ghcr.io/oss-slu/material-derailleur/server@sha256:<digest> --repo oss-slu/material-derailleur
-```
-
-The images are private, so log in to GHCR with `docker login ghcr.io` first. Verification proves where and how an image was built. It does not mean the image is free of vulnerabilities.
+    Only push the code to the repository once all formatting issues have been resolved.

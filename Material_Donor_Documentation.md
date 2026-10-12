@@ -112,13 +112,13 @@ vulnerable to loss and inconsistency.
 
 ## 1.7 Market and Competitive Analysis
 
-| **Solution** | **Strengths** | **Gaps for BWorks** |
-|----|----|----|
-| DonorPerfect | Robust financial donor CRM; widely adopted | Designed for monetary donations; no material item lifecycle tracking |
-| Bloomerang | Strong donor retention analytics; clean interface | No material donation tracking; cost-prohibitive for small orgs |
-| Salesforce Nonprofit | Highly customizable; large ecosystem | Complex setup; expensive; overkill for bikes and computers |
-| Spreadsheets & Paper | Familiar, zero cost, no learning curve | Error-prone; no donor portal; no real-time inventory; data loss risk |
-| **MDMA** | Purpose-built for material donations; status lifecycle; barcode scanning; image approval; donor transparency; open-source | Smaller feature set; dependent on student dev team; single-org focus |
+| **Solution**         | **Strengths**                                                                                                             | **Gaps for BWorks**                                                  |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| DonorPerfect         | Robust financial donor CRM; widely adopted                                                                                | Designed for monetary donations; no material item lifecycle tracking |
+| Bloomerang           | Strong donor retention analytics; clean interface                                                                         | No material donation tracking; cost-prohibitive for small orgs       |
+| Salesforce Nonprofit | Highly customizable; large ecosystem                                                                                      | Complex setup; expensive; overkill for bikes and computers           |
+| Spreadsheets & Paper | Familiar, zero cost, no learning curve                                                                                    | Error-prone; no donor portal; no real-time inventory; data loss risk |
+| **MDMA**             | Purpose-built for material donations; status lifecycle; barcode scanning; image approval; donor transparency; open-source | Smaller feature set; dependent on student dev team; single-org focus |
 
 ## 1.8 Current Feature Set
 
@@ -140,12 +140,12 @@ roles (donor, staff, admin/superuser).
 
 ## 1.9 Donation Status Lifecycle
 
-| **Status** | **Description** | **Who Acts** | **Donor Sees** |
-|----|----|----|----|
-| **Received** | Item dropped off by donor and logged into system | Staff logs item; uploads photos; scans barcode | Confirmation donation was received |
-| **Storage** | Item held in BWorks warehouse awaiting processing | Staff updates status; may add condition notes | Item is safely stored and in the pipeline |
+| **Status**      | **Description**                                       | **Who Acts**                                             | **Donor Sees**                                      |
+| --------------- | ----------------------------------------------------- | -------------------------------------------------------- | --------------------------------------------------- |
+| **Received**    | Item dropped off by donor and logged into system      | Staff logs item; uploads photos; scans barcode           | Confirmation donation was received                  |
+| **Storage**     | Item held in BWorks warehouse awaiting processing     | Staff updates status; may add condition notes            | Item is safely stored and in the pipeline           |
 | **Refurbished** | Item repaired, cleaned, or restored and ready to give | Staff/volunteers complete repairs; upload “after” photos | Item has been restored and is ready to help someone |
-| **Donated** | Item distributed to a community member in need | Staff records distribution; closes the loop | Their contribution made a tangible difference |
+| **Donated**     | Item distributed to a community member in need        | Staff records distribution; closes the loop              | Their contribution made a tangible difference       |
 
 ## 1.10 Product Roadmap
 
@@ -363,7 +363,7 @@ The client outlined a tiered access control system where an admin
 confirms and assigns each user’s account tier upon registration:
 
 | **Tier**        | **Permissions**                                       |
-|-----------------|-------------------------------------------------------|
+| --------------- | ----------------------------------------------------- |
 | **Bottom Tier** | Upload photos only                                    |
 | **Middle Tier** | Upload photos and view donor information              |
 | **Top Tier**    | Full access to all system features and administration |
@@ -446,18 +446,18 @@ EditProgramPage), and Admin (AdminUserManagement, AdminImageReview).
 
 ## 5.3 API Route Reference
 
-| **Route Prefix** | **Purpose** |
-|----|----|
-| GET/POST /donor | Donor CRUD, list, search |
-| POST /donor/register, POST /api/login | Auth (register/login) |
-| GET /donor/me, /donor/pending, /donor/users | Current user, pending users, admin user list |
-| PUT /donor/users/:userId | Admin user approval/update |
-| POST /donor/edit | Donor profile edit |
-| POST /passwordReset, /passwordReset/reset-password | Password reset flow |
-| GET/POST/PUT/DELETE /donatedItem, tags, reanalyze | Donated items CRUD, tags, AI reanalysis |
-| POST /donatedItem/status | Add status to donated item |
-| GET/POST /program, POST /program/edit | Programs CRUD |
-| GET /api/barcode/:donatedItemId?format=svg\|png | Barcode image |
+| **Route Prefix**                                   | **Purpose**                                  |
+| -------------------------------------------------- | -------------------------------------------- |
+| GET/POST /donor                                    | Donor CRUD, list, search                     |
+| POST /donor/register, POST /api/login              | Auth (register/login)                        |
+| GET /donor/me, /donor/pending, /donor/users        | Current user, pending users, admin user list |
+| PUT /donor/users/:userId                           | Admin user approval/update                   |
+| POST /donor/edit                                   | Donor profile edit                           |
+| POST /passwordReset, /passwordReset/reset-password | Password reset flow                          |
+| GET/POST/PUT/DELETE /donatedItem, tags, reanalyze  | Donated items CRUD, tags, AI reanalysis      |
+| POST /donatedItem/status                           | Add status to donated item                   |
+| GET/POST /program, POST /program/edit              | Programs CRUD                                |
+| GET /api/barcode/:donatedItemId?format=svg\|png    | Barcode image                                |
 
 ## 5.4 Data Model Entities
 
@@ -478,15 +478,15 @@ DonatedItem.currentStatus holds the current value.
 
 ## 5.5 Key Screens (Information Architecture)
 
-| **Area** | **Routes** | **Purpose** |
-|----|----|----|
-| Public | /login, /register, /forgot-password, /reset-password, /contact | Landing, auth, contact |
-| Donor | /donor-profile, /my-donations | Donor dashboard and donation list (role-protected) |
-| Admin – Donors | /donorlist, /donorform, /donoredit | Donor CRUD, search, import |
-| Admin – Donations | /donations, /adddonation, /donations/:id, /donatedItem/status/:id | Item list, add, details, status update |
-| Admin – Programs | /programs, /addprogram, /editprogram | Program CRUD |
-| Admin – System | /admin/user-management, /admin/image-review | User approval, image review |
-| Shared | /donations/:id/barcode, /donated/:id/barcode | Barcode display |
+| **Area**          | **Routes**                                                        | **Purpose**                                        |
+| ----------------- | ----------------------------------------------------------------- | -------------------------------------------------- |
+| Public            | /login, /register, /forgot-password, /reset-password, /contact    | Landing, auth, contact                             |
+| Donor             | /donor-profile, /my-donations                                     | Donor dashboard and donation list (role-protected) |
+| Admin – Donors    | /donorlist, /donorform, /donoredit                                | Donor CRUD, search, import                         |
+| Admin – Donations | /donations, /adddonation, /donations/:id, /donatedItem/status/:id | Item list, add, details, status update             |
+| Admin – Programs  | /programs, /addprogram, /editprogram                              | Program CRUD                                       |
+| Admin – System    | /admin/user-management, /admin/image-review                       | User approval, image review                        |
+| Shared            | /donations/:id/barcode, /donated/:id/barcode                      | Barcode display                                    |
 
 # 6. Technical Architecture
 
@@ -524,14 +524,14 @@ automatically.
 
 ## 6.3 Technical Risks and Mitigations
 
-| **Risk** | **Impact** | **Mitigation** |
-|----|----|----|
-| Team turnover (student devs) | High — loss of institutional knowledge | Comprehensive documentation; Docker-based setup for fast onboarding; code standards |
-| Azure dependency | Medium — storage costs and key management | Abstract storage layer; document key rotation; monitor costs |
-| Security (donor PII + images) | High — donor info and sensitive photos | JWT + role-based access; image approval workflow; env variable secrets; regular security reviews |
-| Data migration | Medium — transitioning from spreadsheets | Build import tools; validate data integrity; run parallel tracking during transition |
-| Image moderation scalability | Medium — manual approval bottleneck | Bulk approval UI in roadmap; consider automated pre-screening |
-| Inventory complexity | Medium — different item attributes | Flexible data model with category-specific fields; iterative dev with BWorks feedback |
+| **Risk**                      | **Impact**                                | **Mitigation**                                                                                   |
+| ----------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Team turnover (student devs)  | High — loss of institutional knowledge    | Comprehensive documentation; Docker-based setup for fast onboarding; code standards              |
+| Azure dependency              | Medium — storage costs and key management | Abstract storage layer; document key rotation; monitor costs                                     |
+| Security (donor PII + images) | High — donor info and sensitive photos    | JWT + role-based access; image approval workflow; env variable secrets; regular security reviews |
+| Data migration                | Medium — transitioning from spreadsheets  | Build import tools; validate data integrity; run parallel tracking during transition             |
+| Image moderation scalability  | Medium — manual approval bottleneck       | Bulk approval UI in roadmap; consider automated pre-screening                                    |
+| Inventory complexity          | Medium — different item attributes        | Flexible data model with category-specific fields; iterative dev with BWorks feedback            |
 
 # 7. Team Metrics Report — Sprint 2
 
@@ -549,7 +549,7 @@ Satisfaction — average score from a brief weekly team check-in survey
 ## 7.2 Baseline Values
 
 | **Metric**        | **Current Value** | **Data Source**                   |
-|-------------------|-------------------|-----------------------------------|
+| ----------------- | ----------------- | --------------------------------- |
 | Issue Throughput  | 12 issues closed  | GitHub Projects and GitHub Issues |
 | PR Cycle Time     | 24 hours average  | GitHub Pull Request and Insights  |
 | Defect Rate       | 2 bugs reported   | GitHub Issues (label: “bug”)      |
@@ -571,11 +571,11 @@ defect reports.
 
 ## 7.4 Action Items
 
-| **Issue Identified** | **Planned Action** | **Expected Impact** |
-|----|----|----|
-| PRs taking too long to merge | Implement reviewer rotation schedule | Reduce cycle time by 20% |
-| Minor regression bugs | Add GitHub Actions CI tests before merge | Lower defect rate |
-| Late PR creation | Enforce mid-sprint cutoff for new PRs | More predictable sprint end |
+| **Issue Identified**         | **Planned Action**                       | **Expected Impact**         |
+| ---------------------------- | ---------------------------------------- | --------------------------- |
+| PRs taking too long to merge | Implement reviewer rotation schedule     | Reduce cycle time by 20%    |
+| Minor regression bugs        | Add GitHub Actions CI tests before merge | Lower defect rate           |
+| Late PR creation             | Enforce mid-sprint cutoff for new PRs    | More predictable sprint end |
 
 Targets for upcoming sprints: PR Cycle Time ≤ 20 hours average, Defect
 Rate ≤ 2 bugs per sprint, Satisfaction ≥ 4.5/5 maintained. The team
@@ -679,7 +679,6 @@ feedback session was recorded on Zoom for reference and documentation.
 
 Client Demo 2 — March 30, 2026
 During our second client demo, the team showcased all of the work from Sprints 3 and 4. The team was able to show all of the features that helped improve the workflow of the project, and the client was thoroughly. We discussed the next steps of making the project more efficient for all of the users. We also discussed the SSE showcase on April 30, 2026, and what we will be doing as a team to represent BWorks.
-
 
 # 10. Sprint Retrospective — Team Process Improvement
 
@@ -797,8 +796,7 @@ https://slu.zoom.us/rec/share/bMn3mdyXcr6Ak6hm8CkKX3_VP553J9yAOIyHCdgJf5NX2fyQZg
 This document was compiled from the following source artifacts:
 
 1\. Team Working Agreement (Spring Semester). 2. Team OKRs (Mathew
-Shereni, 001460357). 3. First Client Meeting Notes (February 28, 2026).
-4. Team Metrics Report (Sprint 2). 5. Checkpoint Artifact — Visual
+Shereni, 001460357). 3. First Client Meeting Notes (February 28, 2026). 4. Team Metrics Report (Sprint 2). 5. Checkpoint Artifact — Visual
 System Design Artifacts (GitHub). 6. Product Strategy Draft 1.0
 (Checkpoint). 7. Milestone 2 — DOSSP. 8. Client Demo Feedback 1. 9.
 Sprint 2/3 Team Process Improvement Retrospective. 10. Team Outing Post
@@ -807,7 +805,7 @@ and Documentation.
 ## 12.3 Technology Stack Summary
 
 | **Layer**         | **Technology**                           |
-|-------------------|------------------------------------------|
+| ----------------- | ---------------------------------------- |
 | Frontend          | React.js (functional components, hooks)  |
 | Backend           | Node.js with Express (RESTful API)       |
 | Database          | PostgreSQL (managed via Prisma ORM)      |
