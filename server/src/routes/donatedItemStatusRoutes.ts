@@ -292,6 +292,7 @@ router.put('/review/approve-all', async (req: Request, res: Response) => {
                         statusItem.statusType,
                         statusItem.dateModified,
                         statusItem.imageUrls,
+                        true,
                     );
 
                     await prisma.donatedItemStatus.update({
