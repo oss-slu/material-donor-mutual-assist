@@ -42,7 +42,7 @@ updates:
     allow:
       - dependency-type: "all"
     ignore:
-      # ts-jest only supports TypeScript <7; remove once ts-jest adds TS 7 support
+      # ts-jest only supports TypeScript < 7, so a major bump breaks npm install
       - dependency-name: "typescript"
         update-types: ["version-update:semver-major"]
 
