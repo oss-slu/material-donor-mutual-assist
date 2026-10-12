@@ -41,6 +41,10 @@ updates:
       include: "scope"
     allow:
       - dependency-type: "all"
+    ignore:
+      # ts-jest only supports TypeScript <7; remove once ts-jest adds TS 7 support
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
 
   # Optional: GitHub Actions workflow updates
   - package-ecosystem: "github-actions"
