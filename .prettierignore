@@ -4,4 +4,4 @@ build
 package-lock.json
 package.json
 .vscode
-
+server/src/generated/

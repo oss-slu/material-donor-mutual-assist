@@ -8,7 +8,7 @@ Follow these steps to set up your development environment.
 
 - **PostgreSQL**: Ensure that PostgreSQL is installed on your system. If it's not installed, download and install it from [PostgreSQL Official Website](https://www.postgresql.org/download/).
 
-  > **Note**: During PostgreSQL installation, remember to note down the **username** and **password** you set for the PostgreSQL server. You will need these for setting up your `.env` file.
+    > **Note**: During PostgreSQL installation, remember to note down the **username** and **password** you set for the PostgreSQL server. You will need these for setting up your `.env` file.
 
 ## Step-by-Step Setup
 
@@ -17,20 +17,20 @@ Follow these steps to set up your development environment.
 #### Option 1: Using the Terminal
 
 - **Windows/Linux/Mac**:
-  - Open your terminal or command prompt.
-  - Run `psql` to enter the PostgreSQL command line interface.
-  - Create a new database with the command:
-    ```sql
-    CREATE DATABASE dbname;
-    ```
-  - Replace `dbname` with the name you want to give your database.
+    - Open your terminal or command prompt.
+    - Run `psql` to enter the PostgreSQL command line interface.
+    - Create a new database with the command:
+        ```sql
+        CREATE DATABASE dbname;
+        ```
+    - Replace `dbname` with the name you want to give your database.
 
 #### Option 2: Using pgAdmin
 
 - **pgAdmin**:
-  - Open pgAdmin and connect to your PostgreSQL server.
-  - Right-click on 'Databases', then select 'Create' -> 'Database'.
-  - Enter the desired name for your database in the 'Database Name' field and save.
+    - Open pgAdmin and connect to your PostgreSQL server.
+    - Right-click on 'Databases', then select 'Create' -> 'Database'.
+    - Enter the desired name for your database in the 'Database Name' field and save.
 
 ### 2. Navigate to the server directory
 
@@ -58,7 +58,7 @@ FRONTEND_URL="http://localhost:3000/"
 
 Replace `username`, `password`, and `dbname` with your PostgreSQL username, password, and the name of the database you created.
 
-Replace `SMTP_USER` with you regular gmail 
+Replace `SMTP_USER` with you regular gmail
 
 Replace `SMTP_PASS` with your App password which is not you regular gmail password
 
@@ -80,13 +80,11 @@ Steps to Generate an App Password for Gmail
 
     Select App: Mail.
 
-    Select Device: Other (Custom Name) 
+    Select Device: Other (Custom Name)
 
     Click Generate.
 
     Copy the generated password (it will be a 16-character string, like abcd efgh ijkl mnop).
-
-
 
 ### 4. Install Dependencies
 
@@ -121,19 +119,20 @@ Once the server is running, it will be accessible at:
 You can access your API endpoints via this URL using a web browser or tools like Postman for testing API requests.
 
 ## Prisma Commands
+
 After updating the Prisma schema, you have to generate migrations to keep your database schema in sync with your application's data model. Use the following command:
 
-``` bash
+```bash
 npx prisma migrate dev --name migration-name
 ```
 
 For example, if you add a new model called `DonatedItem` to your Prisma schema, you can run:
 
-``` bash
+```bash
 npx prisma migrate dev --name create-donateditem
 ```
-This command creates and applies a new migration based on the changes in your Prisma schema, ensuring your database schema is up-to-date.
 
+This command creates and applies a new migration based on the changes in your Prisma schema, ensuring your database schema is up-to-date.
 
 ## Additional Information
 

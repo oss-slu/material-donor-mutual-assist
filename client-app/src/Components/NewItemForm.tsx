@@ -383,9 +383,8 @@ const NewItemForm: React.FC = () => {
             );
 
             if (response.status === 201) {
-                setSuccessMessage('Item added successfully!');
                 handleRefresh();
-                navigate('/donations');
+                setSuccessMessage('Item added successfully!');
             }
         } catch (error: any) {
             setErrorMessage(error.response?.data?.error || 'Error adding item');
