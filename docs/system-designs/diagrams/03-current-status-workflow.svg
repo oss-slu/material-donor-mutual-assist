@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title description">
+<title id="title">Current status submission, review and donor visibility</title>
+<desc id="description">Tier Three or above submits status. API immediately changes item and creates pending history separately. Tier One or Admin approves or deletes history. Approval can send email. Donor UI filters history, but API returns pending rows.</desc>
+<rect x="0" y="0" width="1200" height="800" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4"/>
+<text x="48" y="42" font-family="DejaVu Sans, sans-serif" font-size="14" font-weight="700" fill="#12635D" text-anchor="start">BWORKS  /  MATERIAL DERAILLEUR</text>
+<text x="1152" y="42" font-family="DejaVu Sans, sans-serif" font-size="13" font-weight="700" fill="#12635D" text-anchor="end">CURRENT • SOURCE VERIFIED</text>
+<text x="48" y="88" font-family="DejaVu Sans, sans-serif" font-size="31" font-weight="700" fill="#172E3D" text-anchor="start">03  Status submission → review → donor</text>
+<text x="48" y="118" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">Approval moderates history and update email; it does not gate the current inventory status.</text>
+<rect x="48" y="153" width="245" height="496" rx="10" fill="#F5F8F9" stroke="none" stroke-width="1.4"/>
+<text x="62" y="180" font-family="DejaVu Sans, sans-serif" font-size="13" font-weight="700" fill="#12635D" text-anchor="start">STAFF  /  TIER THREE+</text>
+<rect x="312" y="153" width="285" height="496" rx="10" fill="#F5F8F9" stroke="none" stroke-width="1.4"/>
+<text x="326" y="180" font-family="DejaVu Sans, sans-serif" font-size="13" font-weight="700" fill="#12635D" text-anchor="start">API + DATABASE</text>
+<rect x="616" y="153" width="240" height="496" rx="10" fill="#F5F8F9" stroke="none" stroke-width="1.4"/>
+<text x="630" y="180" font-family="DejaVu Sans, sans-serif" font-size="13" font-weight="700" fill="#12635D" text-anchor="start">REVIEW  /  TIER ONE+</text>
+<rect x="875" y="153" width="277" height="496" rx="10" fill="#F5F8F9" stroke="none" stroke-width="1.4"/>
+<text x="889" y="180" font-family="DejaVu Sans, sans-serif" font-size="13" font-weight="700" fill="#12635D" text-anchor="start">DONOR EXPERIENCE</text>
+<text x="631" y="204" font-family="DejaVu Sans, sans-serif" font-size="14" font-weight="400" fill="#4C626D" text-anchor="start">/admin/image-approval</text>
+<rect x="63" y="212" width="215" height="113" rx="10" fill="#FFFFFF" stroke="#A2B3BA" stroke-width="1.4"/>
+<text x="81" y="244" font-family="DejaVu Sans, sans-serif" font-size="19" font-weight="700" fill="#172E3D" text-anchor="start">Open item</text>
+<text x="81" y="271" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">/donations/:id</text>
+<text x="81" y="295" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">Add a status update</text>
+<rect x="63" y="377" width="215" height="153" rx="10" fill="#FFFFFF" stroke="#A2B3BA" stroke-width="1.4"/>
+<text x="81" y="409" font-family="DejaVu Sans, sans-serif" font-size="19" font-weight="700" fill="#172E3D" text-anchor="start">Submit update</text>
+<text x="81" y="436" font-family="DejaVu Sans, sans-serif" font-size="14" font-weight="400" fill="#4C626D" text-anchor="start">Status / date / photos</text>
+<text x="81" y="460" font-family="DejaVu Sans, sans-serif" font-size="14" font-weight="400" fill="#4C626D" text-anchor="start">Optional attributes</text>
+<text x="81" y="484" font-family="DejaVu Sans, sans-serif" font-size="14" font-weight="400" fill="#4C626D" text-anchor="start">Request donor email</text>
+<text x="81" y="508" font-family="DejaVu Sans, sans-serif" font-size="14" font-weight="400" fill="#4C626D" text-anchor="start">/donatedItem/status/:id</text>
+<polyline points="170,325 170,377" fill="none" stroke="#245D89" stroke-width="1.8"/>
+<polygon points="170,377 165.9223954694043,367.8691105968769 174.0776045305957,367.8691105968769" fill="#245D89" stroke="none" stroke-width="1.5"/>
+<rect x="327" y="212" width="255" height="137" rx="10" fill="#FFF3DD" stroke="#845016" stroke-width="1.4"/>
+<text x="345" y="244" font-family="DejaVu Sans, sans-serif" font-size="19" font-weight="700" fill="#172E3D" text-anchor="start">Change item now</text>
+<text x="345" y="271" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">currentStatus updated</text>
+<text x="345" y="295" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">Attributes replaced if sent</text>
+<text x="345" y="319" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">No approval prerequisite</text>
+<polyline points="278,443 299,443 299,279 327,279" fill="none" stroke="#245D89" stroke-width="1.8"/>
+<polygon points="327,279 317.8691105968769,283.0776045305957 317.8691105968769,274.9223954694043" fill="#245D89" stroke="none" stroke-width="1.5"/>
+<rect x="327" y="409" width="255" height="139" rx="10" fill="#FFF3DD" stroke="#845016" stroke-width="1.4"/>
+<text x="345" y="441" font-family="DejaVu Sans, sans-serif" font-size="19" font-weight="700" fill="#172E3D" text-anchor="start">Write history</text>
+<text x="345" y="468" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">approval = false</text>
+<text x="345" y="492" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">donorInformed = request</text>
+<text x="345" y="516" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">Separate database write</text>
+<polyline points="455,349 455,409" fill="none" stroke="#845016" stroke-width="1.8"/>
+<polygon points="455,409 450.9223954694043,399.8691105968769 459.0776045305957,399.8691105968769" fill="#845016" stroke="none" stroke-width="1.5"/>
+<text x="470" y="383" font-family="DejaVu Sans, sans-serif" font-size="14" font-weight="400" fill="#4C626D" text-anchor="start">then</text>
+<polygon points="735,226 825,286 735,346 645,286" fill="#FFFFFF" stroke="#245D89" stroke-width="1.5"/>
+<text x="735" y="281" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="700" fill="#172E3D" text-anchor="middle">Approve</text>
+<text x="735" y="305" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="700" fill="#172E3D" text-anchor="middle">status?</text>
+<polyline points="582,477 602,477 602,286 645,286" fill="none" stroke="#245D89" stroke-width="1.8"/>
+<polygon points="645,286 635.8691105968769,290.0776045305957 635.8691105968769,281.9223954694043" fill="#245D89" stroke="none" stroke-width="1.5"/>
+<rect x="631" y="409" width="210" height="113" rx="10" fill="#EAF5F1" stroke="#12635D" stroke-width="1.4"/>
+<text x="649" y="441" font-family="DejaVu Sans, sans-serif" font-size="19" font-weight="700" fill="#172E3D" text-anchor="start">Approve</text>
+<text x="649" y="468" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">approval = true</text>
+<text x="649" y="492" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">Email if requested</text>
+<polyline points="735,346 735,409" fill="none" stroke="#12635D" stroke-width="1.8"/>
+<polygon points="735,409 730.9223954694043,399.8691105968769 739.0776045305957,399.8691105968769" fill="#12635D" stroke="none" stroke-width="1.5"/>
+<text x="748" y="384" font-family="DejaVu Sans, sans-serif" font-size="14" font-weight="400" fill="#12635D" text-anchor="start">Yes</text>
+<rect x="631" y="562" width="210" height="69" rx="10" fill="#FCEEEE" stroke="#923D3D" stroke-width="1.4"/>
+<text x="649" y="594" font-family="DejaVu Sans, sans-serif" font-size="19" font-weight="700" fill="#172E3D" text-anchor="start">Deny</text>
+<text x="649" y="621" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">Delete history only</text>
+<polyline points="825,286 852,286 852,595 841,595" fill="none" stroke="#923D3D" stroke-width="1.8"/>
+<polygon points="841,595 850.1308894031231,590.9223954694043 850.1308894031231,599.0776045305957" fill="#923D3D" stroke="none" stroke-width="1.5"/>
+<text x="830" y="367" font-family="DejaVu Sans, sans-serif" font-size="14" font-weight="400" fill="#923D3D" text-anchor="start">No</text>
+<rect x="890" y="409" width="247" height="139" rx="10" fill="#ECF3FA" stroke="#245D89" stroke-width="1.4"/>
+<text x="908" y="441" font-family="DejaVu Sans, sans-serif" font-size="19" font-weight="700" fill="#172E3D" text-anchor="start">My donations</text>
+<text x="908" y="468" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">/my-donations</text>
+<text x="908" y="492" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">UI shows approved history</text>
+<text x="908" y="516" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">and approved photos</text>
+<polyline points="841,463 890,463" fill="none" stroke="#12635D" stroke-width="1.8"/>
+<polygon points="890,463 880.8691105968769,467.0776045305957 880.8691105968769,458.9223954694043" fill="#12635D" stroke="none" stroke-width="1.5"/>
+<rect x="890" y="212" width="247" height="113" rx="10" fill="#FFF3DD" stroke="#845016" stroke-width="1.4"/>
+<text x="908" y="244" font-family="DejaVu Sans, sans-serif" font-size="19" font-weight="700" fill="#172E3D" text-anchor="start">API response</text>
+<text x="908" y="271" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">/donor/me returns</text>
+<text x="908" y="295" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">pending history too</text>
+<polyline points="1014,325 1014,409" fill="none" stroke="#845016" stroke-width="1.8"/>
+<polygon points="1014,409 1009.9223954694043,399.8691105968769 1018.0776045305957,399.8691105968769" fill="#845016" stroke="none" stroke-width="1.5"/>
+<rect x="48" y="662" width="1104" height="72" rx="10" fill="#FFF3DD" stroke="#845016" stroke-width="1.4"/>
+<text x="66" y="694" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="700" fill="#172E3D" text-anchor="start">Current-state consequences</text>
+<text x="66" y="721" font-family="DejaVu Sans, sans-serif" font-size="15" font-weight="400" fill="#4C626D" text-anchor="start">Denying leaves item state changed. Email intent is not delivery proof. Business status values are not a sequential state machine.</text>
+<polyline points="48,754 1152,754" fill="none" stroke="#A2B3BA" stroke-width="1"/>
+<text x="48" y="776" font-family="DejaVu Sans, sans-serif" font-size="12" font-weight="400" fill="#4C626D" text-anchor="start">Source: donatedItemStatusRoutes.ts; donorRoutes.ts /me; DonorDonations.tsx; App.js. Tier One+ includes Admin. Snapshot 3c75abdc.</text>
+<text x="1152" y="776" font-family="DejaVu Sans, sans-serif" font-size="12" font-weight="400" fill="#4C626D" text-anchor="end">4 / 5</text>
+</svg>

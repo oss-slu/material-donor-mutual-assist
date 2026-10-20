@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title description">
+<title id="title">Proposed transactional review and notification design</title>
+<desc id="description">Proposed only: consistent authorization guards; store pending proposals without changing published item state. Approval atomically applies changes, marks approved and creates an outbox event. A worker retries notification and records delivery. Rejects remain auditable. Donor API filters approved history and enforces ownership.</desc>
+<rect x="0" y="0" width="1200" height="800" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4"/>
+<text x="48" y="42" font-family="DejaVu Sans, sans-serif" font-size="14" font-weight="700" fill="#12635D" text-anchor="start">BWORKS  /  MATERIAL DERAILLEUR</text>
+<text x="1152" y="42" font-family="DejaVu Sans, sans-serif" font-size="13" font-weight="700" fill="#845016" text-anchor="end">PROPOSED • NOT IMPLEMENTED</text>
+<text x="48" y="88" font-family="DejaVu Sans, sans-serif" font-size="31" font-weight="700" fill="#172E3D" text-anchor="start">04  Proposed approval &amp; delivery boundaries</text>
+<text x="48" y="118" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">Recommendation for BWorks review; new review records, transaction and outbox are not implemented.</text>
+<rect x="48" y="155" width="1104" height="80" rx="10" fill="#ECF3FA" stroke="#245D89" stroke-width="1.4" stroke-dasharray="7 5"/>
+<text x="66" y="187" font-family="DejaVu Sans, sans-serif" font-size="20" font-weight="700" fill="#172E3D" text-anchor="start">Consistent API authorization</text>
+<text x="66" y="214" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">Verify access-token purpose + known claims • load existing ACTIVE user + current role • enforce donor ownership</text>
+<rect x="48" y="284" width="276" height="113" rx="10" fill="#FFF3DD" stroke="#845016" stroke-width="1.4" stroke-dasharray="7 5"/>
+<text x="66" y="316" font-family="DejaVu Sans, sans-serif" font-size="20" font-weight="700" fill="#172E3D" text-anchor="start">Stage proposal</text>
+<text x="66" y="343" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">Pending status + attributes</text>
+<text x="66" y="367" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">Published item unchanged</text>
+<polygon points="445,278 531,340 445,402 359,340" fill="#FFF3DD" stroke="#845016" stroke-width="1.5"/>
+<text x="445" y="334" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="700" fill="#172E3D" text-anchor="middle">Approve</text>
+<text x="445" y="358" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="700" fill="#172E3D" text-anchor="middle">pending?</text>
+<polyline points="324,340 359,340" fill="none" stroke="#845016" stroke-width="1.8" stroke-dasharray="7 5"/>
+<polygon points="359,340 349.8691105968769,344.0776045305957 349.8691105968769,335.9223954694043" fill="#845016" stroke="none" stroke-width="1.5"/>
+<rect x="572" y="271" width="327" height="139" rx="10" fill="#EAF5F1" stroke="#12635D" stroke-width="1.4" stroke-dasharray="7 5"/>
+<text x="590" y="303" font-family="DejaVu Sans, sans-serif" font-size="19" font-weight="700" fill="#172E3D" text-anchor="start">One database transaction</text>
+<text x="590" y="330" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">Apply status + attributes</text>
+<text x="590" y="354" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">Mark review APPROVED</text>
+<text x="590" y="378" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">Insert unique outbox event</text>
+<polyline points="531,340 572,340" fill="none" stroke="#12635D" stroke-width="1.8" stroke-dasharray="7 5"/>
+<polygon points="572,340 562.8691105968769,344.0776045305957 562.8691105968769,335.9223954694043" fill="#12635D" stroke="none" stroke-width="1.5"/>
+<text x="539" y="326" font-family="DejaVu Sans, sans-serif" font-size="13" font-weight="400" fill="#12635D" text-anchor="start">Yes</text>
+<rect x="48" y="474" width="276" height="113" rx="10" fill="#FCEEEE" stroke="#923D3D" stroke-width="1.4" stroke-dasharray="7 5"/>
+<text x="66" y="506" font-family="DejaVu Sans, sans-serif" font-size="20" font-weight="700" fill="#172E3D" text-anchor="start">Retain rejection</text>
+<text x="66" y="533" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">Mark review REJECTED</text>
+<text x="66" y="557" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">Item remains unchanged</text>
+<polyline points="445,402 445,531 324,531" fill="none" stroke="#923D3D" stroke-width="1.8" stroke-dasharray="7 5"/>
+<polygon points="324,531 333.1308894031231,526.9223954694043 333.1308894031231,535.0776045305957" fill="#923D3D" stroke="none" stroke-width="1.5"/>
+<text x="456" y="448" font-family="DejaVu Sans, sans-serif" font-size="14" font-weight="400" fill="#923D3D" text-anchor="start">No</text>
+<rect x="572" y="474" width="327" height="113" rx="10" fill="#ECF3FA" stroke="#245D89" stroke-width="1.4" stroke-dasharray="7 5"/>
+<text x="590" y="506" font-family="DejaVu Sans, sans-serif" font-size="20" font-weight="700" fill="#172E3D" text-anchor="start">Donor read boundary</text>
+<text x="590" y="533" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">Only owned donations</text>
+<text x="590" y="557" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">Only APPROVED history</text>
+<polyline points="735,410 735,474" fill="none" stroke="#245D89" stroke-width="1.8" stroke-dasharray="7 5"/>
+<polygon points="735,474 730.9223954694043,464.8691105968769 739.0776045305957,464.8691105968769" fill="#245D89" stroke="none" stroke-width="1.5"/>
+<rect x="953" y="271" width="199" height="139" rx="10" fill="#EAF5F1" stroke="#12635D" stroke-width="1.4" stroke-dasharray="7 5"/>
+<text x="971" y="303" font-family="DejaVu Sans, sans-serif" font-size="20" font-weight="700" fill="#172E3D" text-anchor="start">Email worker</text>
+<text x="971" y="330" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">Read outbox</text>
+<text x="971" y="354" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">Retry with backoff</text>
+<text x="971" y="378" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">Record delivery</text>
+<polyline points="899,340 953,340" fill="none" stroke="#12635D" stroke-width="1.8" stroke-dasharray="7 5"/>
+<polygon points="953,340 943.8691105968769,344.0776045305957 943.8691105968769,335.9223954694043" fill="#12635D" stroke="none" stroke-width="1.5"/>
+<rect x="953" y="474" width="199" height="113" rx="10" fill="#EAF5F1" stroke="#12635D" stroke-width="1.4" stroke-dasharray="7 5"/>
+<text x="971" y="506" font-family="DejaVu Sans, sans-serif" font-size="20" font-weight="700" fill="#172E3D" text-anchor="start">SMTP</text>
+<text x="971" y="533" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">Respect donor</text>
+<text x="971" y="557" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">notification policy</text>
+<polyline points="1052,410 1052,474" fill="none" stroke="#12635D" stroke-width="1.8" stroke-dasharray="7 5"/>
+<polygon points="1052,474 1047.9223954694044,464.8691105968769 1056.0776045305956,464.8691105968769" fill="#12635D" stroke="none" stroke-width="1.5"/>
+<rect x="48" y="633" width="1104" height="100" rx="10" fill="#FFF3DD" stroke="#845016" stroke-width="1.4"/>
+<text x="66" y="662" font-family="DejaVu Sans, sans-serif" font-size="19" font-weight="700" fill="#845016" text-anchor="start">Decisions before implementation</text>
+<text x="66" y="689" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">Confirm approval/publication semantics and email opt-in with BWorks; migrate existing pending history carefully.</text>
+<text x="66" y="713" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">Use a conditional PENDING → APPROVED transition and unique event key to prevent repeat approvals from resending.</text>
+<polyline points="48,754 1152,754" fill="none" stroke="#A2B3BA" stroke-width="1"/>
+<text x="48" y="776" font-family="DejaVu Sans, sans-serif" font-size="12" font-weight="400" fill="#4C626D" text-anchor="start">Proposed only. Trade-off: adds review/outbox data and worker operations in exchange for consistent item history and retryable email. Dashed = proposed.</text>
+<text x="1152" y="776" font-family="DejaVu Sans, sans-serif" font-size="12" font-weight="400" fill="#4C626D" text-anchor="end">5 / 5</text>
+</svg>

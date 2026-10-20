@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title description">
+<title id="title">Current six-entity data model</title>
+<desc id="description">Each donated item belongs to exactly one donor and zero or one program. An item has zero or more status records and attributes, both cascade-deleted with the item. User has no foreign key to Donor; code matches emails.</desc>
+<rect x="0" y="0" width="1200" height="800" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4"/>
+<text x="48" y="42" font-family="DejaVu Sans, sans-serif" font-size="14" font-weight="700" fill="#12635D" text-anchor="start">BWORKS  /  MATERIAL DERAILLEUR</text>
+<text x="1152" y="42" font-family="DejaVu Sans, sans-serif" font-size="13" font-weight="700" fill="#12635D" text-anchor="end">CURRENT • SOURCE VERIFIED</text>
+<text x="48" y="88" font-family="DejaVu Sans, sans-serif" font-size="31" font-weight="700" fill="#172E3D" text-anchor="start">02  Data model &amp; ownership</text>
+<text x="48" y="118" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">Entity relationships from the Prisma schema; representative fields keep the view readable.</text>
+<rect x="48" y="176" width="285" height="172" rx="6" fill="#FFFFFF" stroke="#A2B3BA" stroke-width="1.4"/>
+<rect x="48" y="176" width="285" height="43" rx="6" fill="#EAF5F1" stroke="#A2B3BA" stroke-width="1.4"/>
+<text x="62" y="204" font-family="DejaVu Sans, sans-serif" font-size="19" font-weight="700" fill="#172E3D" text-anchor="start">Donor</text>
+<text x="62" y="244" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">PK  id: Int</text>
+<text x="62" y="269" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">UQ  email: String</text>
+<text x="62" y="294" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">firstName / lastName</text>
+<text x="62" y="319" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">emailOptIn: Boolean</text>
+<text x="62" y="344" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">address / contact / zipcode</text>
+<rect x="862" y="176" width="290" height="147" rx="6" fill="#FFFFFF" stroke="#A2B3BA" stroke-width="1.4"/>
+<rect x="862" y="176" width="290" height="43" rx="6" fill="#EAF5F1" stroke="#A2B3BA" stroke-width="1.4"/>
+<text x="876" y="204" font-family="DejaVu Sans, sans-serif" font-size="19" font-weight="700" fill="#172E3D" text-anchor="start">Program</text>
+<text x="876" y="244" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">PK  id: Int</text>
+<text x="876" y="269" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">name: String</text>
+<text x="876" y="294" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">description / aimAndCause</text>
+<text x="876" y="319" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">startDate: Date</text>
+<rect x="441" y="176" width="320" height="247" rx="6" fill="#FFFFFF" stroke="#A2B3BA" stroke-width="1.4"/>
+<rect x="441" y="176" width="320" height="43" rx="6" fill="#EAF5F1" stroke="#A2B3BA" stroke-width="1.4"/>
+<text x="455" y="204" font-family="DejaVu Sans, sans-serif" font-size="19" font-weight="700" fill="#172E3D" text-anchor="start">DonatedItem</text>
+<text x="455" y="244" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">PK  id: Int</text>
+<text x="455" y="269" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">FK  donorId: Int</text>
+<text x="455" y="294" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">FK  programId: Int?</text>
+<text x="455" y="319" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">itemType / category / quantity</text>
+<text x="455" y="344" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">currentStatus: String</text>
+<text x="455" y="369" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">dateDonated / lastUpdated</text>
+<text x="455" y="394" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">imagePath: String?</text>
+<text x="455" y="419" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">analysisMetadata: Json?</text>
+<rect x="48" y="453" width="285" height="172" rx="6" fill="#FFFFFF" stroke="#A2B3BA" stroke-width="1.4"/>
+<rect x="48" y="453" width="285" height="43" rx="6" fill="#ECF3FA" stroke="#A2B3BA" stroke-width="1.4"/>
+<text x="62" y="481" font-family="DejaVu Sans, sans-serif" font-size="19" font-weight="700" fill="#172E3D" text-anchor="start">User</text>
+<text x="62" y="521" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">PK  id: UUID string</text>
+<text x="62" y="546" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">UQ  email: String</text>
+<text x="62" y="571" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">password / role? / status</text>
+<text x="62" y="596" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">createdAt / firstLogin</text>
+<text x="62" y="621" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">resetToken? / expiry?</text>
+<rect x="441" y="527" width="320" height="172" rx="6" fill="#FFFFFF" stroke="#A2B3BA" stroke-width="1.4"/>
+<rect x="441" y="527" width="320" height="43" rx="6" fill="#EAF5F1" stroke="#A2B3BA" stroke-width="1.4"/>
+<text x="455" y="555" font-family="DejaVu Sans, sans-serif" font-size="19" font-weight="700" fill="#172E3D" text-anchor="start">DonatedItemStatus</text>
+<text x="455" y="595" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">PK  id; FK  donatedItemId</text>
+<text x="455" y="620" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">statusType / dateModified</text>
+<text x="455" y="645" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">imageUrls: String[]</text>
+<text x="455" y="670" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">approval / donorInformed</text>
+<text x="455" y="695" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">submitter: String</text>
+<rect x="862" y="495" width="290" height="172" rx="6" fill="#FFFFFF" stroke="#A2B3BA" stroke-width="1.4"/>
+<rect x="862" y="495" width="290" height="43" rx="6" fill="#EAF5F1" stroke="#A2B3BA" stroke-width="1.4"/>
+<text x="876" y="523" font-family="DejaVu Sans, sans-serif" font-size="19" font-weight="700" fill="#172E3D" text-anchor="start">ItemAttribute</text>
+<text x="876" y="563" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">PK  id; FK  donatedItemId</text>
+<text x="876" y="588" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">descriptor: String</text>
+<text x="876" y="613" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">stringValue: String?</text>
+<text x="876" y="638" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">numberValue: Float?</text>
+<text x="876" y="663" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#172E3D" text-anchor="start">booleanValue: Boolean?</text>
+<polyline points="333,282 441,282" fill="none" stroke="#12635D" stroke-width="1.8"/>
+<text x="345" y="270" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#12635D" text-anchor="start">1</text>
+<text x="395" y="270" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#12635D" text-anchor="start">0..*</text>
+<polyline points="761,282 862,282" fill="none" stroke="#12635D" stroke-width="1.8"/>
+<text x="769" y="270" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#12635D" text-anchor="start">0..*</text>
+<text x="819" y="270" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#12635D" text-anchor="start">0..1</text>
+<polyline points="600,423 600,527" fill="none" stroke="#12635D" stroke-width="1.8"/>
+<text x="613" y="447" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#12635D" text-anchor="start">1</text>
+<text x="613" y="515" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#12635D" text-anchor="start">0..*</text>
+<text x="582" y="479" font-family="DejaVu Sans, sans-serif" font-size="15" font-weight="400" fill="#4C626D" text-anchor="end">history</text>
+<polyline points="761,390 1007,390 1007,495" fill="none" stroke="#12635D" stroke-width="1.8"/>
+<text x="776" y="380" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#12635D" text-anchor="start">1</text>
+<text x="1020" y="482" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#12635D" text-anchor="start">0..*</text>
+<text x="917" y="418" font-family="DejaVu Sans, sans-serif" font-size="15" font-weight="400" fill="#4C626D" text-anchor="start">attributes</text>
+<text x="48" y="680" font-family="DejaVu Sans, sans-serif" font-size="15" font-weight="400" fill="#245D89" text-anchor="start">User ↔ Donor: email lookup only</text>
+<text x="48" y="703" font-family="DejaVu Sans, sans-serif" font-size="15" font-weight="400" fill="#245D89" text-anchor="start">No database relationship</text>
+<text x="862" y="705" font-family="DejaVu Sans, sans-serif" font-size="15" font-weight="400" fill="#4C626D" text-anchor="start">Status + attribute deletion</text>
+<text x="862" y="727" font-family="DejaVu Sans, sans-serif" font-size="15" font-weight="400" fill="#4C626D" text-anchor="start">cascades from the item</text>
+<text x="48" y="735" font-family="DejaVu Sans, sans-serif" font-size="14" font-weight="400" fill="#4C626D" text-anchor="start">PK primary key  •  FK foreign key  •  UQ unique  •  ? nullable</text>
+<polyline points="48,754 1152,754" fill="none" stroke="#A2B3BA" stroke-width="1"/>
+<text x="48" y="776" font-family="DejaVu Sans, sans-serif" font-size="12" font-weight="400" fill="#4C626D" text-anchor="start">Source: server/prisma/schema.prisma; donorRoutes.ts /me. Numeric multiplicities: 1 required, 0..1 optional, 0..* many. 3c75abdc.</text>
+<text x="1152" y="776" font-family="DejaVu Sans, sans-serif" font-size="12" font-weight="400" fill="#4C626D" text-anchor="end">3 / 5</text>
+</svg>

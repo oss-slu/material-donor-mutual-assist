@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title description">
+<title id="title">Current system architecture and local deployment</title>
+<desc id="description">React browser calls one Express API. Route modules use services and Prisma/PostgreSQL. External integrations are Azure or local media, Gemini and SMTP. Compose runs three containers.</desc>
+<rect x="0" y="0" width="1200" height="800" rx="0" fill="#FFFFFF" stroke="none" stroke-width="1.4"/>
+<text x="48" y="42" font-family="DejaVu Sans, sans-serif" font-size="14" font-weight="700" fill="#12635D" text-anchor="start">BWORKS  /  MATERIAL DERAILLEUR</text>
+<text x="1152" y="42" font-family="DejaVu Sans, sans-serif" font-size="13" font-weight="700" fill="#12635D" text-anchor="end">CURRENT • SOURCE VERIFIED</text>
+<text x="48" y="88" font-family="DejaVu Sans, sans-serif" font-size="31" font-weight="700" fill="#172E3D" text-anchor="start">01  System architecture &amp; local deployment</text>
+<text x="48" y="118" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">One application backend; three Compose services; external media, AI and email integrations.</text>
+<rect x="354" y="151" width="798" height="473" rx="12" fill="#F5F8F9" stroke="#A2B3BA" stroke-width="1.4"/>
+<text x="375" y="178" font-family="DejaVu Sans, sans-serif" font-size="14" font-weight="700" fill="#12635D" text-anchor="start">LOCAL DOCKER COMPOSE</text>
+<rect x="48" y="215" width="255" height="142" rx="10" fill="#ECF3FA" stroke="#245D89" stroke-width="1.4"/>
+<text x="66" y="247" font-family="DejaVu Sans, sans-serif" font-size="20" font-weight="700" fill="#172E3D" text-anchor="start">Web browser</text>
+<text x="66" y="274" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">Donors • tiered staff</text>
+<text x="66" y="298" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">Administrators</text>
+<text x="66" y="322" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">React executes here</text>
+<rect x="377" y="207" width="295" height="111" rx="10" fill="#ECF3FA" stroke="#245D89" stroke-width="1.4"/>
+<text x="395" y="239" font-family="DejaVu Sans, sans-serif" font-size="20" font-weight="700" fill="#172E3D" text-anchor="start">React frontend</text>
+<text x="395" y="266" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">client-app  |  serves the UI</text>
+<text x="395" y="290" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">host 3000 → container 3000</text>
+<polyline points="377,260 303,260" fill="none" stroke="#245D89" stroke-width="1.8"/>
+<polygon points="303,260 312.1308894031231,255.9223954694043 312.1308894031231,264.0776045305957" fill="#245D89" stroke="none" stroke-width="1.5"/>
+<text x="332" y="243" font-family="DejaVu Sans, sans-serif" font-size="14" font-weight="400" fill="#245D89" text-anchor="middle">UI</text>
+<rect x="377" y="370" width="431" height="228" rx="10" fill="#FFFFFF" stroke="#245D89" stroke-width="1.4"/>
+<text x="395" y="402" font-family="DejaVu Sans, sans-serif" font-size="20" font-weight="700" fill="#172E3D" text-anchor="start">Express / TypeScript API</text>
+<text x="395" y="430" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">host 5050 → container 5000</text>
+<text x="395" y="460" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">Routes: donors • auth • programs • items</text>
+<text x="395" y="487" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">status review • CSV • barcode • reset</text>
+<text x="395" y="514" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">JWT / rank / ACTIVE checks on guarded routes</text>
+<text x="395" y="541" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">Services: media • image analysis • email</text>
+<text x="395" y="568" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">Prisma + PostgreSQL driver adapter</text>
+<polyline points="175,357 175,482 377,482" fill="none" stroke="#245D89" stroke-width="1.8"/>
+<polygon points="377,482 367.8691105968769,486.0776045305957 367.8691105968769,477.9223954694043" fill="#245D89" stroke="none" stroke-width="1.5"/>
+<text x="190" y="435" font-family="DejaVu Sans, sans-serif" font-size="15" font-weight="400" fill="#245D89" text-anchor="start">JSON / multipart</text>
+<text x="190" y="457" font-family="DejaVu Sans, sans-serif" font-size="15" font-weight="400" fill="#245D89" text-anchor="start">JWT for guarded calls</text>
+<rect x="852" y="393" width="277" height="117" rx="0" fill="#EAF5F1" stroke="#12635D" stroke-width="1.4"/>
+<ellipse cx="990.5" cy="510" rx="138.5" ry="12" fill="#EAF5F1" stroke="#12635D" stroke-width="1.4"/>
+<ellipse cx="990.5" cy="393" rx="138.5" ry="12" fill="#EAF5F1" stroke="#12635D" stroke-width="1.4"/>
+<text x="870" y="428" font-family="DejaVu Sans, sans-serif" font-size="20" font-weight="700" fill="#172E3D" text-anchor="start">PostgreSQL</text>
+<text x="870" y="455" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">host 5432 → 5432</text>
+<text x="870" y="479" font-family="DejaVu Sans, sans-serif" font-size="17" font-weight="400" fill="#4C626D" text-anchor="start">postgres_data volume</text>
+<polyline points="808,454 852,454" fill="none" stroke="#12635D" stroke-width="1.8"/>
+<polygon points="852,454 842.8691105968769,458.0776045305957 842.8691105968769,449.9223954694043" fill="#12635D" stroke="none" stroke-width="1.5"/>
+<text x="830" y="441" font-family="DejaVu Sans, sans-serif" font-size="13" font-weight="400" fill="#12635D" text-anchor="middle">SQL</text>
+<text x="852" y="556" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">Backend starts after</text>
+<text x="852" y="579" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">database health check</text>
+<rect x="48" y="536" width="255" height="88" rx="10" fill="#FFF3DD" stroke="#845016" stroke-width="1.4"/>
+<text x="66" y="568" font-family="DejaVu Sans, sans-serif" font-size="18" font-weight="700" fill="#172E3D" text-anchor="start">Authorization debt</text>
+<text x="66" y="595" font-family="DejaVu Sans, sans-serif" font-size="15" font-weight="400" fill="#4C626D" text-anchor="start">Some mutations lack guards</text>
+<rect x="48" y="657" width="310" height="76" rx="10" fill="#EAF5F1" stroke="#12635D" stroke-width="1.4"/>
+<text x="66" y="689" font-family="DejaVu Sans, sans-serif" font-size="19" font-weight="700" fill="#172E3D" text-anchor="start">Media adapter</text>
+<text x="66" y="716" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">Azure Blob / local uploads</text>
+<rect x="445" y="657" width="310" height="76" rx="10" fill="#EAF5F1" stroke="#12635D" stroke-width="1.4"/>
+<text x="463" y="689" font-family="DejaVu Sans, sans-serif" font-size="19" font-weight="700" fill="#172E3D" text-anchor="start">Google Gemini</text>
+<text x="463" y="716" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">Optional image → JSON tags</text>
+<rect x="842" y="657" width="310" height="76" rx="10" fill="#EAF5F1" stroke="#12635D" stroke-width="1.4"/>
+<text x="860" y="689" font-family="DejaVu Sans, sans-serif" font-size="19" font-weight="700" fill="#172E3D" text-anchor="start">SMTP / Nodemailer</text>
+<text x="860" y="716" font-family="DejaVu Sans, sans-serif" font-size="16" font-weight="400" fill="#4C626D" text-anchor="start">Receipts • updates • accounts</text>
+<polyline points="414,598 414,639 204,639 204,657" fill="none" stroke="#12635D" stroke-width="1.8"/>
+<polygon points="204,657 199.9223954694043,647.8691105968769 208.0776045305957,647.8691105968769" fill="#12635D" stroke="none" stroke-width="1.5"/>
+<polyline points="600,598 600,657" fill="none" stroke="#12635D" stroke-width="1.8"/>
+<polygon points="600,657 595.9223954694043,647.8691105968769 604.0776045305957,647.8691105968769" fill="#12635D" stroke="none" stroke-width="1.5"/>
+<polyline points="766,598 766,639 996,639 996,657" fill="none" stroke="#12635D" stroke-width="1.8"/>
+<polygon points="996,657 991.9223954694043,647.8691105968769 1000.0776045305957,647.8691105968769" fill="#12635D" stroke="none" stroke-width="1.5"/>
+<text x="703" y="641" font-family="DejaVu Sans, sans-serif" font-size="13" font-weight="400" fill="#4C626D" text-anchor="middle">Request-time calls</text>
+<polyline points="48,754 1152,754" fill="none" stroke="#A2B3BA" stroke-width="1"/>
+<text x="48" y="776" font-family="DejaVu Sans, sans-serif" font-size="12" font-weight="400" fill="#4C626D" text-anchor="start">Source: index.ts; prismaClient.ts; service modules; docker-compose.yml. Snapshot 3c75abdc. Not a verified production topology.</text>
+<text x="1152" y="776" font-family="DejaVu Sans, sans-serif" font-size="12" font-weight="400" fill="#4C626D" text-anchor="end">2 / 5</text>
+</svg>
