@@ -1,0 +1,116 @@
+# Continuous deployment of this fork to Azure Container Apps.
+# Every push to main runs the tests, builds production images, and points
+# mdma-api and mdma-web at the new commit's images. Azure login uses OIDC
+# (no stored password); settings come from repository variables:
+# AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_SUBSCRIPTION_ID,
+# AZURE_RESOURCE_GROUP and API_URL (with a trailing slash).
+name: Deploy to Azure
+
+on:
+    push:
+        branches: [main]
+    workflow_dispatch:
+permissions:
+    contents: read
+    packages: write
+    id-token: write
+concurrency:
+    group: deploy-azure
+    cancel-in-progress: false
+env:
+    API_APP: mdma-api
+    WEB_APP: mdma-web
+jobs:
+    test-server:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v7
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: '20.x'
+                  cache: 'npm'
+                  cache-dependency-path: server/package-lock.json
+            - run: cd server && npm install
+            - run: cd server && npm test
+              env:
+                  CI: true
+
+    test-client:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v7
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: '20.x'
+            - run: cd client-app && npm install
+            - run: cd client-app && npm test
+              env:
+                  CI: true
+
+    build:
+        needs: [test-server, test-client]
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: true
+            matrix:
+                include:
+                    - name: server
+                      context: ./server
+                      dockerfile: ./server/Dockerfile.prod
+                    - name: client
+                      context: ./client-app
+                      dockerfile: ./client-app/Dockerfile.prod
+        steps:
+            - uses: actions/checkout@v7
+            - uses: docker/setup-buildx-action@v3
+            - uses: docker/login-action@v3
+              with:
+                  registry: ghcr.io
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+            - id: meta
+              uses: docker/metadata-action@v5
+              with:
+                  images: ghcr.io/${{ github.repository }}/${{ matrix.name }}-test
+                  tags: |
+                      type=raw,value=main
+                      type=sha,prefix=sha-,format=short
+            - uses: docker/build-push-action@v5
+              with:
+                  context: ${{ matrix.context }}
+                  file: ${{ matrix.dockerfile }}
+                  push: true
+                  build-args: |
+                      REACT_APP_BACKEND_API_BASE_URL=${{ vars.API_URL }}
+                  tags: ${{ steps.meta.outputs.tags }}
+                  labels: ${{ steps.meta.outputs.labels }}
+                  cache-from: type=gha,scope=${{ matrix.name }}-test
+                  cache-to: type=gha,mode=max,scope=${{ matrix.name }}-test
+
+    deploy:
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            - uses: azure/login@v2
+              with:
+                  client-id: ${{ vars.AZURE_CLIENT_ID }}
+                  tenant-id: ${{ vars.AZURE_TENANT_ID }}
+                  subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+            - name: Point both apps at this commit's images
+              run: |
+                  az extension add --name containerapp --upgrade --yes
+                  IMG="ghcr.io/${GITHUB_REPOSITORY,,}"
+                  TAG="sha-${GITHUB_SHA::7}"
+                  az containerapp update -g "${{ vars.AZURE_RESOURCE_GROUP }}" -n "$API_APP" \
+                      --image "$IMG/server-test:$TAG" -o none
+                  az containerapp update -g "${{ vars.AZURE_RESOURCE_GROUP }}" -n "$WEB_APP" \
+                      --image "$IMG/client-test:$TAG" -o none
+            - name: Smoke test
+              run: |
+                  for app in "$API_APP" "$WEB_APP"; do
+                      FQDN=$(az containerapp show -g "${{ vars.AZURE_RESOURCE_GROUP }}" -n "$app" \
+                          --query properties.configuration.ingress.fqdn -o tsv)
+                      CODE=$(curl -s -m 120 -o /dev/null -w '%{http_code}' --retry 5 --retry-all-errors "https://$FQDN/")
+                      echo "$app -> HTTP $CODE"
+                      [ "$CODE" -lt 500 ]
+                  done
