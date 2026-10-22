@@ -1,0 +1,57 @@
+# Manually build production images from any branch for test deployments.
+# Images go to ghcr.io/<owner>/<repo>/{server,client}-test tagged with the
+# branch name and short SHA. Unlike build-and-push.yml, this never updates
+# oss-slu/k8s-manifests.
+on:
+    workflow_dispatch:
+        inputs:
+            api_url:
+                description: 'Public backend URL baked into the client (trailing slash)'
+                required: true
+permissions:
+    contents: read
+    packages: write
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    - name: server
+                      context: ./server
+                      dockerfile: ./server/Dockerfile.prod
+                    - name: client
+                      context: ./client-app
+                      dockerfile: ./client-app/Dockerfile.prod
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v7
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+            - name: Log in to GHCR
+              uses: docker/login-action@v3
+              with:
+                  registry: ghcr.io
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+            - name: Compute image metadata
+              id: meta
+              uses: docker/metadata-action@v5
+              with:
+                  images: ghcr.io/${{ github.repository }}/${{ matrix.name }}-test
+                  tags: |
+                      type=ref,event=branch
+                      type=sha,prefix=sha-,format=short
+            - name: Build and push
+              uses: docker/build-push-action@v5
+              with:
+                  context: ${{ matrix.context }}
+                  file: ${{ matrix.dockerfile }}
+                  push: true
+                  build-args: |
+                      REACT_APP_BACKEND_API_BASE_URL=${{ inputs.api_url }}
+                  tags: ${{ steps.meta.outputs.tags }}
+                  labels: ${{ steps.meta.outputs.labels }}
+                  cache-from: type=gha,scope=${{ matrix.name }}-test
+                  cache-to: type=gha,mode=max,scope=${{ matrix.name }}-test

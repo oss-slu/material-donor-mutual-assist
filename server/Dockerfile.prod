@@ -1,0 +1,26 @@
+# Production image: compiled JS, no nodemon, `prisma migrate deploy` on start.
+# The dev image (Dockerfile) is what docker-compose and the org cluster use.
+FROM node:20 AS build
+WORKDIR /app
+COPY package*.json ./
+COPY prisma ./prisma/
+RUN npm ci
+COPY . .
+# prisma.config.ts requires DATABASE_URL, but generate never connects to it.
+# tsc only emits .ts sources, so copy the generated Prisma client's .js files over.
+RUN DATABASE_URL=postgresql://build:build@localhost:5432/build npx prisma generate \
+    && npm run build \
+    && cp -r src/generated dist/generated
+
+FROM node:20-slim
+WORKDIR /app
+ENV NODE_ENV=production
+RUN apt-get update && apt-get install -y --no-install-recommends openssl \
+    && rm -rf /var/lib/apt/lists/*
+# node_modules keeps the prisma CLI (a devDependency) for migrate deploy
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/prisma ./prisma
+COPY --from=build /app/package.json /app/prisma.config.ts ./
+EXPOSE 5000
+CMD ["sh", "-c", "npx prisma migrate deploy && npm start"]

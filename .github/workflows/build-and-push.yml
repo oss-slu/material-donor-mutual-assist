@@ -7,6 +7,8 @@ permissions:
     packages: write
 jobs:
     build:
+        # Only the org repo deploys to the cluster; forks skip this workflow
+        if: github.repository_owner == 'oss-slu'
         runs-on: ubuntu-latest
         strategy:
             fail-fast: false
@@ -51,6 +53,7 @@ jobs:
 
     update-manifests:
         needs: build
+        if: github.repository_owner == 'oss-slu'
         runs-on: ubuntu-latest
         permissions:
             contents: read
