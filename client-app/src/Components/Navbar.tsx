@@ -9,7 +9,20 @@ const Navbar: React.FC = () => {
     const [userRole, setUserRole] = useState<string | null>(null);
     const [userStatus, setUserStatus] = useState<string | null>(null);
 
+    const handleSessionTimeout = (): void => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('name');
+        setIsLoggedIn(false);
+        setUser('');
+        setUserRole(null);
+        setUserStatus(null);
+
+        window.location.href = (process.env.PUBLIC_URL || '') + '/login';
+    };
+
     useEffect(() => {
+        let sessionTimeoutId: number | undefined;
+
         const checkLoginStatus = () => {
             const token = localStorage.getItem('token');
             const name = localStorage.getItem('name');
@@ -19,10 +32,21 @@ const Navbar: React.FC = () => {
                     const decoded = JSON.parse(atob(token.split('.')[1]));
 
                     // Checks if the token is expired
-                    if (decoded.exp * 1000 < Date.now()) {
-                        handleLogout();
+                    const expirationTime = decoded.exp * 1000;
+                    const timeUntilExpiration = expirationTime - Date.now();
+
+                    if (timeUntilExpiration <= 0) {
+                        handleSessionTimeout();
                         return;
                     }
+
+                    if (sessionTimeoutId !== undefined) {
+                        window.clearTimeout(sessionTimeoutId);
+                    }
+
+                    sessionTimeoutId = window.setTimeout(() => {
+                        handleSessionTimeout();
+                    }, timeUntilExpiration);
 
                     setUserRole(decoded.role); // Save role from JWT
                     setUserStatus(decoded.status); // Save status from JWT
@@ -47,6 +71,10 @@ const Navbar: React.FC = () => {
 
         return () => {
             window.removeEventListener('storage', checkLoginStatus);
+
+            if (sessionTimeoutId !== undefined) {
+                window.clearTimeout(sessionTimeoutId);
+            }
         };
     }, []);
 
